@@ -126,7 +126,7 @@ void Resources::Arc::save(const std::filesystem::path& path)
             .CompSize = entry.CompSize,
             .RealSize = entry.RealSize,
             .Quality = entry.Quality,
-            .Offset = 0
+            .Offset = (u32)dataOffset
         };
 
         const auto pathLen = std::min(sizeof(internal.Path), (size_t)entry.Path.toLatin1().size());
