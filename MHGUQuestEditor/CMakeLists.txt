@@ -22,10 +22,13 @@ set(PROJECT_SOURCES
     MHGUQuestEditor.h
     MHGUQuestEditor.cpp
     Common.h
+    Util/Crc32.h
     Resources/QuestData.h
     Resources/QuestData.cpp
     Resources/Arc.h
     Resources/Arc.cpp
+    Resources/ExtensionResolver.h
+    Resources/ExtensionResolver.cpp
 )
 
 qt_add_executable(MHGUQuestEditor ${PROJECT_SOURCES})

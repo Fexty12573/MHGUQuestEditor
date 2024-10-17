@@ -1,4 +1,5 @@
 #include "Arc.h"
+#include "ExtensionResolver.h"
 
 #include <QtAssert>
 #include <QtLogging>
@@ -77,7 +78,7 @@ void Resources::Arc::load()
         ArcEntry arcEntry = {
             .Path = QString::fromUtf8(entry.Path),
             .TypeHash = entry.TypeHash,
-            .Extension = "", // TODO
+            .Extension = ExtensionResolver::resolve(entry.TypeHash),
             .CompSize = entry.CompSize,
             .RealSize = entry.RealSize,
             .Quality = entry.Quality
