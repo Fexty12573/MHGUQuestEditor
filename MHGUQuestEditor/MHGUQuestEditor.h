@@ -13,4 +13,6 @@ public:
 
 private:
     Ui::MHGUQuestEditorClass ui;
+
+    std::vector<QPixmap> monsterIcons;
 };

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/cmn_micon00.png</file>
+        <file>res/cmn_micon01.png</file>
+        <file>res/em_nando_tbl.nan</file>
+        <file>res/icon_names.json</file>
+    </qresource>
+</RCC>

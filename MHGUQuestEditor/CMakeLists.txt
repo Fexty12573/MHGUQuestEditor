@@ -5,6 +5,7 @@ include(qt.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR}
@@ -29,6 +30,9 @@ set(PROJECT_SOURCES
     Resources/Arc.cpp
     Resources/ExtensionResolver.h
     Resources/ExtensionResolver.cpp
+    Resources/StatTable.h
+    Resources/StatTable.cpp
+    ${CMAKE_SOURCE_DIR}/Resource.qrc
 )
 
 qt_add_executable(MHGUQuestEditor ${PROJECT_SOURCES})
