@@ -30,6 +30,11 @@ private:
     std::vector<StatTableEntry> entries;
 
 public:
+    size_t size() const
+    {
+        return entries.size();
+    }
+
     const StatTableEntry& operator[](size_t index) const
     {
         return entries[index];

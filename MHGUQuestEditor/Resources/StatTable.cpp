@@ -6,6 +6,7 @@
 Resources::StatTable Resources::StatTable::deserialize(const QByteArray& data)
 {
     QDataStream stream(data);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
     u32 magic, version;
     stream >> magic;
@@ -25,21 +26,14 @@ Resources::StatTable Resources::StatTable::deserialize(const QByteArray& data)
 
     int count;
     stream >> count;
+    stream.skipRawData(4); // Padding
 
     StatTable table;
 
     for (int i = 0; i < count; ++i)
     {
         StatTableEntry entry;
-        stream >> entry.Health;
-        stream >> entry.Attack;
-        stream >> entry.Defense;
-        stream >> entry.Stagger;
-        stream >> entry.Exhaust;
-        stream >> entry.KO;
-        stream >> entry.Mount;
-        stream >> entry.Unknown;
-
+        stream.readRawData((char*)&entry, sizeof(StatTableEntry));
         table.entries.emplace_back(entry);
     }
 
