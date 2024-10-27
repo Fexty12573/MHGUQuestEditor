@@ -918,7 +918,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget_2">
           <property name="currentIndex">
-           <number>2</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab_4">
            <attribute name="title">
@@ -928,7 +928,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_26">
               <item>
-               <widget class="QComboBox" name="comboBox_18">
+               <widget class="QComboBox" name="comboMonster1">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
@@ -1347,7 +1347,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_37">
               <item>
-               <widget class="QComboBox" name="comboBox_20">
+               <widget class="QComboBox" name="comboMonster2">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
@@ -1766,7 +1766,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_45">
               <item>
-               <widget class="QComboBox" name="comboBox_22">
+               <widget class="QComboBox" name="comboMonster3">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
@@ -2185,7 +2185,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_54">
               <item>
-               <widget class="QComboBox" name="comboBox_24">
+               <widget class="QComboBox" name="comboMonster4">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
@@ -2604,7 +2604,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_70">
               <item>
-               <widget class="QComboBox" name="comboBox_28">
+               <widget class="QComboBox" name="comboMonster5">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>

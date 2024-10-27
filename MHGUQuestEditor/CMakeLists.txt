@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
     MHGUQuestEditor.h
     MHGUQuestEditor.cpp
     Common.h
+    Monster/Id.h
     Util/Crc32.h
     Resources/QuestData.h
     Resources/QuestData.cpp

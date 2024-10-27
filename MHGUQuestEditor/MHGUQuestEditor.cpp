@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 
 #include "Resources/StatTable.h"
 
@@ -127,6 +128,23 @@ MHGUQuestEditor::MHGUQuestEditor(QWidget *parent)
         ui.comboMonster5Attack->addItem(attack);
         ui.comboMonster5Defense->addItem(defense);
         ui.comboMonster5Other->addItem(other);
+    }
+
+    auto monsterNames = QFile(":/res/em_names.json");
+    if (!monsterNames.open(QIODevice::ReadOnly))
+    {
+        qFatal("Failed to open em_names.json");
+    }
+
+    QJsonObject names = QJsonDocument::fromJson(monsterNames.readAll()).object();
+    for (const auto& name : names.keys())
+    {
+        const auto id = QVariant(names[name].toInt());
+        ui.comboMonster1->addItem(name, id);
+        ui.comboMonster2->addItem(name, id);
+        ui.comboMonster3->addItem(name, id);
+        ui.comboMonster4->addItem(name, id);
+        ui.comboMonster5->addItem(name, id);
     }
 }
 
