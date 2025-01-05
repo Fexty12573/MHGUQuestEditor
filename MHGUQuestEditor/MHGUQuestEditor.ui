@@ -14,11 +14,11 @@
    <string>MHGUQuestEditor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_10">
+   <layout class="QVBoxLayout" name="verticalLayout_11">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -28,11 +28,14 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QSpinBox" name="spinBox">
+           <widget class="QSpinBox" name="spinBoxQuestId">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>9999999</number>
             </property>
            </widget>
           </item>
@@ -49,7 +52,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_8">
+           <widget class="QComboBox" name="comboRequirement1">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -74,7 +77,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QComboBox" name="comboBox">
+           <widget class="QComboBox" name="comboQuestType">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -95,7 +98,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_9">
+           <widget class="QComboBox" name="comboRequirement2">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -120,7 +123,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QComboBox" name="comboBox_2">
+           <widget class="QComboBox" name="comboQuestSubType">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -136,12 +139,12 @@
              </font>
             </property>
             <property name="text">
-             <string>Request Village</string>
+             <string>Sub Type</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_10">
+           <widget class="QComboBox" name="comboComboRequirement">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -166,7 +169,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QComboBox" name="comboBox_3">
+           <widget class="QComboBox" name="comboQuestLevel">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -187,7 +190,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_11">
+           <widget class="QComboBox" name="comboClearType">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -212,7 +215,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QComboBox" name="comboBox_4">
+           <widget class="QComboBox" name="comboMonsterLevel">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -233,11 +236,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_6">
+           <widget class="QSpinBox" name="spinBoxQuestFee">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -258,7 +264,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QComboBox" name="comboBox_5">
+           <widget class="QComboBox" name="comboMap">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -279,7 +285,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_7">
+           <widget class="QSpinBox" name="spinBoxQuestZenny">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -287,6 +293,9 @@
             </property>
             <property name="frame">
              <bool>true</bool>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -307,7 +316,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QComboBox" name="comboBox_6">
+           <widget class="QComboBox" name="comboSpawnType">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -328,11 +337,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_8">
+           <widget class="QSpinBox" name="spinBoxSubquestZenny">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -353,7 +365,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <widget class="QSpinBox" name="spinBox_2">
+           <widget class="QSpinBox" name="spinBoxTimeLimit">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -377,11 +389,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_9">
+           <widget class="QSpinBox" name="spinBoxQuestPoints">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -402,7 +417,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
-           <widget class="QSpinBox" name="spinBox_3">
+           <widget class="QSpinBox" name="spinBoxFaints">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -426,11 +441,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_10">
+           <widget class="QSpinBox" name="spinBoxSubquestPoints">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -451,7 +469,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_10">
           <item>
-           <widget class="QSpinBox" name="spinBox_4">
+           <widget class="QSpinBox" name="spinBoxArenaEquipId">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -475,11 +493,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_11">
+           <widget class="QSpinBox" name="spinBoxQuestHrp">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -500,7 +521,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_11">
           <item>
-           <widget class="QComboBox" name="comboBox_7">
+           <widget class="QComboBox" name="comboBgm">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -521,11 +542,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_12">
+           <widget class="QSpinBox" name="spinBoxSubquestHrp">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
              </font>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
            </widget>
           </item>
@@ -675,11 +699,14 @@
                 <number>5</number>
                </property>
                <item>
-                <widget class="QComboBox" name="comboBox_12">
+                <widget class="QComboBox" name="comboObjectiveType1">
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
                   </font>
+                 </property>
+                 <property name="editable">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
@@ -700,7 +727,11 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_18">
                <item>
-                <widget class="QComboBox" name="comboBox_13"/>
+                <widget class="QComboBox" name="comboObjectiveId1">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_24">
@@ -714,7 +745,11 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_19">
                <item>
-                <widget class="QSpinBox" name="spinBox_5"/>
+                <widget class="QSpinBox" name="spinBoxObjective1Amount">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_25">
@@ -748,11 +783,14 @@
                 <number>5</number>
                </property>
                <item>
-                <widget class="QComboBox" name="comboBox_14">
+                <widget class="QComboBox" name="comboObjectiveType2">
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
                   </font>
+                 </property>
+                 <property name="editable">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
@@ -773,7 +811,11 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_21">
                <item>
-                <widget class="QComboBox" name="comboBox_15"/>
+                <widget class="QComboBox" name="comboObjectiveId2">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_27">
@@ -787,7 +829,11 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_22">
                <item>
-                <widget class="QSpinBox" name="spinBox_13"/>
+                <widget class="QSpinBox" name="spinBoxObjective2Amount">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_28">
@@ -837,7 +883,7 @@
                 <number>5</number>
                </property>
                <item>
-                <widget class="QComboBox" name="comboBox_16">
+                <widget class="QComboBox" name="comboSubObjectiveType">
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
@@ -862,7 +908,11 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_24">
                <item>
-                <widget class="QComboBox" name="comboBox_17"/>
+                <widget class="QComboBox" name="comboSubObjectiveId">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_30">
@@ -876,7 +926,11 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_25">
                <item>
-                <widget class="QSpinBox" name="spinBox_14"/>
+                <widget class="QSpinBox" name="spinBoxSubObjectiveAmount">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_31">
@@ -914,11 +968,11 @@
        <attribute name="title">
         <string>Monsters</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_11">
+       <layout class="QHBoxLayout" name="horizontalLayout_59">
         <item>
          <widget class="QTabWidget" name="tabWidget_2">
           <property name="currentIndex">
-           <number>4</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_4">
            <attribute name="title">
@@ -933,6 +987,9 @@
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="editable">
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -949,11 +1006,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_18">
+               <widget class="QSpinBox" name="spinBoxMonster1Difficulty">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -974,11 +1034,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_27">
               <item>
-               <widget class="QSpinBox" name="spinBox_15">
+               <widget class="QSpinBox" name="spinBoxMonster1Special">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -995,11 +1058,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_19">
+               <widget class="QSpinBox" name="spinBoxMonster1Size">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>65535</number>
                 </property>
                </widget>
               </item>
@@ -1020,11 +1086,17 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_28">
               <item>
-               <widget class="QComboBox" name="comboBox_19">
+               <widget class="QSpinBox" name="spinBoxMonster1State">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="minimum">
+                 <number>-128</number>
+                </property>
+                <property name="maximum">
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -1041,11 +1113,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_20">
+               <widget class="QSpinBox" name="spinBoxMonster1SizeTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1066,11 +1141,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_29">
               <item>
-               <widget class="QSpinBox" name="spinBox_16">
+               <widget class="QSpinBox" name="spinBoxMonster1RestoreAmount">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1087,11 +1165,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_21">
+               <widget class="QSpinBox" name="spinBoxMonster1StaminaTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1117,6 +1198,9 @@
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="editable">
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -1174,6 +1258,9 @@
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="editable">
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -1289,6 +1376,9 @@
                   <pointsize>11</pointsize>
                  </font>
                 </property>
+                <property name="editable">
+                 <bool>false</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1337,6 +1427,19 @@
               </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_5">
@@ -1368,11 +1471,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_23">
+               <widget class="QSpinBox" name="spinBoxMonster2Difficulty">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1393,11 +1499,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_35">
               <item>
-               <widget class="QSpinBox" name="spinBox_17">
+               <widget class="QSpinBox" name="spinBoxMonster2Special">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1414,11 +1523,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_22">
+               <widget class="QSpinBox" name="spinBoxMonster2Size">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>65535</number>
                 </property>
                </widget>
               </item>
@@ -1439,11 +1551,17 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_40">
               <item>
-               <widget class="QComboBox" name="comboBox_21">
+               <widget class="QSpinBox" name="spinBoxMonster2State">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="minimum">
+                 <number>-128</number>
+                </property>
+                <property name="maximum">
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -1460,11 +1578,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_26">
+               <widget class="QSpinBox" name="spinBoxMonster2SizeTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1485,11 +1606,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_38">
               <item>
-               <widget class="QSpinBox" name="spinBox_24">
+               <widget class="QSpinBox" name="spinBoxMonster2RestoreAmount">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1506,11 +1630,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_25">
+               <widget class="QSpinBox" name="spinBoxMonster2StaminaTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1756,6 +1883,19 @@
               </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_6">
@@ -1787,11 +1927,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_29">
+               <widget class="QSpinBox" name="spinBoxMonster3Difficulty">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1812,11 +1955,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_43">
               <item>
-               <widget class="QSpinBox" name="spinBox_27">
+               <widget class="QSpinBox" name="spinBoxMonster3Special">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1833,11 +1979,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_28">
+               <widget class="QSpinBox" name="spinBoxMonster3Size">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>65535</number>
                 </property>
                </widget>
               </item>
@@ -1858,11 +2007,17 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_46">
               <item>
-               <widget class="QComboBox" name="comboBox_23">
+               <widget class="QSpinBox" name="spinBoxMonster3State">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="minimum">
+                 <number>-128</number>
+                </property>
+                <property name="maximum">
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -1879,11 +2034,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_30">
+               <widget class="QSpinBox" name="spinBoxMonster3SizeTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1904,11 +2062,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_48">
               <item>
-               <widget class="QSpinBox" name="spinBox_31">
+               <widget class="QSpinBox" name="spinBoxMonster3RestoreAmount">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -1925,11 +2086,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_32">
+               <widget class="QSpinBox" name="spinBoxMonster3StaminaTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2175,6 +2339,19 @@
               </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_10">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_7">
@@ -2206,11 +2383,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_35">
+               <widget class="QSpinBox" name="spinBoxMonster4Difficulty">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2231,11 +2411,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_52">
               <item>
-               <widget class="QSpinBox" name="spinBox_33">
+               <widget class="QSpinBox" name="spinBoxMonster4Special">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2252,11 +2435,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_34">
+               <widget class="QSpinBox" name="spinBoxMonster4Size">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>65535</number>
                 </property>
                </widget>
               </item>
@@ -2277,11 +2463,17 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_55">
               <item>
-               <widget class="QComboBox" name="comboBox_25">
+               <widget class="QSpinBox" name="spinBoxMonster4State">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="minimum">
+                 <number>-128</number>
+                </property>
+                <property name="maximum">
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -2298,11 +2490,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_36">
+               <widget class="QSpinBox" name="spinBoxMonster4SizeTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2323,11 +2518,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_57">
               <item>
-               <widget class="QSpinBox" name="spinBox_37">
+               <widget class="QSpinBox" name="spinBoxMonster4RestoreAmount">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2344,11 +2542,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_38">
+               <widget class="QSpinBox" name="spinBoxMonster4StaminaTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2594,6 +2795,19 @@
               </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_11">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_8">
@@ -2625,11 +2839,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_47">
+               <widget class="QSpinBox" name="spinBoxMonster5Difficulty">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2650,11 +2867,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_68">
               <item>
-               <widget class="QSpinBox" name="spinBox_45">
+               <widget class="QSpinBox" name="spinBoxMonster5Special">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2671,11 +2891,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_46">
+               <widget class="QSpinBox" name="spinBoxMonster5Size">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>65535</number>
                 </property>
                </widget>
               </item>
@@ -2696,11 +2919,17 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_71">
               <item>
-               <widget class="QComboBox" name="comboBox_29">
+               <widget class="QSpinBox" name="spinBoxMonster5State">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="minimum">
+                 <number>-128</number>
+                </property>
+                <property name="maximum">
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -2717,11 +2946,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_48">
+               <widget class="QSpinBox" name="spinBoxMonster5SizeTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2742,11 +2974,14 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_73">
               <item>
-               <widget class="QSpinBox" name="spinBox_49">
+               <widget class="QSpinBox" name="spinBoxMonster5RestoreAmount">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -2763,11 +2998,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_50">
+               <widget class="QSpinBox" name="spinBoxMonster5StaminaTable">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
                  </font>
+                </property>
+                <property name="maximum">
+                 <number>255</number>
                 </property>
                </widget>
               </item>
@@ -3013,14 +3251,1424 @@
               </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_12">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_9">
            <attribute name="title">
             <string>Small Monsters</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_75">
+              <item>
+               <widget class="QComboBox" name="comboZakoHealth">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_104">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Health</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_49">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Policy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>240</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_50">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Policy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>240</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_76">
+              <item>
+               <widget class="QComboBox" name="comboZakoAttack">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_105">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Attack</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_51">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Policy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>240</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_52">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Policy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>240</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_77">
+              <item>
+               <widget class="QComboBox" name="comboZakoOther">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_106">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Other Stats</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_53">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Policy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>240</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_54">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Policy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>240</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </widget>
          </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_10">
+       <attribute name="title">
+        <string>Items</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_16">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <widget class="QGroupBox" name="groupBox_6">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="title">
+             <string>Supplies A</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_14">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_63">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesALabel">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="minimum">
+                  <number>-128</number>
+                 </property>
+                 <property name="maximum">
+                  <number>127</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_84">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Label</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_64">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesAType">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="minimum">
+                  <number>-128</number>
+                 </property>
+                 <property name="maximum">
+                  <number>127</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_85">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Type</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_65">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesATarget">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_86">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Target</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_66">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesATargetAmount">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_87">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Target Amount</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="title">
+             <string>Supplies B</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_13">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_50">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesBLabel">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="minimum">
+                  <number>-128</number>
+                 </property>
+                 <property name="maximum">
+                  <number>127</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_80">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Label</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_60">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesBType">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="minimum">
+                  <number>-128</number>
+                 </property>
+                 <property name="maximum">
+                  <number>127</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_81">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Type</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_61">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesBTarget">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_82">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Target</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_62">
+               <item>
+                <widget class="QSpinBox" name="spinBoxSuppliesBTargetAmount">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_83">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Target Amount</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Items</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_15">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_78">
+             <item>
+              <widget class="QComboBox" name="comboCarveLevel"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_88">
+               <property name="text">
+                <string>Carve Level</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_79">
+             <item>
+              <widget class="QComboBox" name="comboGatheringLevel"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_89">
+               <property name="text">
+                <string>Gathering Level</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_80">
+             <item>
+              <widget class="QComboBox" name="comboFishingLevel"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_90">
+               <property name="text">
+                <string>Fishing Level</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Rewards</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_83">
+             <item>
+              <widget class="QSpinBox" name="spinBoxRewardBoxes1">
+               <property name="minimum">
+                <number>-128</number>
+               </property>
+               <property name="maximum">
+                <number>127</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_91">
+               <property name="text">
+                <string>Reward Boxes 1</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_84">
+             <item>
+              <widget class="QSpinBox" name="spinBoxRewardBoxes2">
+               <property name="minimum">
+                <number>-128</number>
+               </property>
+               <property name="maximum">
+                <number>127</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_107">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Reward Boxes 2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_85">
+             <item>
+              <widget class="QSpinBox" name="spinBoxMaxExtraBoxes">
+               <property name="minimum">
+                <number>-128</number>
+               </property>
+               <property name="maximum">
+                <number>127</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_108">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Max Additional Reward Boxes</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_11">
+       <attribute name="title">
+        <string>Spawns</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_18">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_92">
+          <item>
+           <widget class="QGroupBox" name="groupBox_8">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="title">
+             <string>Monster Set 2</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_19">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_86">
+               <item>
+                <widget class="QSpinBox" name="spinBoxMonster2SetType">
+                 <property name="minimum">
+                  <number>-128</number>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_109">
+                 <property name="text">
+                  <string>Set Type</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_87">
+               <item>
+                <widget class="QSpinBox" name="spinBoxMonster2SetTargetId">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_110">
+                 <property name="text">
+                  <string>Set Target ID</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_88">
+               <item>
+                <widget class="QSpinBox" name="spinBoxMonster2SetTargetAmount">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_111">
+                 <property name="text">
+                  <string>Set Target Amount</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_9">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="title">
+             <string>Monster Set 3</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_20">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_89">
+               <item>
+                <widget class="QSpinBox" name="spinBoxMonster3SetType">
+                 <property name="minimum">
+                  <number>-128</number>
+                 </property>
+                 <property name="maximum">
+                  <number>127</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_112">
+                 <property name="text">
+                  <string>Set Type</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_90">
+               <item>
+                <widget class="QSpinBox" name="spinBoxMonster3SetTargetId">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_113">
+                 <property name="text">
+                  <string>Set Target ID</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_91">
+               <item>
+                <widget class="QSpinBox" name="spinBoxMonster3SetTargetAmount">
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_114">
+                 <property name="text">
+                  <string>Set Target Amount</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Spawn</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_26">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_102">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_24">
+               <item>
+                <widget class="QGroupBox" name="groupBox_11">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Monster 1</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_21">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_93">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster1SpawnType">
+                      <property name="minimum">
+                       <number>-128</number>
+                      </property>
+                      <property name="maximum">
+                       <number>127</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_115">
+                      <property name="text">
+                       <string>Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_94">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster1SpawnTargetType">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_116">
+                      <property name="text">
+                       <string>Target Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_95">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster1SpawnTargetAmount">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_117">
+                      <property name="text">
+                       <string>Target Amount</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_14">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Monster 4</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_21">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_93">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster4SpawnType">
+                      <property name="minimum">
+                       <number>-128</number>
+                      </property>
+                      <property name="maximum">
+                       <number>127</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_115">
+                      <property name="text">
+                       <string>Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_94">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster4SpawnTargetType">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_116">
+                      <property name="text">
+                       <string>Target Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_95">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster4SpawnTargetAmount">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_117">
+                      <property name="text">
+                       <string>Target Amount</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_25">
+               <item>
+                <widget class="QGroupBox" name="groupBox_12">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Monster 2</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_22">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_96">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster2SpawnType">
+                      <property name="minimum">
+                       <number>-128</number>
+                      </property>
+                      <property name="maximum">
+                       <number>127</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_118">
+                      <property name="text">
+                       <string>Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_97">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster2SpawnTargetType">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_119">
+                      <property name="text">
+                       <string>Target Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_98">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster2SpawnTargetAmount">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_120">
+                      <property name="text">
+                       <string>Target Amount</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_15">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Monster 5</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_22">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_96">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster5SpawnType">
+                      <property name="minimum">
+                       <number>-128</number>
+                      </property>
+                      <property name="maximum">
+                       <number>127</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_118">
+                      <property name="text">
+                       <string>Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_97">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster5SpawnTargetType">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_119">
+                      <property name="text">
+                       <string>Target Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_98">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster5SpawnTargetAmount">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_120">
+                      <property name="text">
+                       <string>Target Amount</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_27">
+               <item>
+                <widget class="QGroupBox" name="groupBox_13">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Monster 3</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_23">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_99">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster3SpawnType">
+                      <property name="minimum">
+                       <number>-128</number>
+                      </property>
+                      <property name="maximum">
+                       <number>127</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_121">
+                      <property name="text">
+                       <string>Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_100">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster3SpawnTargetType">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_122">
+                      <property name="text">
+                       <string>Target Type</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_101">
+                    <item>
+                     <widget class="QSpinBox" name="spinBoxMonster3SpawnTargetAmount">
+                      <property name="maximum">
+                       <number>65535</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_123">
+                      <property name="text">
+                       <string>Target Amount</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_4">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_12">
+       <attribute name="title">
+        <string>Other</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_29">
+        <item>
+         <widget class="QGroupBox" name="groupBox_16">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Invaders</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_28">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_81">
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayRandom">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_124">
+               <property name="text">
+                <string>Invader Chance (%)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayLimit5">
+               <property name="minimum">
+                <number>-128</number>
+               </property>
+               <property name="maximum">
+                <number>127</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_125">
+               <property name="text">
+                <string>Stray Limit Monster 5</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_82">
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayStart">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_126">
+               <property name="text">
+                <string>Invader Spawn Time (Minutes)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayRandom3">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_127">
+               <property name="text">
+                <string>Stray Random Monster 3</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_103">
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayStartRandom">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_128">
+               <property name="text">
+                <string>Invader Start Variance (Minutes)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayRandom4">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_129">
+               <property name="text">
+                <string>Stray Random Monster 4</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_104">
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayLimit3">
+               <property name="minimum">
+                <number>-128</number>
+               </property>
+               <property name="maximum">
+                <number>127</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_130">
+               <property name="text">
+                <string>Stray Limit Monster 3</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayRandom5">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_131">
+               <property name="text">
+                <string>Stray Random Monster 5</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_105">
+             <item>
+              <widget class="QSpinBox" name="spinBoxStrayLimit4">
+               <property name="minimum">
+                <number>-128</number>
+               </property>
+               <property name="maximum">
+                <number>127</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_132">
+               <property name="text">
+                <string>Stray Limit Monster 4</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxExtraTicketCount">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_133">
+               <property name="text">
+                <string>Extra Ticket Count</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

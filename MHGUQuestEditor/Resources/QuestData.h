@@ -10,6 +10,8 @@
 namespace Resources
 {
 
+#pragma pack(push, 1)
+
 enum class Map : s8;
 enum class QuestLevel : u8;
 enum class QuestEnemyLevel : u8;
@@ -139,7 +141,7 @@ public:
     u8 ExtraTicketCount;
     QuestIcon Icons[5];
     u32 ProgNum;
-    QuestInfo Info;
+    QuestInfo Info[7];
     s32 VillagePointsG;
     u16 Flags;
 
@@ -371,7 +373,8 @@ enum class QuestGatheringLevel : u8
 
 enum class QuestFishingLevel : u8
 {
-    LowRank = 0,
+    LowRankSpecial = 0,
+    LowRank,
     HighRank,
     Arena,
     GRank,
@@ -581,5 +584,7 @@ struct Language
         ChineseSimplified,
     };
 };
+
+#pragma pack(pop)
 
 }

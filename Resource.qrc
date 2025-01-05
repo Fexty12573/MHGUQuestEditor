@@ -5,5 +5,19 @@
         <file>res/em_nando_tbl.nan</file>
         <file>res/icon_names.json</file>
         <file>res/em_names.json</file>
+        <file>res/em_level.json</file>
+        <file>res/map_names.json</file>
+        <file>res/quest_bgm.json</file>
+        <file>res/quest_carve_level.json</file>
+        <file>res/quest_clear_type.json</file>
+        <file>res/quest_fishing_level.json</file>
+        <file>res/quest_gather_level.json</file>
+        <file>res/quest_level.json</file>
+        <file>res/quest_objective.json</file>
+        <file>res/quest_requirement.json</file>
+        <file>res/quest_start_type.json</file>
+        <file>res/quest_subtype.json</file>
+        <file>res/quest_type.json</file>
+        <file>res/item_names.json</file>
     </qresource>
 </RCC>

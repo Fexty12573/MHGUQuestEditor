@@ -37,6 +37,62 @@ Resources::Arc::Arc(std::filesystem::path path) : path(std::move(path))
     load();
 }
 
+std::span<const Resources::ArcEntry> Resources::Arc::getEntries() const
+{
+    return entries;
+}
+
+std::vector<Resources::ArcEntry>& Resources::Arc::getEntries()
+{
+    return entries;
+}
+
+const Resources::ArcEntry* Resources::Arc::findEntry(QStringView path) const
+{
+    for (auto& entry : entries)
+    {
+        if (entry.Path == path)
+        {
+            return &entry;
+        }
+    }
+
+    return nullptr;
+}
+
+Resources::ArcEntry* Resources::Arc::findEntry(QStringView path)
+{
+    for (auto& entry : entries)
+    {
+        if (entry.Path == path)
+        {
+            return &entry;
+        }
+    }
+
+    return nullptr;
+}
+
+const Resources::ArcEntry& Resources::Arc::getEntry(int index) const
+{
+    if (index < 0 || index >= entries.size())
+    {
+        qFatal("Invalid index %d", index);
+    }
+
+    return entries[index];
+}
+
+Resources::ArcEntry& Resources::Arc::getEntry(int index)
+{
+    if (index < 0 || index >= entries.size())
+    {
+        qFatal("Invalid index %d", index);
+    }
+
+    return entries[index];
+}
+
 void Resources::Arc::load()
 {
     QFile file(path);

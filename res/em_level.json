@@ -1,0 +1,6 @@
+[
+    { "Name": "Training", "Value": 0 },
+    { "Name": "Low Rank", "Value": 1 },
+    { "Name": "High Rank", "Value": 3 },
+    { "Name": "G Rank", "Value": 5 }
+]

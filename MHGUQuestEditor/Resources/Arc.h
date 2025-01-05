@@ -2,9 +2,11 @@
 
 #include <Common.h>
 
+#include <QString>
 #include <filesystem>
-#include <qstring.h>
+#include <optional>
 #include <vector>
+#include <span>
 
 
 namespace Resources
@@ -39,6 +41,15 @@ private:
     
 public:
     explicit Arc(std::filesystem::path path);
+
+    std::span<const ArcEntry> getEntries() const;
+    std::vector<ArcEntry>& getEntries();
+
+    const ArcEntry* findEntry(QStringView path) const;
+    ArcEntry* findEntry(QStringView path);
+
+    const ArcEntry& getEntry(int index) const;
+    ArcEntry& getEntry(int index);
 
     void save(const std::filesystem::path& path = {});
 };

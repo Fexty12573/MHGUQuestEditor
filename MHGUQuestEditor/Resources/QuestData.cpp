@@ -6,6 +6,7 @@
 Resources::QuestData Resources::QuestData::deserialize(const QByteArray& data)
 {
     QDataStream stream(data);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
     u32 magic;
     s32 count;
