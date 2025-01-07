@@ -3,6 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MHGUQuestEditor.h"
 #include "Resources/Arc.h"
+#include "Resources/Gmd.h"
+#include "Resources/QuestArc.h"
 #include "Resources/QuestData.h"
 
 class MHGUQuestEditor : public QMainWindow
@@ -38,14 +40,16 @@ private:
     void onOpenFile();
     void onSaveFile();
 
-    void loadQuestFile(const QString& path);
+    void loadFile(const QString& path);
+    void loadQuestArc();
     void loadQuestDataIntoUi();
     void saveQuestDataFromUi();
 
 private:
     Ui::MHGUQuestEditorClass ui;
 
-    std::unique_ptr<Resources::Arc> arc;
+    std::unique_ptr<Resources::QuestArc> arc;
+    std::vector<Resources::Gmd> gmds;
     Resources::QuestData questData;
     std::vector<QPixmap> monsterIcons;
     QStringList itemNames;

@@ -33,7 +33,7 @@ public:
     static constexpr u32 Magic = 0x435241; // "ARC\0"
     static constexpr s16 Version = 0x0011;
 
-private:
+protected:
     std::filesystem::path path;
     std::vector<ArcEntry> entries;
 

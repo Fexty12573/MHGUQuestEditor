@@ -31,10 +31,16 @@ Resources::QuestData Resources::QuestData::deserialize(const QByteArray& data)
     return quest;
 }
 
+Resources::QuestData Resources::QuestData::deserialize(std::span<const u8> data)
+{
+    return deserialize(QByteArray((const char*)data.data(), data.size()));
+}
+
 QByteArray Resources::QuestData::serialize(const QuestData& quest)
 {
     QByteArray data;
     QDataStream stream(&data, QIODeviceBase::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
     stream << Magic;
     stream << 1;

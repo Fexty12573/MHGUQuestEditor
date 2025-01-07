@@ -27,8 +27,12 @@ set(PROJECT_SOURCES
     Util/Crc32.h
     Resources/QuestData.h
     Resources/QuestData.cpp
+    Resources/Gmd.h
+    Resources/Gmd.cpp
     Resources/Arc.h
     Resources/Arc.cpp
+    Resources/QuestArc.h
+    Resources/QuestArc.cpp
     Resources/ExtensionResolver.h
     Resources/ExtensionResolver.cpp
     Resources/StatTable.h

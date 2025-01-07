@@ -5,6 +5,8 @@
 #include <Common.h>
 
 #include <QByteArray>
+#include <QString>
+#include <span>
 
 
 namespace Resources
@@ -86,6 +88,36 @@ struct QuestInfo
     char File[16];
 };
 
+struct Language
+{
+    enum : s32
+    {
+        Eng = 0,
+        Fre,
+        Ger,
+        Ita,
+        Spa,
+        ChT,
+        ChS,
+        Count
+    };
+
+    static QString toString(s32 language)
+    {
+        switch (language)
+        {
+        case Eng: return "eng";
+        case Fre: return "fre";
+        case Ger: return "ger";
+        case Ita: return "ita";
+        case Spa: return "spa";
+        case ChT: return "chT";
+        case ChS: return "chS";
+        default: return "unknown";
+        }
+    }
+};
+
 class QuestData
 {
 public:
@@ -141,11 +173,12 @@ public:
     u8 ExtraTicketCount;
     QuestIcon Icons[5];
     u32 ProgNum;
-    QuestInfo Info[7];
+    QuestInfo Info[Language::Count];
     s32 VillagePointsG;
     u16 Flags;
 
     static QuestData deserialize(const QByteArray& data);
+    static QuestData deserialize(std::span<const u8> data);
     static QByteArray serialize(const QuestData& quest);
 };
 
@@ -569,20 +602,6 @@ enum class QuestIcon : u8
     Astalos_Hyper,
     Mizutsune_Hyper,
     Gammoth_Hyper
-};
-
-struct Language
-{
-    enum e
-    {
-        English = 0,
-        French,
-        German,
-        Italian,
-        Spanish,
-        ChineseTraditional,
-        ChineseSimplified,
-    };
 };
 
 #pragma pack(pop)

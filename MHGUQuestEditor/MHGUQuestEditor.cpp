@@ -1,6 +1,7 @@
 #include "MHGUQuestEditor.h"
 
 #include <ranges>
+#include <regex>
 
 #include <QFileDialog>
 #include <QJsonArray>
@@ -8,10 +9,12 @@
 #include <QJsonObject>
 #include <QDragEnterEvent>
 #include <QMimeData>
+#include <QMessageBox>
 
 #include "Resources/Arc.h"
 #include "Resources/QuestData.h"
 #include "Resources/StatTable.h"
+#include "Util/Crc32.h"
 
 template<typename T> concept Enum = std::is_enum_v<T>;
 template<typename T> concept Integral = std::is_integral_v<T>;
@@ -40,6 +43,54 @@ MHGUQuestEditor::MHGUQuestEditor(QWidget *parent) : QMainWindow(parent)
     initItemNames();
 
     connect(ui.actionOpen, &QAction::triggered, this, &MHGUQuestEditor::onOpenFile);
+    connect(ui.actionDuplicateQuestInfo, &QAction::triggered, this, [this]() {
+        const auto button = QMessageBox::warning(this, "Duplicate Quest Info",
+            R"(Warning: This will duplicate the quest info from
+the currently selected language into all other languages.
+This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | QMessageBox::No);
+
+        if (button == QMessageBox::Yes)
+        {
+            using Resources::Language;
+            const auto currentLang = ui.tabWidgetLanguage->currentIndex();
+            auto currentLangString = Language::toString(currentLang);
+            currentLangString[0] = currentLangString[0].toUpper();
+
+            const auto currentWidget = ui.tabWidgetLanguage->currentWidget();
+            const auto currentName = currentWidget->findChild<QLineEdit*>("textName" + currentLangString)->text();
+            const auto currentClient = currentWidget->findChild<QLineEdit*>("textClient" + currentLangString)->text();
+            const auto currentDesc = currentWidget->findChild<QPlainTextEdit*>("textDescription" + currentLangString)->toPlainText();
+            const auto currentZako = currentWidget->findChild<QPlainTextEdit*>("textZako" + currentLangString)->toPlainText();
+            const auto currentObjective = currentWidget->findChild<QPlainTextEdit*>("textObjective" + currentLangString)->toPlainText();
+            const auto currentFailure = currentWidget->findChild<QPlainTextEdit*>("textFailure" + currentLangString)->toPlainText();
+            const auto currentSub = currentWidget->findChild<QLineEdit*>("textSubquest" + currentLangString)->text();
+
+            for (auto i = 0; i < Language::Count; i++)
+            {
+                if (i == currentLang)
+                    continue;
+
+                auto languageString = Language::toString(i);
+                languageString[0] = languageString[0].toUpper();
+                const auto widget = ui.tabWidgetLanguage->widget(i);
+                widget->findChild<QLineEdit*>("textName" + languageString)->setText(currentName);
+                widget->findChild<QLineEdit*>("textClient" + languageString)->setText(currentClient);
+                widget->findChild<QPlainTextEdit*>("textDescription" + languageString)->setPlainText(currentDesc);
+                widget->findChild<QPlainTextEdit*>("textZako" + languageString)->setPlainText(currentZako);
+                widget->findChild<QPlainTextEdit*>("textObjective" + languageString)->setPlainText(currentObjective);
+                widget->findChild<QPlainTextEdit*>("textFailure" + languageString)->setPlainText(currentFailure);
+                widget->findChild<QLineEdit*>("textSubquest" + languageString)->setText(currentSub);
+            }
+        }
+    });
+    connect(ui.tabWidgetRoot, &QTabWidget::currentChanged, this, [this](int index) {
+        ui.actionDuplicateQuestInfo->setEnabled(index == 1); // Is in Quest Info tab
+    });
+
+    ui.tabWidgetRoot->setTabEnabled(1, false);
+    ui.tabWidgetRoot->setCurrentIndex(0);
+    ui.tabWidgetQuestData->setCurrentIndex(0);
+    ui.tabWidgetLanguage->setCurrentIndex(0);
 }
 
 MHGUQuestEditor::~MHGUQuestEditor() = default;
@@ -60,7 +111,7 @@ void MHGUQuestEditor::dragMoveEvent(QDragMoveEvent* event)
 void MHGUQuestEditor::dropEvent(QDropEvent* event)
 {
     const auto url = event->mimeData()->urls().first();
-    loadQuestFile(url.toLocalFile());
+    loadFile(url.toLocalFile());
 }
 
 void MHGUQuestEditor::initIconDropdowns()
@@ -98,12 +149,6 @@ void MHGUQuestEditor::initIconDropdowns()
             }
         }
     }
-
-    //ui.labelIcon1->setPixmap(monsterIcons[1]);
-    //ui.labelIcon2->setPixmap(monsterIcons[21]);
-    //ui.labelIcon3->setPixmap(monsterIcons[111]);
-    //ui.labelIcon4->setPixmap(monsterIcons[61]);
-    //ui.labelIcon5->setPixmap(monsterIcons[106]);
 
     auto iconNames = QFile(":/res/icon_names.json");
     if (!iconNames.open(QIODevice::ReadOnly))
@@ -496,14 +541,14 @@ void MHGUQuestEditor::onOpenFile()
     if (path.isEmpty())
         return;
 
-    loadQuestFile(path);
+    loadFile(path);
 }
 
 void MHGUQuestEditor::onSaveFile()
 {
 }
 
-void MHGUQuestEditor::loadQuestFile(const QString& path)
+void MHGUQuestEditor::loadFile(const QString& path)
 {
     QFile file(path.trimmed());
     if (!file.open(QIODevice::ReadOnly))
@@ -514,22 +559,141 @@ void MHGUQuestEditor::loadQuestFile(const QString& path)
 
     if (path.endsWith(".mib") || path.endsWith(".ext"))
     {
+        arc.reset();
         questData = Resources::QuestData::deserialize(file.readAll());
+
+        loadQuestDataIntoUi();
     }
     else if (path.endsWith(".arc"))
     {
-        qWarning("Loading from archives is not supported yet");
-        //arc = std::make_unique<Resources::Arc>(path.toStdWString());
-        //if (arc->getEntries().empty())
-        //{
-        //    qCritical("No entries found in %s", qUtf8Printable(path));
-        //    return;
-        //}
+        constexpr auto isQuestArc = [](const std::filesystem::path& p) {
+            const auto filename = p.stem().string();
+            if (filename.size() != 8)
+                return false;
+
+            if (filename[0] != 'q')
+                return false;
+
+            return std::all_of(filename.begin() + 1, filename.end(), isdigit);
+        };
+
+        const std::filesystem::path fsPath = path.toStdWString();
+        if (!isQuestArc(fsPath))
+        {
+            qCritical("Invalid quest arc %s", qUtf8Printable(path));
+            return;
+        }
+
+        arc = std::make_unique<Resources::QuestArc>(fsPath);
+
+        loadQuestArc();
     }
     else
     {
         qCritical("Invalid file extension %s", qUtf8Printable(path));
-        return;
+    }
+
+    ui.tabWidgetLanguage->setCurrentIndex(0);
+    ui.tabWidgetRoot->setCurrentIndex(0);
+    ui.tabWidgetQuestData->setCurrentIndex(0);
+}
+
+void MHGUQuestEditor::loadQuestArc()
+{
+    gmds.clear();
+    questData = Resources::QuestData::deserialize(arc->getQuestData().getData());
+
+    constexpr auto setText = [](QLineEdit* name, QLineEdit* client, 
+        QPlainTextEdit* desc, QPlainTextEdit* zako, 
+        QPlainTextEdit* obj, QPlainTextEdit* failure, 
+        QLineEdit* sub, const Resources::Gmd& gmd) {
+        name->setText(gmd.Entries[0].c_str());
+        client->setText(gmd.Entries[1].c_str());
+        desc->setPlainText(gmd.Entries[2].c_str());
+        zako->setPlainText(gmd.Entries[3].c_str());
+        obj->setPlainText(gmd.Entries[4].c_str());
+        failure->setPlainText(gmd.Entries[5].c_str());
+        sub->setText(gmd.Entries[6].c_str());
+    };
+
+    ui.tabWidgetRoot->setTabEnabled(1, true); // Enable quest info tab
+
+    using Resources::Language;
+    for (s32 language = Language::Eng; language < Language::Count; ++language)
+    {
+        const auto gmdEntry = arc->getGmd(language, questData.Info[language].File);
+        if (!gmdEntry)
+        {
+            ui.tabWidgetLanguage->setTabEnabled(language, false);
+            qCritical("Failed to find GMD for language %d", language);
+            continue;
+        }
+
+        ui.tabWidgetLanguage->setTabEnabled(language, true);
+        const auto& gmd = gmds.emplace_back(Resources::Gmd::deserialize(gmdEntry->getData()));
+
+        switch (language)
+        {
+        case Language::Eng:
+            setText(
+                ui.textNameEng, ui.textClientEng,
+                ui.textDescriptionEng, ui.textZakoEng,
+                ui.textObjectiveEng, ui.textFailureEng,
+                ui.textSubquestEng, gmd
+            );
+            break;
+        case Language::Fre:
+            setText(
+                ui.textNameFre, ui.textClientFre,
+                ui.textDescriptionFre, ui.textZakoFre,
+                ui.textObjectiveFre, ui.textFailureFre,
+                ui.textSubquestFre, gmd
+            );
+            break;
+        case Language::Ger:
+            setText(
+                ui.textNameGer, ui.textClientGer,
+                ui.textDescriptionGer, ui.textZakoGer,
+                ui.textObjectiveGer, ui.textFailureGer,
+                ui.textSubquestGer, gmd
+            );
+            break;
+        case Language::Ita:
+            setText(
+                ui.textNameIta, ui.textClientIta,
+                ui.textDescriptionIta, ui.textZakoIta,
+                ui.textObjectiveIta, ui.textFailureIta,
+                ui.textSubquestIta, gmd
+            );
+            break;
+        case Language::Spa:
+            setText(
+                ui.textNameSpa, ui.textClientSpa,
+                ui.textDescriptionSpa, ui.textZakoSpa,
+                ui.textObjectiveSpa, ui.textFailureSpa,
+                ui.textSubquestSpa, gmd
+            );
+            break;
+        case Language::ChT:
+            setText(
+                ui.textNameChT, ui.textClientChT,
+                ui.textDescriptionChT, ui.textZakoChT,
+                ui.textObjectiveChT, ui.textFailureChT,
+                ui.textSubquestChT, gmd
+            );
+            break;
+        case Language::ChS:
+            setText(
+                ui.textNameChS, ui.textClientChS,
+                ui.textDescriptionChS, ui.textZakoChS,
+                ui.textObjectiveChS, ui.textFailureChS,
+                ui.textSubquestChS, gmd
+            );
+            break;
+        case Language::Count: [[fallthrough]];
+        default:
+            break;
+        }
     }
 
     loadQuestDataIntoUi();
