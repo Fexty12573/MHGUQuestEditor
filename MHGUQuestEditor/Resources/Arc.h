@@ -23,7 +23,8 @@ struct ArcEntry
     std::vector<u8> Data;
 
     std::vector<u8> getData(bool decompress = true) const;
-    void setData(const std::vector<u8>& data, bool compress = true);
+    void setData(std::span<const u8> data, bool compress = true);
+    void setData(const QByteArray& data, bool compress = true);
 };
 
 class Arc
@@ -32,6 +33,9 @@ public:
     static constexpr auto Extension = ".arc";
     static constexpr u32 Magic = 0x435241; // "ARC\0"
     static constexpr s16 Version = 0x0011;
+
+private:
+    static constexpr u32 DataAlignment = 0x10;
 
 protected:
     std::filesystem::path path;
@@ -50,6 +54,8 @@ public:
 
     const ArcEntry& getEntry(int index) const;
     ArcEntry& getEntry(int index);
+
+    ArcEntry& addEntry(const QString& fpath, const QString& typeName, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
 
     void save(const std::filesystem::path& path = {});
 };

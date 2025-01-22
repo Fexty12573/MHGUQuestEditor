@@ -10,11 +10,14 @@
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QMessageBox>
+#include <QSettings>
 
+#include "SettingsDialog.h"
 #include "Resources/Arc.h"
 #include "Resources/QuestData.h"
 #include "Resources/StatTable.h"
 #include "Util/Crc32.h"
+#include <QListView>
 
 template<typename T> concept Enum = std::is_enum_v<T>;
 template<typename T> concept Integral = std::is_integral_v<T>;
@@ -24,6 +27,7 @@ MHGUQuestEditor::MHGUQuestEditor(QWidget *parent) : QMainWindow(parent)
 {
     ui.setupUi(this);
     setAcceptDrops(true);
+    setWindowIcon(QIcon(":/res/icon.png"));
 
     // Initialize dropdowns
     initIconDropdowns();
@@ -42,8 +46,16 @@ MHGUQuestEditor::MHGUQuestEditor(QWidget *parent) : QMainWindow(parent)
     initItemLevelDropdowns();
     initItemNames();
 
+    loadSettings();
+
+    recentFilesMenu = new QMenu("Open Recent", ui.menuFile);
+    const QFont font("Segoe UI", 11);
+    recentFilesMenu->setFont(font);
+    ui.menuFile->insertMenu(ui.actionSave, recentFilesMenu)->setFont(font);
+    ui.menuFile->insertSeparator(ui.actionSave);
+
     connect(ui.actionOpen, &QAction::triggered, this, &MHGUQuestEditor::onOpenFile);
-    connect(ui.actionDuplicateQuestInfo, &QAction::triggered, this, [this]() {
+    connect(ui.actionDuplicateQuestInfo, &QAction::triggered, this, [this] {
         const auto button = QMessageBox::warning(this, "Duplicate Quest Info",
             R"(Warning: This will duplicate the quest info from
 the currently selected language into all other languages.
@@ -53,8 +65,7 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
         {
             using Resources::Language;
             const auto currentLang = ui.tabWidgetLanguage->currentIndex();
-            auto currentLangString = Language::toString(currentLang);
-            currentLangString[0] = currentLangString[0].toUpper();
+            const auto currentLangString = Language::toString(currentLang, true);
 
             const auto currentWidget = ui.tabWidgetLanguage->currentWidget();
             const auto currentName = currentWidget->findChild<QLineEdit*>("textName" + currentLangString)->text();
@@ -70,8 +81,7 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
                 if (i == currentLang)
                     continue;
 
-                auto languageString = Language::toString(i);
-                languageString[0] = languageString[0].toUpper();
+                const auto languageString = Language::toString(i, true);
                 const auto widget = ui.tabWidgetLanguage->widget(i);
                 widget->findChild<QLineEdit*>("textName" + languageString)->setText(currentName);
                 widget->findChild<QLineEdit*>("textClient" + languageString)->setText(currentClient);
@@ -83,14 +93,50 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
             }
         }
     });
+    connect(ui.actionSettings, &QAction::triggered, this, &MHGUQuestEditor::openSettings);
+    connect(ui.actionSave, &QAction::triggered, this, &MHGUQuestEditor::onSaveFile);
+    connect(ui.actionSaveAs, &QAction::triggered, this, &MHGUQuestEditor::onSaveFileAs);
     connect(ui.tabWidgetRoot, &QTabWidget::currentChanged, this, [this](int index) {
         ui.actionDuplicateQuestInfo->setEnabled(index == 1); // Is in Quest Info tab
     });
+    connect(recentFilesMenu, &QMenu::aboutToShow, this, [this, font] {
+        recentFilesMenu->clear();
+        for (const auto& file : recentFiles)
+        {
+            const auto action = recentFilesMenu->addAction(file);
+            action->setFont(font);
+            connect(action, &QAction::triggered, this, [this, file] {
+                loadFile(file);
+            });
+        }
+    });
+    connect(ui.buttonRemMainAAdd, &QPushButton::pressed, this, [this] { addRemEntry("MainA", 0); });
+    connect(ui.buttonRemMainBAdd, &QPushButton::pressed, this, [this] { addRemEntry("MainB", 1); });
+    connect(ui.buttonRemExtraAAdd, &QPushButton::pressed, this, [this] { addRemEntry("ExtraA", 2); });
+    connect(ui.buttonRemExtraBAdd, &QPushButton::pressed, this, [this] { addRemEntry("ExtraB", 3); });
+    connect(ui.buttonRemSubAdd, &QPushButton::pressed, this, [this] { addRemEntry("Sub", 4); });
 
-    ui.tabWidgetRoot->setTabEnabled(1, false);
+    ui.tabWidgetRoot->setTabEnabled(1, false); // Quest Info
+    ui.tabWidgetRoot->setTabEnabled(2, false); // Rewards
     ui.tabWidgetRoot->setCurrentIndex(0);
     ui.tabWidgetQuestData->setCurrentIndex(0);
     ui.tabWidgetLanguage->setCurrentIndex(0);
+
+    //const auto container = new QWidget;
+    //ui.scrollAreaRemItems->setWidget(container);
+    //const auto vlayout = new QVBoxLayout(container);
+
+    //for (const auto i : std::views::iota(0, 40)) {
+    //    const auto layout = new QHBoxLayout;
+    //    layout->setDirection(QBoxLayout::LeftToRight);
+
+    //    const auto spinBox = new QSpinBox;
+    //    const auto label = new QLabel(QStringLiteral("My Label %1").arg(i));
+    //    layout->addWidget(spinBox, 2);
+    //    layout->addWidget(label, 1);
+
+    //    vlayout->addLayout(layout);
+    //}
 }
 
 MHGUQuestEditor::~MHGUQuestEditor() = default;
@@ -112,6 +158,12 @@ void MHGUQuestEditor::dropEvent(QDropEvent* event)
 {
     const auto url = event->mimeData()->urls().first();
     loadFile(url.toLocalFile());
+}
+
+void MHGUQuestEditor::closeEvent(QCloseEvent* event)
+{
+    saveSettings();
+    event->accept();
 }
 
 void MHGUQuestEditor::initIconDropdowns()
@@ -448,12 +500,13 @@ void MHGUQuestEditor::initObjectiveDropdowns() const
         case Resources::QuestClearParam::Capture: [[fallthrough]];
         case Resources::QuestClearParam::HuntAllLargeMonsters: [[fallthrough]];
         case Resources::QuestClearParam::SlayTotalOfTargets:
+            idCombo->setModel(nullptr);
             for (auto i = 0; i < ui.comboMonster1->count(); ++i) {
                 idCombo->addItem(ui.comboMonster1->itemText(i), ui.comboMonster1->itemData(i));
             }
             break;
         case Resources::QuestClearParam::DeliverItem:
-            idCombo->addItems(itemNames);
+            idCombo->setModel(itemNamesModel);
             break;
         case Resources::QuestClearParam::None: [[fallthrough]];
         case Resources::QuestClearParam::EarnWycademyPoints: [[fallthrough]];
@@ -526,6 +579,77 @@ void MHGUQuestEditor::initItemNames()
 
     const auto names = QJsonDocument::fromJson(itemNamesFile.readAll());
     itemNames = names.toVariant().toStringList();
+    itemNamesModel = new QStringListModel(itemNames, this);
+}
+
+void MHGUQuestEditor::addRemEntry(const QString& remName, s32 tabIndex)
+{
+    const auto tab = ui.tabWidgetRewards->widget(tabIndex);
+    const auto scrollArea = tab->findChild<QScrollArea*>(QStringLiteral("scrollAreaRem%1").arg(remName));
+    const auto layout = (QVBoxLayout*)scrollArea->widget()->layout();
+
+    const auto deleteButton = new QToolButton;
+    const auto itemCombo = new QComboBox;
+    const auto amountBox = new QSpinBox;
+    const auto chanceBox = new QSpinBox;
+    const auto itemLayout = new QHBoxLayout;
+
+    itemCombo->setModel(itemNamesModel);
+    chanceBox->setSuffix("%");
+
+    deleteButton->setText("⨯");
+    connect(deleteButton, &QToolButton::clicked, [itemLayout] {
+        itemLayout->itemAt(0)->widget()->deleteLater(); // Delete button
+        itemLayout->itemAt(1)->widget()->deleteLater(); // Item combo
+        itemLayout->itemAt(2)->widget()->deleteLater(); // Amount box
+        itemLayout->itemAt(3)->widget()->deleteLater(); // Chance box
+        itemLayout->deleteLater();
+    });
+
+    itemCombo->setCurrentIndex(0);
+    amountBox->setValue(0);
+    chanceBox->setValue(0);
+
+    itemLayout->addWidget(deleteButton, 0);
+    itemLayout->addWidget(itemCombo, 2);
+    itemLayout->addWidget(amountBox, 1);
+    itemLayout->addWidget(chanceBox, 1);
+    layout->addLayout(itemLayout);
+}
+
+void MHGUQuestEditor::loadSettings()
+{
+    QSettings settings("Fexty", "MHGU Quest Editor");
+
+    settings.beginGroup("MainWindow");
+
+    const auto geometry = settings.value("geometry").toByteArray();
+    if (!geometry.isEmpty())
+        restoreGeometry(geometry);
+
+    settings.endGroup();
+    settings.beginGroup("QuestEditor");
+
+    questListPath = settings.value("quest_list_path").toString();
+    autoUpdateQuestList = settings.value("auto_update_quest_list").toBool();
+    recentFiles = settings.value("recent_files").toStringList();
+
+    settings.endGroup();
+}
+
+void MHGUQuestEditor::saveSettings() const
+{
+    QSettings settings("Fexty", "MHGU Quest Editor");
+
+    settings.beginGroup("MainWindow");
+    settings.setValue("geometry", saveGeometry());
+    settings.endGroup();
+
+    settings.beginGroup("QuestEditor");
+    settings.setValue("quest_list_path", questListPath);
+    settings.setValue("auto_update_quest_list", autoUpdateQuestList);
+    settings.setValue("recent_files", recentFiles);
+    settings.endGroup();
 }
 
 void MHGUQuestEditor::onOpenFile()
@@ -546,15 +670,57 @@ void MHGUQuestEditor::onOpenFile()
 
 void MHGUQuestEditor::onSaveFile()
 {
+    if (arc) 
+    {
+        saveQuestArc();
+    }
+    else 
+    {
+        saveQuestFile();
+    }
+}
+
+void MHGUQuestEditor::onSaveFileAs()
+{
+    const auto path = QFileDialog::getSaveFileName(
+        this,
+        "Save Quest File",
+        {},
+        "Quest Files (*.mib *.ext);;Archive Files (*.arc)"
+    );
+
+    if (path.isEmpty())
+        return;
+
+    if (arc)
+    {
+        saveQuestArc(path);
+    }
+    else
+    {
+        saveQuestFile(path);
+    }
 }
 
 void MHGUQuestEditor::loadFile(const QString& path)
 {
-    QFile file(path.trimmed());
+    QFile file(path);
     if (!file.open(QIODevice::ReadOnly))
     {
         qCritical("Failed to open file %s", qUtf8Printable(path));
         return;
+    }
+
+    if (std::ranges::find(recentFiles, path) == recentFiles.end())
+    {
+        recentFiles.push_front(path);
+        if (recentFiles.size() > 10)
+            recentFiles.pop_back();
+    }
+    else
+    {
+        recentFiles.removeOne(path);
+        recentFiles.push_front(path);
     }
 
     if (path.endsWith(".mib") || path.endsWith(".ext"))
@@ -591,8 +757,10 @@ void MHGUQuestEditor::loadFile(const QString& path)
     else
     {
         qCritical("Invalid file extension %s", qUtf8Printable(path));
+        return;
     }
 
+    openedFile = path;
     ui.tabWidgetLanguage->setCurrentIndex(0);
     ui.tabWidgetRoot->setCurrentIndex(0);
     ui.tabWidgetQuestData->setCurrentIndex(0);
@@ -600,7 +768,11 @@ void MHGUQuestEditor::loadFile(const QString& path)
 
 void MHGUQuestEditor::loadQuestArc()
 {
+    using namespace Resources;
+
     gmds.clear();
+    rems.clear();
+
     questData = Resources::QuestData::deserialize(arc->getQuestData().getData());
 
     constexpr auto setText = [](QLineEdit* name, QLineEdit* client, 
@@ -618,19 +790,19 @@ void MHGUQuestEditor::loadQuestArc()
 
     ui.tabWidgetRoot->setTabEnabled(1, true); // Enable quest info tab
 
-    using Resources::Language;
     for (s32 language = Language::Eng; language < Language::Count; ++language)
     {
         const auto gmdEntry = arc->getGmd(language, questData.Info[language].File);
         if (!gmdEntry)
         {
             ui.tabWidgetLanguage->setTabEnabled(language, false);
+            gmds.emplace_back();
             qCritical("Failed to find GMD for language %d", language);
             continue;
         }
 
         ui.tabWidgetLanguage->setTabEnabled(language, true);
-        const auto& gmd = gmds.emplace_back(Resources::Gmd::deserialize(gmdEntry->getData()));
+        const auto& gmd = gmds.emplace_back(Gmd::deserialize(gmdEntry->getData()));
 
         switch (language)
         {
@@ -696,7 +868,169 @@ void MHGUQuestEditor::loadQuestArc()
         }
     }
 
+    questLink = std::make_unique<QuestLink>(QuestLink::deserialize(arc->getQuestLink().getData()));
+    const auto resources = questLink->resolve(*arc);
+
+    ui.tabWidgetRoot->setTabEnabled(2, true); // Enable rewards tab
+
+    rems.emplace_back(resources.RemMain[0] ? Rem::deserialize(resources.RemMain[0]->getData()) : Resources::Rem{});
+    rems.emplace_back(resources.RemMain[1] ? Rem::deserialize(resources.RemMain[1]->getData()) : Resources::Rem{});
+    rems.emplace_back(resources.RemAdd[0] ? Rem::deserialize(resources.RemAdd[0]->getData()) : Resources::Rem{});
+    rems.emplace_back(resources.RemAdd[1] ? Rem::deserialize(resources.RemAdd[1]->getData()) : Resources::Rem{});
+    rems.emplace_back(resources.RemSub ? Rem::deserialize(resources.RemSub->getData()) : Resources::Rem{});
+
+    loadRemIntoUi(rems[0], "MainA", 0);
+    loadRemIntoUi(rems[1], "MainB", 1);
+    loadRemIntoUi(rems[2], "ExtraA", 2);
+    loadRemIntoUi(rems[3], "ExtraB", 3);
+    loadRemIntoUi(rems[4], "Sub", 4);
+
     loadQuestDataIntoUi();
+}
+
+void MHGUQuestEditor::saveQuestArc(const QString& path)
+{
+    if (!arc)
+    {
+        qCritical("No quest arc loaded");
+        return;
+    }
+
+    // Save UI
+    saveQuestDataFromUi();
+    saveQuestInfoFromUi();
+    saveRemFromUi(rems[0], "MainA", 0);
+    saveRemFromUi(rems[1], "MainB", 1);
+    saveRemFromUi(rems[2], "ExtraA", 2);
+    saveRemFromUi(rems[3], "ExtraB", 3);
+    saveRemFromUi(rems[4], "Sub", 4);
+
+    // Save quest info
+    using Resources::Language;
+    using namespace Qt::StringLiterals;
+
+    for (s32 language = Language::Eng; language < Language::Count; ++language)
+    {
+        if (language >= gmds.size() || !ui.tabWidgetLanguage->isTabEnabled(language))
+            continue;
+
+        const auto& gmd = gmds[language];
+        const auto gmdEntry = arc->getGmd(language, questData.Info[language].File);
+        (void)std::snprintf(
+            questData.Info[language].File, 
+            16, 
+            "%07d_%s", 
+            questData.Id, 
+            Language::toString(language).toStdString().c_str()
+        );
+
+        const auto serializedGmd = Resources::Gmd::serialize(gmd);
+        gmdEntry->Path = QStringLiteral(R"(%1\quest\questData\questData_%2)")
+            .arg(Language::toString(language))
+            .arg(questData.Info[language].File);
+        gmdEntry->setData({
+            (const u8*)serializedGmd.data(), 
+            (size_t)serializedGmd.size()
+        });
+    }
+
+    // Save quest data
+    const auto serialized = Resources::QuestData::serialize(questData);
+    auto& questDataEntry = arc->getQuestData();
+    questDataEntry.Path = QStringLiteral(R"(loc\quest\questData\questData_%1)").arg(questData.Id, 7, 10, QChar(u8'0'));
+    questDataEntry.setData({
+        (const u8*)serialized.data(),
+        (size_t)serialized.size()
+    });
+
+    const auto resources = questLink->resolve(*arc);
+
+    // Save rem
+    const auto saveRem = [this](const Resources::Rem& rem, Resources::ArcEntry* entry, Resources::LinkResource& resource) {
+        if (rem.size() > 0)
+        {
+            entry->setData(Resources::Rem::serialize(rem));
+        }
+        else
+        {
+            questLink->clear_resource(resource);
+        }
+    };
+
+    saveRem(rems[0], resources.RemMain[0], questLink->RemMain[0]);
+    saveRem(rems[1], resources.RemMain[1], questLink->RemMain[1]);
+    saveRem(rems[2], resources.RemAdd[0], questLink->RemAdd[0]);
+    saveRem(rems[3], resources.RemAdd[1], questLink->RemAdd[1]);
+    saveRem(rems[4], resources.RemSub, questLink->RemSub);
+
+    if (path.isEmpty())
+        arc->save();
+    else
+        arc->save(path.toStdWString());
+
+    if (autoUpdateQuestList)
+        saveQuestArcToQuestList();
+}
+
+void MHGUQuestEditor::saveQuestFile(const QString& path) const
+{
+    QFile file(path.isEmpty() ? openedFile : path);
+    file.write(Resources::QuestData::serialize(questData));
+}
+
+void MHGUQuestEditor::saveQuestArcToQuestList() const
+{
+    if (!arc)
+    {
+        qCritical("No quest arc loaded");
+        return;
+    }
+
+    if (questListPath.isEmpty())
+    {
+        qCritical("No quest list path set");
+        return;
+    }
+
+    if (!QFile::exists(questListPath))
+    {
+        qCritical("Quest list path does not exist");
+        return;
+    }
+
+    const auto& serialized = arc->getQuestData();
+    Resources::QuestArc questList(questListPath.toStdWString());
+    const auto questDataEntry = questList.getQuestData(questData.Id);
+    if (questDataEntry) // Update existing entry
+    {
+        questDataEntry->setData(serialized.getData(false), false);
+        questDataEntry->RealSize = serialized.RealSize; // Update real size since setData(..., false) doesn't update it
+    }
+    else // Insert new entry
+    {
+        questList.addQuestData(questData.Id, serialized.getData(false), true, serialized.RealSize);
+    }
+
+    for (s32 language = 0; language < gmds.size(); ++language)
+    {
+        if (language >= gmds.size() || !ui.tabWidgetLanguage->isTabEnabled(language))
+            continue;
+
+        const auto name = questData.Info[language].File;
+        const auto gmdEntry = arc->getGmd(language, name);
+        const auto targetGmd = questList.getGmd(language, name);
+        if (targetGmd) // Update existing entry
+        {
+            targetGmd->setData(gmdEntry->getData(false), false);
+            targetGmd->RealSize = gmdEntry->RealSize; // Update real size since setData(..., false) doesn't update it
+        }
+        else // Insert new entry
+        {
+            questList.addGmd(language, name, gmdEntry->getData(false), true, gmdEntry->RealSize);
+        }
+    }
+
+    questList.save();
 }
 
 void MHGUQuestEditor::loadQuestDataIntoUi()
@@ -1121,4 +1455,133 @@ void MHGUQuestEditor::saveQuestDataFromUi()
     questData.StrayRand345[1] = ui.spinBoxStrayRandom4->value();
     questData.StrayRand345[2] = ui.spinBoxStrayRandom5->value();
     questData.ExtraTicketCount = ui.spinBoxExtraTicketCount->value();
+}
+
+void MHGUQuestEditor::saveQuestInfoFromUi()
+{
+    for (s32 language = 0; language < gmds.size(); ++language)
+    {
+        if (language >= gmds.size() || !ui.tabWidgetLanguage->isTabEnabled(language))
+            continue;
+        auto& gmd = gmds[language];
+        const auto tab = ui.tabWidgetLanguage->widget(language);
+        const auto languageName = Resources::Language::toString(language, true);
+
+        const auto textName = tab->findChild<QLineEdit*>("textName" + languageName);
+        const auto textClient = tab->findChild<QLineEdit*>("textClient" + languageName);
+        const auto textDescription = tab->findChild<QPlainTextEdit*>("textDescription" + languageName);
+        const auto textZako = tab->findChild<QPlainTextEdit*>("textZako" + languageName);
+        const auto textObjective = tab->findChild<QPlainTextEdit*>("textObjective" + languageName);
+        const auto textFailure = tab->findChild<QPlainTextEdit*>("textFailure" + languageName);
+        const auto textSubquest = tab->findChild<QLineEdit*>("textSubquest" + languageName);
+
+        gmd.Entries[0] = textName->text().toStdString();
+        gmd.Entries[1] = textClient->text().toStdString();
+        gmd.Entries[2] = textDescription->toPlainText().replace("\n", "\r\n").toStdString();
+        gmd.Entries[3] = textZako->toPlainText().replace("\n", "\r\n").toStdString();
+        gmd.Entries[4] = textObjective->toPlainText().replace("\n", "\r\n").toStdString();
+        gmd.Entries[5] = textFailure->toPlainText().replace("\n", "\r\n").toStdString();
+        gmd.Entries[6] = textSubquest->text().toStdString();
+    }
+}
+
+void MHGUQuestEditor::saveRemFromUi(Resources::Rem& rem, const QString& remName, s32 tabIndex)
+{
+    const auto tab = ui.tabWidgetRewards->widget(tabIndex);
+
+    for (s32 i = 0; i < 8; ++i)
+    {
+        rem.Flags[i].Flag = (u8)tab->findChild<QSpinBox*>(QStringLiteral("spinBoxRem%1Flag%2").arg(remName).arg(i))->value();
+        rem.Flags[i].Value = (u8)tab->findChild<QSpinBox*>(QStringLiteral("spinBoxRem%1Value%2").arg(remName).arg(i))->value();
+    }
+
+    const auto scrollArea = tab->findChild<QScrollArea*>(QStringLiteral("scrollAreaRem%1").arg(remName));
+    const auto layout = (QVBoxLayout*)scrollArea->widget()->layout();
+
+    std::memset(rem.Rewards, 0, sizeof(rem.Rewards));
+
+    s32 i;
+    for (i = 0; i < layout->count(); ++i)
+    {
+        const auto itemLayout = (QHBoxLayout*)layout->itemAt(i)->layout();
+        const auto itemCombo = (QComboBox*)itemLayout->itemAt(1)->widget();
+        const auto amountBox = (QSpinBox*)itemLayout->itemAt(2)->widget();
+        const auto chanceBox = (QSpinBox*)itemLayout->itemAt(3)->widget();
+        rem.Rewards[i].ItemId = itemCombo->currentIndex();
+        rem.Rewards[i].Amount = amountBox->value();
+        rem.Rewards[i].Weight = chanceBox->value();
+    }
+
+    if (i < std::size(rem.Rewards))
+        rem.Rewards[i] = { .Weight = 255 }; // End marker
+}
+
+void MHGUQuestEditor::loadRemIntoUi(const Resources::Rem& rem, const QString& remName, s32 tabIndex)
+{
+    const auto tab = ui.tabWidgetRewards->widget(tabIndex);
+
+    for (s32 i = 0; i < 8; ++i)
+    {
+        tab->findChild<QSpinBox*>(QStringLiteral("spinBoxRem%1Flag%2").arg(remName).arg(i))->setValue(rem.Flags[i].Flag);
+        tab->findChild<QSpinBox*>(QStringLiteral("spinBoxRem%1Value%2").arg(remName).arg(i))->setValue(rem.Flags[i].Value);
+    }
+
+    const auto scrollArea = tab->findChild<QScrollArea*>(QStringLiteral("scrollAreaRem%1").arg(remName));
+    const auto container = new QWidget;
+    scrollArea->setWidget(container);
+    const auto layout = new QVBoxLayout(container);
+
+    if (*(const u32*)&rem.Rewards[0] == 0) // Empty rewards
+        return;
+
+    scrollArea->setUpdatesEnabled(false);
+
+    for (const auto [i, item] : std::views::enumerate(rem.Rewards)) {
+        if (item.ItemId == 0 && item.Amount == 0 && item.Weight == 255) // End marker
+            break;
+
+        const auto deleteButton = new QToolButton;
+        const auto itemCombo = new QComboBox;
+        const auto amountBox = new QSpinBox;
+        const auto chanceBox = new QSpinBox;
+        const auto itemLayout = new QHBoxLayout;
+        
+        itemCombo->setModel(itemNamesModel);
+        chanceBox->setSuffix("%");
+        
+        deleteButton->setText("⨯");
+        connect(deleteButton, &QToolButton::clicked, [itemLayout] {
+            itemLayout->itemAt(0)->widget()->deleteLater(); // Delete button
+            itemLayout->itemAt(1)->widget()->deleteLater(); // Item combo
+            itemLayout->itemAt(2)->widget()->deleteLater(); // Amount box
+            itemLayout->itemAt(3)->widget()->deleteLater(); // Chance box
+            itemLayout->deleteLater();
+        });
+
+        itemCombo->setCurrentIndex(item.ItemId);
+        amountBox->setValue(item.Amount);
+        chanceBox->setValue(item.Weight);
+
+        itemLayout->addWidget(deleteButton, 0);
+        itemLayout->addWidget(itemCombo, 2);
+        itemLayout->addWidget(amountBox, 1);
+        itemLayout->addWidget(chanceBox, 1);
+        layout->addLayout(itemLayout);
+    }
+
+    scrollArea->setUpdatesEnabled(true);
+}
+
+void MHGUQuestEditor::openSettings()
+{
+    const auto settings = new SettingsDialog(this, questListPath, autoUpdateQuestList);
+    settings->exec();
+
+    if (settings->result() == QDialog::Accepted)
+    {
+        qDebug("Settings updated");
+        questListPath = settings->getQuestListPath();
+        autoUpdateQuestList = settings->getAutoUpdateQuestList();
+        saveSettings();
+    }
 }

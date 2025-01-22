@@ -6,8 +6,9 @@ include(qt.cmake)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR}
     COMPONENTS
         Core
@@ -16,12 +17,26 @@ find_package(Qt${QT_VERSION_MAJOR}
 )
 qt_standard_project_setup()
 
+if (WIN32)
+    set(RESOURCE_FILES 
+        ${CMAKE_SOURCE_DIR}/Resource.qrc
+        ${CMAKE_SOURCE_DIR}/MHGUQuestEditor.rc
+    )
+else()
+    set(RESOURCE_FILES 
+        ${CMAKE_SOURCE_DIR}/Resource.qrc
+    )
+endif()
+
 
 set(PROJECT_SOURCES
     main.cpp
     MHGUQuestEditor.ui
     MHGUQuestEditor.h
     MHGUQuestEditor.cpp
+    SettingsDialog.ui
+    SettingsDialog.h
+    SettingsDialog.cpp
     Common.h
     Monster/Id.h
     Util/Crc32.h
@@ -29,6 +44,12 @@ set(PROJECT_SOURCES
     Resources/QuestData.cpp
     Resources/Gmd.h
     Resources/Gmd.cpp
+    Resources/Rem.h
+    Resources/Rem.cpp
+    Resources/QuestLink.h
+    Resources/QuestLink.cpp
+    Resources/EmSetList.h
+    Resources/EmSetList.cpp
     Resources/Arc.h
     Resources/Arc.cpp
     Resources/QuestArc.h
@@ -37,7 +58,7 @@ set(PROJECT_SOURCES
     Resources/ExtensionResolver.cpp
     Resources/StatTable.h
     Resources/StatTable.cpp
-    ${CMAKE_SOURCE_DIR}/Resource.qrc
+    ${RESOURCE_FILES}
 )
 
 qt_add_executable(MHGUQuestEditor ${PROJECT_SOURCES})

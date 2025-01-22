@@ -1,5 +1,6 @@
 #include "Arc.h"
 #include "ExtensionResolver.h"
+#include "Util/Crc32.h"
 
 #include <QtAssert>
 #include <QtLogging>
@@ -93,6 +94,24 @@ Resources::ArcEntry& Resources::Arc::getEntry(int index)
     return entries[index];
 }
 
+Resources::ArcEntry& Resources::Arc::addEntry(const QString& fpath, const QString& typeName, std::span<const u8> data, bool compressed, u32 realSize)
+{
+    const auto typeHash = type_hash(typeName.toLatin1());
+    ArcEntry entry = {
+        .Path = fpath,
+        .TypeHash = typeHash,
+        .Extension = ExtensionResolver::resolve(typeHash),
+        .Quality = 2
+    };
+
+    entry.setData(data, !compressed);
+    if (compressed && realSize != 0)
+        entry.RealSize = realSize;
+
+    entries.push_back(entry);
+    return entries.back();
+}
+
 void Resources::Arc::load()
 {
     QFile file(path);
@@ -103,6 +122,7 @@ void Resources::Arc::load()
     }
 
     QDataStream stream(&file);
+    stream.setByteOrder(QDataStream::LittleEndian);
     if (stream.atEnd())
     {
         qCritical("File is empty %s", path.string().c_str());
@@ -165,6 +185,7 @@ void Resources::Arc::save(const std::filesystem::path& path)
     }
 
     QDataStream stream(&file);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
     stream << Arc::Magic;
     stream << Arc::Version;
@@ -172,7 +193,7 @@ void Resources::Arc::save(const std::filesystem::path& path)
     stream << (u32)0;
 
     const auto fileTableLength = sizeof(ArcHeader) + entries.size() * sizeof(ArcEntryInternal);
-    auto dataOffset = fileTableLength + (0x8000 - fileTableLength % 0x8000); // Align to 0x8000
+    auto dataOffset = fileTableLength + (Arc::DataAlignment - fileTableLength % Arc::DataAlignment);
 
     std::vector<qint64> offsets;
 
@@ -197,9 +218,8 @@ void Resources::Arc::save(const std::filesystem::path& path)
     }
 
     // Pad to 0x8000
-    const auto paddingSize = 0x8000 - file.pos() % 0x8000;
-    const auto padding = new char[paddingSize];
-    std::memset(padding, 0, paddingSize);
+    const auto paddingSize = Arc::DataAlignment - file.pos() % Arc::DataAlignment;
+    constexpr char padding[Arc::DataAlignment] = {};
     stream.writeRawData(padding, paddingSize);
 
     for (auto i = 0; i < entries.size(); i++)
@@ -234,26 +254,30 @@ std::vector<u8> Resources::ArcEntry::getData(bool decompress) const
     return decompressed;
 }
 
-void Resources::ArcEntry::setData(const std::vector<u8>& data, bool compress)
+void Resources::ArcEntry::setData(std::span<const u8> data, bool compress)
 {
     if (!compress)
     {
-        Data = data;
-        CompSize = RealSize = (u32)data.size();
+        Data = { std::from_range, data };
+        CompSize = (u32)data.size();
         return;
     }
 
     uLongf compSize = compressBound((uLong)data.size());
-    std::vector<u8> compressed(compSize);
+    Data.resize(compSize);
 
-    if (::compress(compressed.data(), &compSize, data.data(), (uLong)data.size()) != Z_OK)
+    if (::compress(Data.data(), &compSize, data.data(), (uLong)data.size()) != Z_OK)
     {
         qCritical("Failed to compress data");
         return;
     }
 
-    Data = compressed;
     Data.resize(compSize);
     CompSize = compSize;
     RealSize = (u32)data.size();
+}
+
+void Resources::ArcEntry::setData(const QByteArray& data, bool compress)
+{
+    setData({ (const u8*)data.data(), (size_t)data.size() }, compress);
 }

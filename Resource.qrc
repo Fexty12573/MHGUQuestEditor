@@ -19,5 +19,6 @@
         <file>res/quest_subtype.json</file>
         <file>res/quest_type.json</file>
         <file>res/item_names.json</file>
+        <file>res/icon.png</file>
     </qresource>
 </RCC>

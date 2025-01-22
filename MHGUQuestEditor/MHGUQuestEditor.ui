@@ -31,7 +31,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_13">
        <attribute name="title">
@@ -46,7 +46,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
@@ -3756,7 +3756,7 @@
                     </widget>
                    </item>
                    <item>
-                    <spacer name="verticalSpacer_6">
+                    <spacer name="verticalSpacer_13">
                      <property name="orientation">
                       <enum>Qt::Orientation::Vertical</enum>
                      </property>
@@ -4018,6 +4018,35 @@
                   </layout>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <widget class="QTextBrowser" name="textBrowser">
+                 <property name="html">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:700;&quot;&gt;Type 0&lt;/span&gt;: Spawn after previous Monster has despawned (Hunt-A-Thon only)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - In non Hunt-A-Thon quests type 0 means the monster is spawned at quest start&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:700;&quot;&gt;Type 1&lt;/span&gt;: Spawn after X Minutes&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - &lt;span style=&quot; font-style:italic;&quot;&gt;Target Type&lt;/span&gt; should be 0&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - &lt;span style=&quot; font-style:italic;&quot;&gt;Target Amount&lt;/span&gt; specifies the delay in minutes&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:700;&quot;&gt;Type 2&lt;/span&gt;: Spawn after X Monsters hunted&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - &lt;span style=&quot; font-style:italic;&quot;&gt;Target Type&lt;/span&gt; is the ID of the monster that needs to be hunted&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - &lt;span style=&quot; font-style:italic;&quot;&gt;Target Amount&lt;/span&gt; is the amount that needs to be hunted&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:700;&quot;&gt;Type 5&lt;/span&gt;: Spawn when Monster is at X% HP&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - &lt;span style=&quot; font-style:italic;&quot;&gt;Target Type&lt;/span&gt; is the ID of the monster to check&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  - &lt;span style=&quot; font-style:italic;&quot;&gt;Target Amount&lt;/span&gt; is the HP percentage&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Monster IDs can be found on the &lt;a href=&quot;https://github.com/RTHKKona/MHGUModding/wiki/Monster-IDs&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#9b9a99;&quot;&gt;Modding Wiki&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="openExternalLinks">
+                  <bool>true</bool>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -5525,6 +5554,1265 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_21">
+       <attribute name="title">
+        <string>Rewards</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_40" stretch="0">
+        <item>
+         <widget class="QTabWidget" name="tabWidgetRewards">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_22">
+           <attribute name="title">
+            <string>Main A</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_45">
+            <item>
+             <widget class="QGroupBox" name="groupBox_17">
+              <property name="title">
+               <string>Flags</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_39">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_155">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_183">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_184">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_156">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_185">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_186">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_157">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_187">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_188">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_159">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_191">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_192">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_162">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_197">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_198">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_158">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_189">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_190">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_161">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_195">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_196">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_160">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAFlag7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_193">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainAValue7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_194">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollAreaRemMainA">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>1106</width>
+                 <height>396</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_196">
+              <item>
+               <widget class="QPushButton" name="buttonRemMainAAdd">
+                <property name="text">
+                 <string>Add Entry</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_23">
+           <attribute name="title">
+            <string>Main B</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_46">
+            <item>
+             <widget class="QGroupBox" name="groupBox_18">
+              <property name="title">
+               <string>Flags</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_41">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_163">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_199">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_200">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_164">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_201">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_202">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_165">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_203">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_204">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_166">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_205">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_206">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_167">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_207">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_208">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_168">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_209">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_210">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_169">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_211">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_212">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_170">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBFlag7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_213">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemMainBValue7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_214">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollAreaRemMainB">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_2">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>98</width>
+                 <height>28</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_197">
+              <item>
+               <widget class="QPushButton" name="buttonRemMainBAdd">
+                <property name="text">
+                 <string>Add Entry</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_24">
+           <attribute name="title">
+            <string>Extra A</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_47">
+            <item>
+             <widget class="QGroupBox" name="groupBox_19">
+              <property name="title">
+               <string>Flags</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_42">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_171">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_215">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_216">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_172">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_217">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_218">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_173">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_219">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_220">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_174">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_221">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_222">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_175">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_223">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_224">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_176">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_225">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_226">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_177">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_227">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_228">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_178">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAFlag7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_229">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraAValue7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_230">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollAreaRemExtraA">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_3">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>98</width>
+                 <height>28</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_198">
+              <item>
+               <widget class="QPushButton" name="buttonRemExtraAAdd">
+                <property name="text">
+                 <string>Add Entry</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_7">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_25">
+           <attribute name="title">
+            <string>Extra B</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_48">
+            <item>
+             <widget class="QGroupBox" name="groupBox_20">
+              <property name="title">
+               <string>Flags</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_43">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_179">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_231">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_232">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_180">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_233">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_234">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_181">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_235">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_236">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_182">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_237">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_238">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_183">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_239">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_240">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_184">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_241">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_242">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_185">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_243">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_244">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_186">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBFlag7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_245">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemExtraBValue7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_246">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollAreaRemExtraB">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_4">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>98</width>
+                 <height>28</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_199">
+              <item>
+               <widget class="QPushButton" name="buttonRemExtraBAdd">
+                <property name="text">
+                 <string>Add Entry</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_26">
+           <attribute name="title">
+            <string>Subquest</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_49">
+            <item>
+             <widget class="QGroupBox" name="groupBox_21">
+              <property name="title">
+               <string>Flags</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_44">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_187">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_247">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue0"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_248">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_188">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_249">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue1"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_250">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_189">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_251">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_252">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_190">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_253">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_254">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_191">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_255">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_256">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_192">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_257">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_258">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_193">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_259">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue6"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_260">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_194">
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubFlag7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_261">
+                   <property name="text">
+                    <string>Flag</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxRemSubValue7"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_262">
+                   <property name="text">
+                    <string>Value</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollAreaRemSub">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_5">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>98</width>
+                 <height>28</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_200">
+              <item>
+               <widget class="QPushButton" name="buttonRemSubAdd">
+                <property name="text">
+                 <string>Add Entry</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_9">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -5544,7 +6832,8 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
-    <addaction name="actionSave_As"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -5557,9 +6846,17 @@
      <string>Edit</string>
     </property>
     <addaction name="actionDuplicateQuestInfo"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -5572,7 +6869,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Open...</string>
    </property>
    <property name="font">
     <font>
@@ -5590,7 +6887,7 @@
     </font>
    </property>
   </action>
-  <action name="actionSave_As">
+  <action name="actionSaveAs">
    <property name="text">
     <string>Save As...</string>
    </property>
@@ -5616,6 +6913,16 @@
    </property>
    <property name="text">
     <string>Duplicate Quest Info</string>
+   </property>
+  </action>
+  <action name="actiona">
+   <property name="text">
+    <string>a</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

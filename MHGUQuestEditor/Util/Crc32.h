@@ -41,3 +41,11 @@ constexpr uint32_t crc32(const T* data, size_t length) {
 constexpr inline uint32_t operator""_ext(const char* s, size_t len) {
     return detail::crc::crc32(s, len) & 0x7FFFFFFF;
 }
+
+constexpr inline uint32_t operator""_crc(const char* s, size_t len) {
+    return detail::crc::crc32(s, len) & 0x7FFFFFFF;
+}
+
+constexpr inline uint32_t type_hash(const char* s) {
+    return detail::crc::crc32(s, std::char_traits<char>::length(s)) & 0x7FFFFFFF;
+}

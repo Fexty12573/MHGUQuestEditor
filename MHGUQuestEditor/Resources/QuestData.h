@@ -102,17 +102,17 @@ struct Language
         Count
     };
 
-    static QString toString(s32 language)
+    static QString toString(s32 language, bool upper = false)
     {
         switch (language)
         {
-        case Eng: return "eng";
-        case Fre: return "fre";
-        case Ger: return "ger";
-        case Ita: return "ita";
-        case Spa: return "spa";
-        case ChT: return "chT";
-        case ChS: return "chS";
+        case Eng: return upper ? "Eng" : "eng";
+        case Fre: return upper ? "Fre" : "fre";
+        case Ger: return upper ? "Ger" : "ger";
+        case Ita: return upper ? "Ita" : "ita";
+        case Spa: return upper ? "Spa" : "spa";
+        case ChT: return upper ? "ChT" : "chT";
+        case ChS: return upper ? "ChS" : "chS";
         default: return "unknown";
         }
     }
