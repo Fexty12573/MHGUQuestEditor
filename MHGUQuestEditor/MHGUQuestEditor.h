@@ -4,6 +4,7 @@
 #include <QStringListModel>
 #include <QtWidgets/QMainWindow>
 #include "ui_MHGUQuestEditor.h"
+#include "Widgets/EmSetListEditor/EmSetListEditor.h"
 #include "Resources/Arc.h"
 #include "Resources/Gmd.h"
 #include "Resources/QuestArc.h"
@@ -76,6 +77,7 @@ private:
     std::vector<QPixmap> monsterIcons;
     QStringList itemNames;
     QStringListModel* itemNamesModel;
+    std::array<EmSetListEditor*, 3> emSetListEditors;
 
     QString questListPath;
     bool autoUpdateQuestList;

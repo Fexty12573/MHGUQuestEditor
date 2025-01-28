@@ -20,5 +20,6 @@
         <file>res/quest_type.json</file>
         <file>res/item_names.json</file>
         <file>res/icon.png</file>
+        <file>res/ems_names.json</file>
     </qresource>
 </RCC>

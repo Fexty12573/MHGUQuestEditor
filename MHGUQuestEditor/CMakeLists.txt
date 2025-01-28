@@ -37,6 +37,9 @@ set(PROJECT_SOURCES
     SettingsDialog.ui
     SettingsDialog.h
     SettingsDialog.cpp
+    Widgets/EmSetListEditor/EmSetListEditor.ui
+    Widgets/EmSetListEditor/EmSetListEditor.h
+    Widgets/EmSetListEditor/EmSetListEditor.cpp
     Common.h
     Monster/Id.h
     Util/Crc32.h

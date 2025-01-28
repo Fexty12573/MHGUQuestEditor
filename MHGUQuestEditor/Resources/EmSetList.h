@@ -12,8 +12,7 @@ namespace Resources
 #pragma pack(push, 1)
 struct Ems
 {
-    u8 MonsterId;
-    u8 SubId;
+    u16 MonsterId;
     u8 Unk1[2];
     s8 SpawnCondition;
     u8 Area;
@@ -42,17 +41,21 @@ struct EsdHeader
 struct ZakoPack
 {
     std::vector<Ems> Ems;
+
+    [[nodiscard]] bool empty() const;
 };
 
 class EmSetList
 {
 public:
-    static constexpr u32 EslMagic = 0x6C7364; // "esl"
+    static constexpr u32 EslMagic = 0x6C7365; // "esl"
     static constexpr u32 EsdMagic = 0x445345; // "ESD"
     static constexpr u32 EslVersion = 2;
     static constexpr u32 EsdVersion = 0x20151214;
 
     std::vector<ZakoPack> Packs;
+
+    [[nodiscard]] bool empty() const;
 
     static EmSetList deserialize(const QByteArray& data);
     static EmSetList deserialize(std::span<const u8> data);

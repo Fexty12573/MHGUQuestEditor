@@ -50,7 +50,7 @@ QByteArray Resources::QuestLink::serialize(const QuestLink& link)
     return data;
 }
 
-void Resources::QuestLink::clear_resource(LinkResource& resource)
+void Resources::QuestLink::clearResource(LinkResource& resource)
 {
     switch (resource.TypeHash)
     {
@@ -108,6 +108,47 @@ Resources::ResolvedLinkResource Resources::QuestLink::resolve(QuestArc& arc) con
     return resolved;
 }
 
+bool Resources::QuestLink::isEmptyResource(const LinkResource& resource)
+{
+    if (resource.TypeHash == 0)
+        return true;
+
+    switch (resource.TypeHash)
+    {
+    case "rSetEmMain"_crc:
+        return resource.File == EmptyBossSet;
+    case "rEmSetList"_crc:
+        return resource.File == EmptyEmSetList;
+    case "rRem"_crc:
+        return resource.File == EmptyRem;
+    default:
+        qWarning("Unknown quest link type hash: 0x%08X", resource.TypeHash);
+        return false;
+    }
+}
+
+QString Resources::QuestLink::formatRemPath(const QString& remName)
+{
+    return QStringLiteral(R"(quest\rem\%1)").arg(remName);
+}
+
+QString Resources::QuestLink::formatRemPath(u32 remId)
+{
+    return QStringLiteral(R"(quest\rem\rem_%1)").arg(remId, 6, 10, QChar(u8'0'));
+}
+
+QString Resources::QuestLink::formatEslPath(const QString& eslName)
+{
+    return QStringLiteral(R"(quest\zako\emSetList\%1)").arg(eslName);
+}
+
+QString Resources::QuestLink::formatEslPath(u32 mapId, u32 eslId)
+{
+    return QStringLiteral(R"(quest\zako\emSetList\z_m%1d_%2)")
+        .arg(mapId, 2, 10, QChar(u8'0'))
+        .arg(eslId, 3, 10, QChar(u8'0'));
+}
+
 Resources::ArcEntry* Resources::QuestLink::resolveBossSet(QuestArc& arc, const LinkResource& resource)
 {
     if (resource.TypeHash == 0)
@@ -128,7 +169,7 @@ Resources::ArcEntry* Resources::QuestLink::resolveEmSetList(QuestArc& arc, const
     if (resource.TypeHash == 0)
         return nullptr;
 
-    const auto entry = arc.findEntry(QStringLiteral(R"(quest\zako\emSetList\%1)").arg(resource.File));
+    const auto entry = arc.findEntry(formatEslPath(resource.File));
     if (!entry) {
         qCritical("Failed to resolve EmSetList %08X %s", resource.TypeHash, resource.File);
         return nullptr;
@@ -143,7 +184,7 @@ Resources::ArcEntry* Resources::QuestLink::resolveRem(QuestArc& arc, const LinkR
     if (resource.TypeHash == 0)
         return nullptr;
 
-    const auto entry = arc.findEntry(QStringLiteral(R"(quest\rem\%1)").arg(resource.File));
+    const auto entry = arc.findEntry(formatRemPath(resource.File));
     if (!entry) {
         qCritical("Failed to resolve RemSub %08X %s", resource.TypeHash, resource.File);
         return nullptr;

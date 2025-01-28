@@ -51,9 +51,15 @@ public:
     static QuestLink deserialize(std::span<const u8> data);
     static QByteArray serialize(const QuestLink& link);
 
-    static void clear_resource(LinkResource& resource);
+    static void clearResource(LinkResource& resource);
 
     ResolvedLinkResource resolve(QuestArc& arc) const;
+
+    static bool isEmptyResource(const LinkResource& resource);
+    static QString formatRemPath(const QString& remName);
+    static QString formatRemPath(u32 remId);
+    static QString formatEslPath(const QString& eslName);
+    static QString formatEslPath(u32 mapId, u32 eslId);
 
 private:
     static ArcEntry* resolveBossSet(QuestArc& arc, const LinkResource& resource);

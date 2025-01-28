@@ -54,6 +54,8 @@ Resources::EmSetList Resources::EmSetList::deserialize(const QByteArray& data)
 
         esl.Packs.push_back(pack);
     }
+
+    return esl;
 }
 
 Resources::EmSetList Resources::EmSetList::deserialize(std::span<const u8> data)
@@ -104,4 +106,14 @@ QByteArray Resources::EmSetList::serialize(const EmSetList& esl)
     }
 
     return data;
+}
+
+bool Resources::ZakoPack::empty() const
+{
+    return Ems.empty();
+}
+
+bool Resources::EmSetList::empty() const
+{
+    return Packs.empty() || std::ranges::all_of(Packs, &ZakoPack::empty);
 }

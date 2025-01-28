@@ -31,7 +31,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_13">
        <attribute name="title">
@@ -6029,8 +6029,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6278,8 +6278,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6527,8 +6527,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6776,8 +6776,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6808,6 +6808,35 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </layout>
             </item>
            </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_27">
+       <attribute name="title">
+        <string>Small Monsters</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_50">
+        <item>
+         <widget class="QTabWidget" name="tabWidgetZako">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_28">
+           <attribute name="title">
+            <string>A</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_29">
+           <attribute name="title">
+            <string>B</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_30">
+           <attribute name="title">
+            <string>C</string>
+           </attribute>
           </widget>
          </widget>
         </item>

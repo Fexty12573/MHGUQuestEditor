@@ -11,6 +11,7 @@
 #include <QMimeData>
 #include <QMessageBox>
 #include <QSettings>
+#include <QRandomGenerator>
 
 #include "SettingsDialog.h"
 #include "Resources/Arc.h"
@@ -118,25 +119,34 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
 
     ui.tabWidgetRoot->setTabEnabled(1, false); // Quest Info
     ui.tabWidgetRoot->setTabEnabled(2, false); // Rewards
+    ui.tabWidgetRoot->setTabEnabled(3, false); // Small Monsters
     ui.tabWidgetRoot->setCurrentIndex(0);
     ui.tabWidgetQuestData->setCurrentIndex(0);
     ui.tabWidgetLanguage->setCurrentIndex(0);
+    ui.tabWidgetRewards->setCurrentIndex(0);
+    ui.tabWidgetZako->setCurrentIndex(0);
 
-    //const auto container = new QWidget;
-    //ui.scrollAreaRemItems->setWidget(container);
-    //const auto vlayout = new QVBoxLayout(container);
+    emSetListEditors = {
+        new EmSetListEditor({}, this),
+        new EmSetListEditor({}, this),
+        new EmSetListEditor({}, this)
+    };
 
-    //for (const auto i : std::views::iota(0, 40)) {
-    //    const auto layout = new QHBoxLayout;
-    //    layout->setDirection(QBoxLayout::LeftToRight);
+    const auto zakoA = ui.tabWidgetZako->widget(0);
+    const auto zakoB = ui.tabWidgetZako->widget(1);
+    const auto zakoC = ui.tabWidgetZako->widget(2);
 
-    //    const auto spinBox = new QSpinBox;
-    //    const auto label = new QLabel(QStringLiteral("My Label %1").arg(i));
-    //    layout->addWidget(spinBox, 2);
-    //    layout->addWidget(label, 1);
+    auto layout = new QVBoxLayout(zakoA);
+    layout->addWidget(emSetListEditors[0]);
+    zakoA->setLayout(layout);
 
-    //    vlayout->addLayout(layout);
-    //}
+    layout = new QVBoxLayout(zakoB);
+    layout->addWidget(emSetListEditors[1]);
+    zakoB->setLayout(layout);
+
+    layout = new QVBoxLayout(zakoC);
+    layout->addWidget(emSetListEditors[2]);
+    zakoC->setLayout(layout);
 }
 
 MHGUQuestEditor::~MHGUQuestEditor() = default;
@@ -885,6 +895,16 @@ void MHGUQuestEditor::loadQuestArc()
     loadRemIntoUi(rems[3], "ExtraB", 3);
     loadRemIntoUi(rems[4], "Sub", 4);
 
+    ui.tabWidgetRoot->setTabEnabled(3, true); // Enable small monsters tab
+
+    for (s32 i = 0; i < 3; ++i)
+    {
+        if (resources.EmSetList[i])
+        {
+            emSetListEditors[i]->setEsl(EmSetList::deserialize(resources.EmSetList[i]->getData()));
+        }
+    }
+
     loadQuestDataIntoUi();
 }
 
@@ -947,13 +967,25 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
 
     // Save rem
     const auto saveRem = [this](const Resources::Rem& rem, Resources::ArcEntry* entry, Resources::LinkResource& resource) {
-        if (rem.size() > 0)
+        if (rem.size() == 0)
         {
-            entry->setData(Resources::Rem::serialize(rem));
+            questLink->clearResource(resource);
         }
         else
         {
-            questLink->clear_resource(resource);
+            // Entries were added to an empty resource, so we need to create a new entry
+            if (!entry && Resources::QuestLink::isEmptyResource(resource))
+            {
+                // Generate a random 6 digit number for the id
+                // Highest vanilla ids end at around 730000, so we'll start at 750000
+                // Chance of collision is low enough to ignore
+                const auto id = QRandomGenerator::global()->bounded(750000, 999999);
+                arc->addRem(id, Resources::Rem::serialize(rem));
+            }
+            else 
+            {
+                entry->setData(Resources::Rem::serialize(rem));
+            }
         }
     };
 
@@ -962,6 +994,36 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
     saveRem(rems[2], resources.RemAdd[0], questLink->RemAdd[0]);
     saveRem(rems[3], resources.RemAdd[1], questLink->RemAdd[1]);
     saveRem(rems[4], resources.RemSub, questLink->RemSub);
+
+    // Save esl
+    const auto saveEsl = [this](const EmSetListEditor* editor, Resources::ArcEntry* entry, Resources::LinkResource& resource) {
+        if (editor->getEsl().empty())
+        {
+            questLink->clearResource(resource);
+        }
+        else
+        {
+            // Entries were added to an empty resource, so we need to create a new entry
+            if (!entry && Resources::QuestLink::isEmptyResource(resource))
+            {
+                // Generate a random 3 digit number for the id
+                // Vanilla ids never exceed 100 so we'll start there
+                const auto esl = Resources::EmSetList::serialize(editor->getEsl());
+                int id;
+                do {
+                    id = QRandomGenerator::global()->bounded(100, 999);
+                } while (!arc->addEsl((u32)questData.Map, id, esl));
+            }
+            else
+            {
+                entry->setData(Resources::EmSetList::serialize(editor->getEsl()));
+            }
+        }
+    };
+
+    saveEsl(emSetListEditors[0], resources.EmSetList[0], questLink->EmSetList[0]);
+    saveEsl(emSetListEditors[1], resources.EmSetList[1], questLink->EmSetList[1]);
+    saveEsl(emSetListEditors[2], resources.EmSetList[2], questLink->EmSetList[2]);
 
     if (path.isEmpty())
         arc->save();
@@ -1512,7 +1574,7 @@ void MHGUQuestEditor::saveRemFromUi(Resources::Rem& rem, const QString& remName,
         rem.Rewards[i].Weight = chanceBox->value();
     }
 
-    if (i < std::size(rem.Rewards))
+    if (i != 0 && i < std::size(rem.Rewards))
         rem.Rewards[i] = { .Weight = 255 }; // End marker
 }
 
