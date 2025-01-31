@@ -27,6 +27,8 @@ private:
     Resources::Ems saveEmsFromUi() const;
     void loadEslIntoUi();
 
+    void importFromFile();
+
     static QString formatEmsName(const Resources::Ems& ems);
     
 private:

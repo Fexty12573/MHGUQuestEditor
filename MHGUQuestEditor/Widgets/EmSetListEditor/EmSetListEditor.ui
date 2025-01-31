@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
      <item>
       <widget class="QLabel" name="label">
        <property name="font">
@@ -56,6 +56,24 @@
         </property>
        </column>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="buttonClearAll">
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonImportFromFile">
+         <property name="text">
+          <string>Import</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

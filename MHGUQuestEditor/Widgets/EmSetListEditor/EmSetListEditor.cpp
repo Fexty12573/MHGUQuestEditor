@@ -1,6 +1,7 @@
 #include "EmSetListEditor.h"
 
 #include <QFile>
+#include <QFileDialog>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMenu>
@@ -171,7 +172,6 @@ EmSetListEditor::EmSetListEditor(Resources::EmSetList esl, QWidget *parent)
 
         menu.exec(ui.treeWidgetPackSelector->mapToGlobal(pos));
     });
-
     connect(ui.treeWidgetPackSelector, &QTreeWidget::itemClicked, this, [this](const QTreeWidgetItem* item) {
         if (item->type() == ItemType::Ems)
         {
@@ -180,6 +180,12 @@ EmSetListEditor::EmSetListEditor(Resources::EmSetList esl, QWidget *parent)
             currentEms = this->esl.Packs[packIndex].Ems.data() + emsIndex;
             loadEmsIntoUi(*currentEms);
         }
+    });
+
+    connect(ui.buttonImportFromFile, &QPushButton::clicked, this, &EmSetListEditor::importFromFile);
+    connect(ui.buttonClearAll, &QPushButton::clicked, this, [this] {
+        this->esl.Packs.clear();
+        loadEslIntoUi();
     });
 }
 
@@ -239,6 +245,26 @@ void EmSetListEditor::loadEslIntoUi()
     }
 
     ui.treeWidgetPackSelector->expandAll();
+}
+
+void EmSetListEditor::importFromFile()
+{
+    const auto fileName = QFileDialog::getOpenFileName(
+        this, 
+        "Import EmSetList", 
+        QString(), 
+        "EmSetList (*.esl *.32CA92F8);;All Files (*)");
+    if (fileName.isEmpty())
+        return;
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning("Failed to open file for reading");
+        return;
+    }
+
+    setEsl(Resources::EmSetList::deserialize(file.readAll()));
 }
 
 QString EmSetListEditor::formatEmsName(const Resources::Ems& ems)

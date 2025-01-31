@@ -69,6 +69,34 @@ void Resources::QuestLink::clearResource(LinkResource& resource)
     }
 }
 
+void Resources::QuestLink::setEslResource(LinkResource& resource, const QString& emSetListName)
+{
+    resource.TypeHash = "rEmSetList"_crc;
+    const auto size = std::min(emSetListName.size(), 15LL);
+    std::memcpy(resource.File, emSetListName.toUtf8().constData(), size);
+    resource.File[size] = '\0';
+}
+
+void Resources::QuestLink::setEslResource(LinkResource& resource, u32 mapId, u32 eslId)
+{
+    resource.TypeHash = "rEmSetList"_crc;
+    (void)std::snprintf(resource.File, sizeof(resource.File), "z_m%02d_%03d", mapId, eslId);
+}
+
+void Resources::QuestLink::setRemResource(LinkResource& resource, const QString& remName)
+{
+    resource.TypeHash = "rRem"_crc;
+    const auto size = std::min(remName.size(), 15LL);
+    std::memcpy(resource.File, remName.toUtf8().constData(), size);
+    resource.File[size] = '\0';
+}
+
+void Resources::QuestLink::setRemResource(LinkResource& resource, u32 remId)
+{
+    resource.TypeHash = "rRem"_crc;
+    (void)std::snprintf(resource.File, sizeof(resource.File), "rem_%06d", remId);
+}
+
 Resources::ResolvedLinkResource Resources::QuestLink::resolve(QuestArc& arc) const
 {
     ResolvedLinkResource resolved{};

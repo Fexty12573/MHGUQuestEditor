@@ -669,7 +669,7 @@ void MHGUQuestEditor::onOpenFile()
         this, 
         "Open Quest File", 
         {}, 
-        "Quest Files (*.mib *.ext);;Archive Files (*.arc)"
+        "Archive Files (*.arc);;Quest Files (*.mib *.ext)"
     );
 
     if (path.isEmpty())
@@ -696,7 +696,7 @@ void MHGUQuestEditor::onSaveFileAs()
         this,
         "Save Quest File",
         {},
-        "Quest Files (*.mib *.ext);;Archive Files (*.arc)"
+        "Archive Files (*.arc);;Quest Files (*.mib *.ext)"
     );
 
     if (path.isEmpty())
@@ -981,6 +981,7 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
                 // Chance of collision is low enough to ignore
                 const auto id = QRandomGenerator::global()->bounded(750000, 999999);
                 arc->addRem(id, Resources::Rem::serialize(rem));
+                questLink->setRemResource(resource, id);
             }
             else 
             {
@@ -1013,6 +1014,7 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
                 do {
                     id = QRandomGenerator::global()->bounded(100, 999);
                 } while (!arc->addEsl((u32)questData.Map, id, esl));
+                questLink->setEslResource(resource, (u32)questData.Map, id);
             }
             else
             {

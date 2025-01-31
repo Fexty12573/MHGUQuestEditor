@@ -53,6 +53,11 @@ public:
 
     static void clearResource(LinkResource& resource);
 
+    static void setEslResource(LinkResource& resource, const QString& emSetListName);
+    static void setEslResource(LinkResource& resource, u32 mapId, u32 eslId);
+    static void setRemResource(LinkResource& resource, const QString& remName);
+    static void setRemResource(LinkResource& resource, u32 remId);
+
     ResolvedLinkResource resolve(QuestArc& arc) const;
 
     static bool isEmptyResource(const LinkResource& resource);
