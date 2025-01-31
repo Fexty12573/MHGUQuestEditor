@@ -8,7 +8,7 @@ This is a Quest Editor for Monster Hunter Generations Ultimate and Monster Hunte
 - [x] Quest Info editing (Text Displayed, found in various `.gmd` files)
 - [x] Quest Rewards editing (Found in `.rem` files)
 - [x] Small Monster spawn editing (`.esl` files)
-- [ ] Large Monster spawn editing (`.sem` files)
+- [x] Large Monster spawn editing (`.sem` files)
 - [ ] Supply Item editing (`.sup` files)
 - [ ] QuestPlus editing (Arena Fence timers, Fort HP, etc. `.qpl` files)
 - [ ] Adding new quests to the game
