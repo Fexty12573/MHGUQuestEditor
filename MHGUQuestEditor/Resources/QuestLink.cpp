@@ -69,6 +69,20 @@ void Resources::QuestLink::clearResource(LinkResource& resource)
     }
 }
 
+void Resources::QuestLink::setBossSetResource(LinkResource& resource, const QString& bossSetName)
+{
+    resource.TypeHash = "rSetEmMain"_crc;
+    const auto size = std::min(bossSetName.size(), 15LL);
+    std::memcpy(resource.File, bossSetName.toUtf8().constData(), size);
+    resource.File[size] = '\0';
+}
+
+void Resources::QuestLink::setBossSetResource(LinkResource& resource, u32 mapId, u32 emId, u32 semId)
+{
+    resource.TypeHash = "rSetEmMain"_crc;
+    (void)std::snprintf(resource.File, sizeof(resource.File), "b_m%02dem%03d_%02d", mapId, emId, semId);
+}
+
 void Resources::QuestLink::setEslResource(LinkResource& resource, const QString& emSetListName)
 {
     resource.TypeHash = "rEmSetList"_crc;
@@ -153,6 +167,19 @@ bool Resources::QuestLink::isEmptyResource(const LinkResource& resource)
         qWarning("Unknown quest link type hash: 0x%08X", resource.TypeHash);
         return false;
     }
+}
+
+QString Resources::QuestLink::formatBossSetPath(const QString& bossSetName)
+{
+    return QStringLiteral(R"(quest\boss\setEmMain\%1)").arg(bossSetName);
+}
+
+QString Resources::QuestLink::formatBossSetPath(u32 mapId, u32 emId, u32 semId)
+{
+    return QStringLiteral(R"(quest\boss\setEmMain\b_m%1em%2_%3)")
+        .arg(mapId, 2, 10, QChar(u8'0'))
+        .arg(emId, 3, 10, QChar(u8'0'))
+        .arg(semId, 2, 10, QChar(u8'0'));
 }
 
 QString Resources::QuestLink::formatRemPath(const QString& remName)

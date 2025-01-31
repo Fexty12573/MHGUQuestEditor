@@ -40,6 +40,9 @@ set(PROJECT_SOURCES
     Widgets/EmSetListEditor/EmSetListEditor.ui
     Widgets/EmSetListEditor/EmSetListEditor.h
     Widgets/EmSetListEditor/EmSetListEditor.cpp
+    Widgets/BossSetEditor/BossSetEditor.ui
+    Widgets/BossSetEditor/BossSetEditor.h
+    Widgets/BossSetEditor/BossSetEditor.cpp
     Common.h
     Monster/Id.h
     Util/Crc32.h
@@ -53,6 +56,8 @@ set(PROJECT_SOURCES
     Resources/QuestLink.cpp
     Resources/EmSetList.h
     Resources/EmSetList.cpp
+    Resources/BossSet.h
+    Resources/BossSet.cpp
     Resources/Arc.h
     Resources/Arc.cpp
     Resources/QuestArc.h

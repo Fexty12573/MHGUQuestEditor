@@ -1,16 +1,18 @@
 #pragma once
 
-#include <QMenu>
+#include <map>
 #include <QStringListModel>
 #include <QtWidgets/QMainWindow>
 #include "ui_MHGUQuestEditor.h"
 #include "Widgets/EmSetListEditor/EmSetListEditor.h"
+#include "Widgets/BossSetEditor/BossSetEditor.h"
 #include "Resources/Arc.h"
 #include "Resources/Gmd.h"
 #include "Resources/QuestArc.h"
 #include "Resources/QuestData.h"
 #include "Resources/QuestLink.h"
 #include "Resources/Rem.h"
+
 
 class MHGUQuestEditor : public QMainWindow
 {
@@ -34,7 +36,7 @@ private:
     void initQuestSubTypeDropdown() const;
     void initQuestLevelDropdown() const;
     void initMonsterLevelDropdown() const;
-    void initMapDropdown() const;
+    void initMapDropdown();
     void initSpawnTypeDropdown() const;
     void initBgmDropdown() const;
     void initRequirementsDropdowns() const;
@@ -42,6 +44,7 @@ private:
     void initObjectiveDropdowns() const;
     void initItemLevelDropdowns() const;
     void initItemNames();
+    void initSpawns();
 
     void addRemEntry(const QString& remName, s32 tabIndex);
 
@@ -78,6 +81,9 @@ private:
     QStringList itemNames;
     QStringListModel* itemNamesModel;
     std::array<EmSetListEditor*, 3> emSetListEditors;
+    std::array<BossSetEditor*, 5> bossSetEditors;
+    
+    std::map<int, QString> mapNames;
 
     QString questListPath;
     bool autoUpdateQuestList;

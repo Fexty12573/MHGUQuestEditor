@@ -31,7 +31,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="tab_13">
        <attribute name="title">
@@ -46,7 +46,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
@@ -6029,8 +6029,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6278,8 +6278,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6527,8 +6527,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6776,8 +6776,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6836,6 +6836,45 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <widget class="QWidget" name="tab_30">
            <attribute name="title">
             <string>C</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_31">
+       <attribute name="title">
+        <string>Spawns</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_51">
+        <item>
+         <widget class="QTabWidget" name="tabWidgetMonsterSpawns">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_32">
+           <attribute name="title">
+            <string>Monster 1</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_33">
+           <attribute name="title">
+            <string>Monster 2</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_34">
+           <attribute name="title">
+            <string>Monster 3</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_35">
+           <attribute name="title">
+            <string>Monster 4</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_36">
+           <attribute name="title">
+            <string>Monster 5</string>
            </attribute>
           </widget>
          </widget>

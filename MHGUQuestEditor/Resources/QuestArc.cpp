@@ -127,6 +127,37 @@ bool Resources::QuestArc::addGmd(s32 languageId, const QString& name, std::span<
     return true;
 }
 
+bool Resources::QuestArc::addSem(u32 mapId, u32 emId, u32 semId, const QByteArray& data, bool compressed, u32 realSize)
+{
+    return addSem(mapId, emId, semId, { (const u8*)data.data(), (size_t)data.size() }, compressed, realSize);
+}
+
+bool Resources::QuestArc::addSem(u32 mapId, u32 emId, u32 semId, std::span<const u8> data, bool compressed, u32 realSize)
+{
+    const auto path = QuestLink::formatBossSetPath(mapId, emId, semId);
+    if (findEntry(path))
+    {
+        qWarning("Duplicate SEM %s", path.toStdString().c_str());
+        return false;
+    }
+
+    ArcEntry entry = {
+        .Path = path,
+        .TypeHash = "rSetEmMain"_ext,
+        .Extension = ExtensionResolver::resolve("rSetEmMain"_ext),
+        .CompSize = 0,
+        .RealSize = 0,
+        .Quality = 2
+    };
+
+    entry.setData(data, !compressed);
+    if (compressed && realSize != 0)
+        entry.RealSize = realSize;
+
+    entries.push_back(entry);
+    return true;
+}
+
 bool Resources::QuestArc::addRem(u32 remId, const QByteArray& data, bool compressed, u32 realSize)
 {
     return addRem(remId, { (const u8*)data.data(), (size_t)data.size() }, compressed, realSize);

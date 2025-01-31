@@ -25,6 +25,8 @@ public:
     bool addQuestData(u32 questId, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
     bool addGmd(s32 languageId, const QString& name, const QByteArray& data, bool compressed = false, u32 realSize = 0);
     bool addGmd(s32 languageId, const QString& name, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
+    bool addSem(u32 mapId, u32 emId, u32 semId, const QByteArray& data, bool compressed = false, u32 realSize = 0);
+    bool addSem(u32 mapId, u32 emId, u32 semId, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
     bool addRem(u32 remId, const QByteArray& data, bool compressed = false, u32 realSize = 0);
     bool addRem(u32 remId, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
     bool addEsl(u32 mapId, u32 eslId, const QByteArray& data, bool compressed = false, u32 realSize = 0);

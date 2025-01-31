@@ -53,6 +53,8 @@ public:
 
     static void clearResource(LinkResource& resource);
 
+    static void setBossSetResource(LinkResource& resource, const QString& bossSetName);
+    static void setBossSetResource(LinkResource& resource, u32 mapId, u32 emId, u32 semId);
     static void setEslResource(LinkResource& resource, const QString& emSetListName);
     static void setEslResource(LinkResource& resource, u32 mapId, u32 eslId);
     static void setRemResource(LinkResource& resource, const QString& remName);
@@ -61,6 +63,8 @@ public:
     ResolvedLinkResource resolve(QuestArc& arc) const;
 
     static bool isEmptyResource(const LinkResource& resource);
+    static QString formatBossSetPath(const QString& bossSetName);
+    static QString formatBossSetPath(u32 mapId, u32 emId, u32 semId);
     static QString formatRemPath(const QString& remName);
     static QString formatRemPath(u32 remId);
     static QString formatEslPath(const QString& eslName);

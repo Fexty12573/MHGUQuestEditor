@@ -21,5 +21,6 @@
         <file>res/item_names.json</file>
         <file>res/icon.png</file>
         <file>res/ems_names.json</file>
+        <file>res/spawns.json</file>
     </qresource>
 </RCC>

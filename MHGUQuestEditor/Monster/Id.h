@@ -3,13 +3,15 @@
 
 namespace Monster {
 
-enum SubId : short;
-enum Id : short;
+enum SubId : u16;
+enum Id : u16;
 
 struct IdType
 {
     u8 Id;
     u8 SubId;
+
+    IdType(u16 id) : Id(id & 0xFF), SubId(id >> 8) {}
 
     IdType& operator=(enum Id id) 
     {
@@ -26,7 +28,7 @@ struct IdType
 
 enum SubId : u16
 {
-    None = 0,
+    Default = 0,
     Subspecies = 1 << 8,
     RareSpecies = 2 << 8,
     Apex = 3 << 8,

@@ -17,6 +17,8 @@
 #include "Resources/Arc.h"
 #include "Resources/QuestData.h"
 #include "Resources/StatTable.h"
+#include "Resources/BossSet.h"
+#include "Monster/Id.h"
 #include "Util/Crc32.h"
 #include <QListView>
 
@@ -46,6 +48,7 @@ MHGUQuestEditor::MHGUQuestEditor(QWidget *parent) : QMainWindow(parent)
     initObjectiveDropdowns();
     initItemLevelDropdowns();
     initItemNames();
+    initSpawns();
 
     loadSettings();
 
@@ -120,11 +123,13 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
     ui.tabWidgetRoot->setTabEnabled(1, false); // Quest Info
     ui.tabWidgetRoot->setTabEnabled(2, false); // Rewards
     ui.tabWidgetRoot->setTabEnabled(3, false); // Small Monsters
+    ui.tabWidgetRoot->setTabEnabled(4, false); // Spawns
     ui.tabWidgetRoot->setCurrentIndex(0);
     ui.tabWidgetQuestData->setCurrentIndex(0);
     ui.tabWidgetLanguage->setCurrentIndex(0);
     ui.tabWidgetRewards->setCurrentIndex(0);
     ui.tabWidgetZako->setCurrentIndex(0);
+    ui.tabWidgetMonsterSpawns->setCurrentIndex(0);
 
     emSetListEditors = {
         new EmSetListEditor({}, this),
@@ -147,6 +152,22 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
     layout = new QVBoxLayout(zakoC);
     layout->addWidget(emSetListEditors[2]);
     zakoC->setLayout(layout);
+
+    bossSetEditors = {
+        new BossSetEditor(this),
+        new BossSetEditor(this),
+        new BossSetEditor(this),
+        new BossSetEditor(this),
+        new BossSetEditor(this)
+    };
+
+    for (auto i = 0; i < bossSetEditors.size(); i++)
+    {
+        const auto widget = ui.tabWidgetMonsterSpawns->widget(i);
+        const auto layout = new QVBoxLayout(widget);
+        layout->addWidget(bossSetEditors[i]);
+        widget->setLayout(layout);
+    }
 }
 
 MHGUQuestEditor::~MHGUQuestEditor() = default;
@@ -410,7 +431,7 @@ void MHGUQuestEditor::initMonsterLevelDropdown() const
     }
 }
 
-void MHGUQuestEditor::initMapDropdown() const
+void MHGUQuestEditor::initMapDropdown()
 {
     auto mapsFile = QFile(":/res/map_names.json");
     if (!mapsFile.open(QIODevice::ReadOnly))
@@ -422,7 +443,10 @@ void MHGUQuestEditor::initMapDropdown() const
     for (const auto map : maps)
     {
         const auto obj = map.toObject();
-        ui.comboMap->addItem(obj["Name"].toString(), obj["Value"].toInt());
+        const auto name = obj["Name"].toString();
+        const auto value = obj["Value"].toInt();
+        ui.comboMap->addItem(name, value);
+        mapNames[value] = name;
     }
 
     ui.comboMap->model()->sort(0);
@@ -590,6 +614,62 @@ void MHGUQuestEditor::initItemNames()
     const auto names = QJsonDocument::fromJson(itemNamesFile.readAll());
     itemNames = names.toVariant().toStringList();
     itemNamesModel = new QStringListModel(itemNames, this);
+}
+
+void MHGUQuestEditor::initSpawns()
+{
+    auto spawnsFile = QFile(":/res/spawns.json");
+    if (!spawnsFile.open(QIODevice::ReadOnly))
+    {
+        qFatal("Failed to open spawns.json");
+    }
+
+    const auto maps = QJsonDocument::fromJson(spawnsFile.readAll()).array();
+    const auto font = QFont("Segoe UI", 11);
+    const auto menu = new QMenu("Insert Spawn", ui.menuEdit);
+    menu->setFont(font);
+    ui.menuEdit->addMenu(menu);
+    for (const auto map : maps)
+    {
+        const auto obj = map.toObject();
+        const auto mapId = obj["map_id"].toInt();
+        if (mapId == 0)
+            continue;
+        const auto mapName = mapNames[mapId];
+        const auto areas = obj["areas"].toArray();
+        const auto mapMenu = new QMenu(mapName, menu);
+        mapMenu->setFont(font);
+        for (const auto area : areas)
+        {
+            const auto areaObj = area.toObject();
+            const auto areaNo = areaObj["area"].toInt();
+            const auto areaMenu = new QMenu(QString("Area %1").arg(areaNo), mapMenu);
+            areaMenu->setFont(font);
+            const auto spawns = areaObj["spawns"].toArray();
+            for (const auto [i, spawn] : std::views::enumerate(spawns))
+            {
+                const auto spawnObj = spawn.toObject();
+                const Resources::Spawn s{
+                    (u32)spawnObj["round_no"].toInt(),
+                    (u32)areaNo,
+                    (float)spawnObj["angle"].toDouble(),
+                    (float)spawnObj["x"].toDouble(),
+                    (float)spawnObj["y"].toDouble(),
+                    (float)spawnObj["z"].toDouble()
+                };
+
+                const auto action = areaMenu->addAction(QString("Spawn %1").arg(i + 1));
+                action->setFont(font);
+                connect(action, &QAction::triggered, this, [this, s] {
+                    bossSetEditors[ui.tabWidgetMonsterSpawns->currentIndex()]->setSpawn(s);
+                });
+            }
+
+            mapMenu->addMenu(areaMenu);
+        }
+
+        menu->addMenu(mapMenu);
+    }
 }
 
 void MHGUQuestEditor::addRemEntry(const QString& remName, s32 tabIndex)
@@ -897,11 +977,21 @@ void MHGUQuestEditor::loadQuestArc()
 
     ui.tabWidgetRoot->setTabEnabled(3, true); // Enable small monsters tab
 
-    for (s32 i = 0; i < 3; ++i)
+    for (auto i = 0; i < emSetListEditors.size(); ++i)
     {
         if (resources.EmSetList[i])
         {
             emSetListEditors[i]->setEsl(EmSetList::deserialize(resources.EmSetList[i]->getData()));
+        }
+    }
+
+    ui.tabWidgetRoot->setTabEnabled(4, true); // Enable boss spawns tab
+
+    for (auto i = 0; i < bossSetEditors.size(); ++i)
+    {
+        if (resources.BossSet[i])
+        {
+            bossSetEditors[i]->setSpawn(BossSet::deserialize(resources.BossSet[i]->getData()));
         }
     }
 
@@ -1026,6 +1116,39 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
     saveEsl(emSetListEditors[0], resources.EmSetList[0], questLink->EmSetList[0]);
     saveEsl(emSetListEditors[1], resources.EmSetList[1], questLink->EmSetList[1]);
     saveEsl(emSetListEditors[2], resources.EmSetList[2], questLink->EmSetList[2]);
+
+    // Save sem
+    const auto saveSem = [this](const BossSetEditor* editor, Monster::IdType emId, 
+        Resources::ArcEntry* entry, Resources::LinkResource& resource) {
+        if (editor->getSpawn().empty())
+        {
+            questLink->clearResource(resource);
+        }
+        else
+        {
+            // Entries were added to an empty resource, so we need to create a new entry
+            if (!entry && Resources::QuestLink::isEmptyResource(resource))
+            {
+                // Generate a random 2 digit number for the id
+                // Vanilla ids never exceed 10 so we'll start there
+                const auto sem = Resources::BossSet::serialize(editor->getSpawn());
+                int id;
+                do {
+                    id = QRandomGenerator::global()->bounded(10, 99);
+                } while (!arc->addSem((u32)questData.Map, emId.Id, id, sem));
+                questLink->setBossSetResource(resource, (u32)questData.Map, emId.Id, id);
+            }
+            else
+            {
+                entry->setData(Resources::BossSet::serialize(editor->getSpawn()));
+            }
+        }
+    };
+
+    for (auto i = 0; i < bossSetEditors.size(); ++i)
+    {
+        saveSem(bossSetEditors[i], questData.Monsters[i].Id, resources.BossSet[i], questLink->BossSet[i]);
+    }
 
     if (path.isEmpty())
         arc->save();
