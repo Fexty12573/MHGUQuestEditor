@@ -31,7 +31,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_13">
        <attribute name="title">
@@ -1219,7 +1219,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_30" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_30" stretch="1,1,1,1">
                   <item>
                    <widget class="QComboBox" name="comboMonster1Health">
                     <property name="font">
@@ -1241,6 +1241,13 @@
                     </property>
                     <property name="text">
                      <string>Health</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelMonster1Hp">
+                    <property name="text">
+                     <string>Actual HP: 0</string>
                     </property>
                    </widget>
                   </item>
@@ -1595,7 +1602,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_39" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_39" stretch="1,1,1,1">
                   <item>
                    <widget class="QComboBox" name="comboMonster2Health">
                     <property name="font">
@@ -1614,6 +1621,13 @@
                     </property>
                     <property name="text">
                      <string>Health</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelMonster2Hp">
+                    <property name="text">
+                     <string>Actual HP: 0</string>
                     </property>
                    </widget>
                   </item>
@@ -1971,7 +1985,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_49" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_49" stretch="1,1,1,1">
                   <item>
                    <widget class="QComboBox" name="comboMonster3Health">
                     <property name="font">
@@ -1990,6 +2004,13 @@
                     </property>
                     <property name="text">
                      <string>Health</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelMonster3Hp">
+                    <property name="text">
+                     <string>Actual HP: 0</string>
                     </property>
                    </widget>
                   </item>
@@ -2347,7 +2368,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_58" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_58" stretch="1,1,1,1">
                   <item>
                    <widget class="QComboBox" name="comboMonster4Health">
                     <property name="font">
@@ -2366,6 +2387,13 @@
                     </property>
                     <property name="text">
                      <string>Health</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelMonster4Hp">
+                    <property name="text">
+                     <string>Actual HP: 0</string>
                     </property>
                    </widget>
                   </item>
@@ -2723,7 +2751,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_74" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_74" stretch="1,1,1,1">
                   <item>
                    <widget class="QComboBox" name="comboMonster5Health">
                     <property name="font">
@@ -2742,6 +2770,13 @@
                     </property>
                     <property name="text">
                      <string>Health</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelMonster5Hp">
+                    <property name="text">
+                     <string>Actual HP: 0</string>
                     </property>
                    </widget>
                   </item>
@@ -6029,8 +6064,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6278,8 +6313,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6527,8 +6562,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>
@@ -6776,8 +6811,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>66</width>
+                 <height>16</height>
                 </rect>
                </property>
               </widget>

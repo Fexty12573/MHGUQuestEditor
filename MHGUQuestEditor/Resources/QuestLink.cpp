@@ -150,6 +150,21 @@ Resources::ResolvedLinkResource Resources::QuestLink::resolve(QuestArc& arc) con
     return resolved;
 }
 
+Resources::ArcEntry* Resources::QuestLink::resolve(QuestArc& arc, const LinkResource& resource)
+{
+    switch (resource.TypeHash) {
+    case "rSetEmMain"_crc:
+        return resolveBossSet(arc, resource);
+    case "rEmSetList"_crc:
+        return resolveEmSetList(arc, resource);
+    case "rRem"_crc:
+        return resolveRem(arc, resource);
+    default:
+        qWarning("Unsupported quest link type hash for single resolution: 0x%08X", resource.TypeHash);
+        return nullptr;
+    }
+}
+
 bool Resources::QuestLink::isEmptyResource(const LinkResource& resource)
 {
     if (resource.TypeHash == 0)

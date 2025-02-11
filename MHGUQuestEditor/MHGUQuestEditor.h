@@ -30,8 +30,8 @@ protected:
 
 private:
     void initIconDropdowns();
-    void initStatDropdowns() const;
-    void initMonsterDropdowns() const;
+    void initStatDropdowns();
+    void initMonsterDropdowns();
     void initQuestTypeDropdown() const;
     void initQuestSubTypeDropdown() const;
     void initQuestLevelDropdown() const;
@@ -84,6 +84,8 @@ private:
     std::array<BossSetEditor*, 5> bossSetEditors;
     
     std::map<int, QString> mapNames;
+    std::map<int, int> emBaseHp;
+    std::vector<float> monsterHealthMods;
 
     QString questListPath;
     bool autoUpdateQuestList;

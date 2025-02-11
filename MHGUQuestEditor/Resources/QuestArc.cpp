@@ -6,8 +6,8 @@
 
 using namespace Qt::StringLiterals;
 
-Resources::QuestArc::QuestArc(std::filesystem::path path)
-    : Arc(std::move(path)), questDataIndex(-1), questLinkIndex(-1)
+Resources::QuestArc::QuestArc(std::filesystem::path path, bool isRegularQuestArc)
+    : Arc(std::move(path)), questDataIndex(-1), questLinkIndex(-1), isRegularQuestArc(isRegularQuestArc)
 {
     for (size_t i = 0; i < getEntries().size(); i++)
     {
@@ -228,4 +228,30 @@ const Resources::ArcEntry* Resources::QuestArc::getGmd(s32 languageId, const QSt
 Resources::ArcEntry* Resources::QuestArc::getGmd(s32 languageId, const QString& name)
 {
     return findEntry(Language::toString(languageId) + R"(\quest\questData\questData_)" + name);
+}
+
+void Resources::QuestArc::save(const std::filesystem::path& path)
+{
+    if (isRegularQuestArc)
+        fixOrder();
+
+    Arc::save(path);
+}
+
+void Resources::QuestArc::fixOrder()
+{
+    // Quest data must always be the last entry
+    // Quest link must always be the 9th-to-last entry
+
+    if (questDataIndex != entries.size() - 1)
+    {
+        std::swap(entries[questDataIndex], entries.back());
+        questDataIndex = entries.size() - 1;
+    }
+
+    if (questLinkIndex != entries.size() - 9)
+    {
+        std::swap(entries[questLinkIndex], entries[entries.size() - 9]);
+        questLinkIndex = entries.size() - 9;
+    }
 }

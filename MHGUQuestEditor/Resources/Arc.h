@@ -57,7 +57,7 @@ public:
 
     ArcEntry& addEntry(const QString& fpath, const QString& typeName, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
 
-    void save(const std::filesystem::path& path = {});
+    virtual void save(const std::filesystem::path& path = {});
 };
 
 }

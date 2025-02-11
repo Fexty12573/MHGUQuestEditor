@@ -300,7 +300,7 @@ void MHGUQuestEditor::initIconDropdowns()
     });
 }
 
-void MHGUQuestEditor::initStatDropdowns() const {
+void MHGUQuestEditor::initStatDropdowns() {
     QFile file(":/res/em_nando_tbl.nan");
     if (!file.open(QIODevice::ReadOnly))
     {
@@ -321,6 +321,8 @@ void MHGUQuestEditor::initStatDropdowns() const {
             .arg(entry.KO * 100.0f)
             .arg(entry.Mount * 100.0f)
             .arg(entry.Unknown * 100.0f);
+
+        monsterHealthMods.push_back(entry.Health);
 
         ui.comboMonster1Health->addItem(health);
         ui.comboMonster1Attack->addItem(attack);
@@ -353,7 +355,7 @@ void MHGUQuestEditor::initStatDropdowns() const {
     }
 }
 
-void MHGUQuestEditor::initMonsterDropdowns() const {
+void MHGUQuestEditor::initMonsterDropdowns() {
     auto monsterNames = QFile(":/res/em_names.json");
     if (!monsterNames.open(QIODevice::ReadOnly))
     {
@@ -363,13 +365,54 @@ void MHGUQuestEditor::initMonsterDropdowns() const {
     QJsonObject names = QJsonDocument::fromJson(monsterNames.readAll()).object();
     for (const auto& name : names.keys())
     {
-        const auto id = QVariant(names[name].toInt());
+        const auto data = names[name].toObject();
+        const auto id = QVariant(data["Id"].toInt());
+        const auto baseHp = data["BaseHp"].toInt();
         ui.comboMonster1->addItem(name, id);
         ui.comboMonster2->addItem(name, id);
         ui.comboMonster3->addItem(name, id);
         ui.comboMonster4->addItem(name, id);
         ui.comboMonster5->addItem(name, id);
+
+        emBaseHp[id.toInt()] = baseHp;
     }
+
+    const auto updateHp1 = [this](int) {
+        const auto id = ui.comboMonster1->currentData().toInt();
+        const auto modifier = ui.comboMonster1Health->currentIndex();
+        ui.labelMonster1Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+    };
+    const auto updateHp2 = [this](int) {
+        const auto id = ui.comboMonster2->currentData().toInt();
+        const auto modifier = ui.comboMonster2Health->currentIndex();
+        ui.labelMonster2Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+    };
+    const auto updateHp3 = [this](int) {
+        const auto id = ui.comboMonster3->currentData().toInt();
+        const auto modifier = ui.comboMonster3Health->currentIndex();
+        ui.labelMonster3Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+    };
+    const auto updateHp4 = [this](int) {
+        const auto id = ui.comboMonster4->currentData().toInt();
+        const auto modifier = ui.comboMonster4Health->currentIndex();
+        ui.labelMonster4Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+    };
+    const auto updateHp5 = [this](int) {
+        const auto id = ui.comboMonster5->currentData().toInt();
+        const auto modifier = ui.comboMonster5Health->currentIndex();
+        ui.labelMonster5Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+    };
+
+    connect(ui.comboMonster1, &QComboBox::currentIndexChanged, this, updateHp1);
+    connect(ui.comboMonster1Health, &QComboBox::currentIndexChanged, this, updateHp1);
+    connect(ui.comboMonster2, &QComboBox::currentIndexChanged, this, updateHp2);
+    connect(ui.comboMonster2Health, &QComboBox::currentIndexChanged, this, updateHp2);
+    connect(ui.comboMonster3, &QComboBox::currentIndexChanged, this, updateHp3);
+    connect(ui.comboMonster3Health, &QComboBox::currentIndexChanged, this, updateHp3);
+    connect(ui.comboMonster4, &QComboBox::currentIndexChanged, this, updateHp4);
+    connect(ui.comboMonster4Health, &QComboBox::currentIndexChanged, this, updateHp4);
+    connect(ui.comboMonster5, &QComboBox::currentIndexChanged, this, updateHp5);
+    connect(ui.comboMonster5Health, &QComboBox::currentIndexChanged, this, updateHp5);
 }
 
 void MHGUQuestEditor::initQuestTypeDropdown() const {
@@ -529,12 +572,12 @@ void MHGUQuestEditor::initObjectiveDropdowns() const
     const auto indexChanged = [this](int index, QComboBox* idCombo) {
         const auto type = (Resources::QuestClearParam)index;
         idCombo->clear();
+        idCombo->setModel(nullptr);
         switch (type) {
         case Resources::QuestClearParam::Hunt: [[fallthrough]];
         case Resources::QuestClearParam::Capture: [[fallthrough]];
         case Resources::QuestClearParam::HuntAllLargeMonsters: [[fallthrough]];
         case Resources::QuestClearParam::SlayTotalOfTargets:
-            idCombo->setModel(nullptr);
             for (auto i = 0; i < ui.comboMonster1->count(); ++i) {
                 idCombo->addItem(ui.comboMonster1->itemText(i), ui.comboMonster1->itemData(i));
             }
@@ -1048,12 +1091,7 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
     const auto serialized = Resources::QuestData::serialize(questData);
     auto& questDataEntry = arc->getQuestData();
     questDataEntry.Path = QStringLiteral(R"(loc\quest\questData\questData_%1)").arg(questData.Id, 7, 10, QChar(u8'0'));
-    questDataEntry.setData({
-        (const u8*)serialized.data(),
-        (size_t)serialized.size()
-    });
-
-    const auto resources = questLink->resolve(*arc);
+    questDataEntry.setData(serialized);
 
     // Save rem
     const auto saveRem = [this](const Resources::Rem& rem, Resources::ArcEntry* entry, Resources::LinkResource& resource) {
@@ -1068,9 +1106,11 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
             {
                 // Generate a random 6 digit number for the id
                 // Highest vanilla ids end at around 730000, so we'll start at 750000
-                // Chance of collision is low enough to ignore
-                const auto id = QRandomGenerator::global()->bounded(750000, 999999);
-                arc->addRem(id, Resources::Rem::serialize(rem));
+                const auto serializedRem = Resources::Rem::serialize(rem);
+                int id;
+                do {
+                    id = QRandomGenerator::global()->bounded(750000, 999999);
+                } while (!arc->addRem(id, serializedRem));
                 questLink->setRemResource(resource, id);
             }
             else 
@@ -1080,11 +1120,11 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
         }
     };
 
-    saveRem(rems[0], resources.RemMain[0], questLink->RemMain[0]);
-    saveRem(rems[1], resources.RemMain[1], questLink->RemMain[1]);
-    saveRem(rems[2], resources.RemAdd[0], questLink->RemAdd[0]);
-    saveRem(rems[3], resources.RemAdd[1], questLink->RemAdd[1]);
-    saveRem(rems[4], resources.RemSub, questLink->RemSub);
+    saveRem(rems[0], questLink->resolve(*arc, questLink->RemMain[0]), questLink->RemMain[0]);
+    saveRem(rems[1], questLink->resolve(*arc, questLink->RemMain[1]), questLink->RemMain[1]);
+    saveRem(rems[2], questLink->resolve(*arc, questLink->RemAdd[0]), questLink->RemAdd[0]);
+    saveRem(rems[3], questLink->resolve(*arc, questLink->RemAdd[1]), questLink->RemAdd[1]);
+    saveRem(rems[4], questLink->resolve(*arc, questLink->RemSub), questLink->RemSub);
 
     // Save esl
     const auto saveEsl = [this](const EmSetListEditor* editor, Resources::ArcEntry* entry, Resources::LinkResource& resource) {
@@ -1113,9 +1153,9 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
         }
     };
 
-    saveEsl(emSetListEditors[0], resources.EmSetList[0], questLink->EmSetList[0]);
-    saveEsl(emSetListEditors[1], resources.EmSetList[1], questLink->EmSetList[1]);
-    saveEsl(emSetListEditors[2], resources.EmSetList[2], questLink->EmSetList[2]);
+    saveEsl(emSetListEditors[0], questLink->resolve(*arc, questLink->EmSetList[0]), questLink->EmSetList[0]);
+    saveEsl(emSetListEditors[1], questLink->resolve(*arc, questLink->EmSetList[1]), questLink->EmSetList[1]);
+    saveEsl(emSetListEditors[2], questLink->resolve(*arc, questLink->EmSetList[2]), questLink->EmSetList[2]);
 
     // Save sem
     const auto saveSem = [this](const BossSetEditor* editor, Monster::IdType emId, 
@@ -1147,8 +1187,17 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
 
     for (auto i = 0; i < bossSetEditors.size(); ++i)
     {
-        saveSem(bossSetEditors[i], questData.Monsters[i].Id, resources.BossSet[i], questLink->BossSet[i]);
+        saveSem(
+            bossSetEditors[i], 
+            questData.Monsters[i].Id, 
+            questLink->resolve(*arc, questLink->BossSet[i]), 
+            questLink->BossSet[i]
+        );
     }
+
+    auto& questLinkEntry = arc->getQuestLink();
+    questLinkEntry.Path = QStringLiteral(R"(loc\quest\questLink\questLink_%1)").arg(questData.Id, 7, 10, QChar(u8'0'));
+    questLinkEntry.setData(Resources::QuestLink::serialize(*questLink));
 
     if (path.isEmpty())
         arc->save();
@@ -1186,7 +1235,7 @@ void MHGUQuestEditor::saveQuestArcToQuestList() const
     }
 
     const auto& serialized = arc->getQuestData();
-    Resources::QuestArc questList(questListPath.toStdWString());
+    Resources::QuestArc questList(questListPath.toStdWString(), false);
     const auto questDataEntry = questList.getQuestData(questData.Id);
     if (questDataEntry) // Update existing entry
     {
@@ -1552,11 +1601,11 @@ void MHGUQuestEditor::saveQuestDataFromUi()
     setFieldFromIndex(ui.comboMonster4Attack, questData.Monsters[3].AttackTableIndex);
     setFieldFromIndex(ui.comboMonster5Attack, questData.Monsters[4].AttackTableIndex);
 
-    setFieldFromIndex(ui.comboMonster1Other, questData.Monsters[0].HealthTableIndex);
-    setFieldFromIndex(ui.comboMonster2Other, questData.Monsters[1].HealthTableIndex);
-    setFieldFromIndex(ui.comboMonster3Other, questData.Monsters[2].HealthTableIndex);
-    setFieldFromIndex(ui.comboMonster4Other, questData.Monsters[3].HealthTableIndex);
-    setFieldFromIndex(ui.comboMonster5Other, questData.Monsters[4].HealthTableIndex);
+    setFieldFromIndex(ui.comboMonster1Other, questData.Monsters[0].OtherTableIndex);
+    setFieldFromIndex(ui.comboMonster2Other, questData.Monsters[1].OtherTableIndex);
+    setFieldFromIndex(ui.comboMonster3Other, questData.Monsters[2].OtherTableIndex);
+    setFieldFromIndex(ui.comboMonster4Other, questData.Monsters[3].OtherTableIndex);
+    setFieldFromIndex(ui.comboMonster5Other, questData.Monsters[4].OtherTableIndex);
 
     questData.Monsters[0].Difficulty = ui.spinBoxMonster1Difficulty->value();
     questData.Monsters[1].Difficulty = ui.spinBoxMonster2Difficulty->value();

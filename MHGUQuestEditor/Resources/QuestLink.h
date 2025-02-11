@@ -61,6 +61,7 @@ public:
     static void setRemResource(LinkResource& resource, u32 remId);
 
     ResolvedLinkResource resolve(QuestArc& arc) const;
+    static ArcEntry* resolve(QuestArc& arc, const LinkResource& resource);
 
     static bool isEmptyResource(const LinkResource& resource);
     static QString formatBossSetPath(const QString& bossSetName);

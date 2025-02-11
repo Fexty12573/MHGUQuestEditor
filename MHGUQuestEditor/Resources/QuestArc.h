@@ -10,7 +10,7 @@ namespace Resources
 class QuestArc : public Arc
 {
 public:
-    explicit QuestArc(std::filesystem::path path);
+    explicit QuestArc(std::filesystem::path path, bool isRegularQuestArc = true);
 
     const ArcEntry& getQuestData() const;
     ArcEntry& getQuestData();
@@ -35,9 +35,15 @@ public:
     const ArcEntry* getGmd(s32 languageId, const QString& name) const;
     ArcEntry* getGmd(s32 languageId, const QString& name);
 
+    void save(const std::filesystem::path& path = {}) override;
+
+private:
+    void fixOrder();
+
 private:
     size_t questDataIndex;
     size_t questLinkIndex;
+    bool isRegularQuestArc;
 };
 
 }
