@@ -4,6 +4,8 @@
 #include "ExtensionResolver.h"
 #include "Util/Crc32.h"
 
+#include <ranges>
+
 using namespace Qt::StringLiterals;
 
 Resources::QuestArc::QuestArc(std::filesystem::path path, bool isRegularQuestArc)
@@ -238,10 +240,67 @@ void Resources::QuestArc::save(const std::filesystem::path& path)
     Arc::save(path);
 }
 
+std::vector<const Resources::ArcEntry*> Resources::QuestArc::getSortedEntries() const
+{
+    if (!isRegularQuestArc)
+        return Arc::getSortedEntries();
+
+    // Quest Arc Order:
+    // 5x SEM
+    // 2x ESL
+    // 5x REM
+    // 1x SUPP
+    // 1x PLUS
+    // 1x Quest Link
+    // 7x GMD
+    // 1x Quest Data
+
+    if (entries.size() < 22)
+    {
+        qWarning("Potentially missing quest arc entries (has %zu)", entries.size());
+    }
+
+    std::vector<const ArcEntry*> sorted;
+    sorted.reserve(entries.size());
+
+    const auto ext_filter = [](const char* ext) {
+        return std::views::filter([ext](const auto& entry) { return entry.Extension == ext; });
+    };
+
+    for (const auto& sem : entries | ext_filter(".sem"))
+        sorted.push_back(&sem);
+
+    for (const auto& esl : entries | ext_filter(".esl"))
+        sorted.push_back(&esl);
+
+    for (const auto& rem : entries | ext_filter(".rem"))
+        sorted.push_back(&rem);
+
+    for (const auto& supp : entries | ext_filter(".sup"))
+        sorted.push_back(&supp);
+
+    for (const auto& plus : entries | ext_filter(".plus"))
+        sorted.push_back(&plus);
+
+    for (const auto& questLink : entries | ext_filter(".qdl"))
+        sorted.push_back(&questLink);
+
+    for (const auto& gmd : entries | ext_filter(".gmd"))
+        sorted.push_back(&gmd);
+
+    for (const auto& questData : entries | ext_filter(".ext"))
+        sorted.push_back(&questData);
+
+    return sorted;
+}
+
 void Resources::QuestArc::fixOrder()
 {
-    // Quest data must always be the last entry
-    // Quest link must always be the 9th-to-last entry
+    if (entries.size() < 22)
+    {
+        qCritical("Invalid quest arc entry count %zu", entries.size());
+        return;
+    }
 
     if (questDataIndex != entries.size() - 1)
     {

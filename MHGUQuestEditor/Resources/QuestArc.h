@@ -37,6 +37,8 @@ public:
 
     void save(const std::filesystem::path& path = {}) override;
 
+    std::vector<const ArcEntry*> getSortedEntries() const override;
+
 private:
     void fixOrder();
 

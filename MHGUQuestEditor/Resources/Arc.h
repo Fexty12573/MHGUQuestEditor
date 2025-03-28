@@ -42,6 +42,14 @@ protected:
     std::vector<ArcEntry> entries;
 
     void load();
+
+    virtual std::vector<const ArcEntry*> getSortedEntries() const {
+        std::vector<const ArcEntry*> sorted;
+        sorted.reserve(entries.size());
+        for (auto& entry : entries)
+            sorted.push_back(&entry);
+        return sorted;
+    }
     
 public:
     explicit Arc(std::filesystem::path path);
@@ -56,6 +64,7 @@ public:
     ArcEntry& getEntry(int index);
 
     ArcEntry& addEntry(const QString& fpath, const QString& typeName, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
+    ArcEntry& addEntry(const QString& fpath, const QString& typeName, const QByteArray& data, bool compressed = false, u32 realSize = 0);
 
     virtual void save(const std::filesystem::path& path = {});
 };

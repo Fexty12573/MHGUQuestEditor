@@ -100,6 +100,8 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
     connect(ui.actionSettings, &QAction::triggered, this, &MHGUQuestEditor::openSettings);
     connect(ui.actionSave, &QAction::triggered, this, &MHGUQuestEditor::onSaveFile);
     connect(ui.actionSaveAs, &QAction::triggered, this, &MHGUQuestEditor::onSaveFileAs);
+    connect(ui.actionExit, &QAction::triggered, this, &MHGUQuestEditor::close);
+    connect(ui.actionSaveArenaQuests, &QAction::triggered, this, &MHGUQuestEditor::saveAcEquip);
     connect(ui.tabWidgetRoot, &QTabWidget::currentChanged, this, [this](int index) {
         ui.actionDuplicateQuestInfo->setEnabled(index == 1); // Is in Quest Info tab
     });
@@ -120,10 +122,12 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
     connect(ui.buttonRemExtraBAdd, &QPushButton::pressed, this, [this] { addRemEntry("ExtraB", 3); });
     connect(ui.buttonRemSubAdd, &QPushButton::pressed, this, [this] { addRemEntry("Sub", 4); });
 
+    ui.actionSaveArenaQuests->setEnabled(false);
     ui.tabWidgetRoot->setTabEnabled(1, false); // Quest Info
     ui.tabWidgetRoot->setTabEnabled(2, false); // Rewards
     ui.tabWidgetRoot->setTabEnabled(3, false); // Small Monsters
     ui.tabWidgetRoot->setTabEnabled(4, false); // Spawns
+    ui.tabWidgetRoot->setTabEnabled(5, false); // Arena Equip
     ui.tabWidgetRoot->setCurrentIndex(0);
     ui.tabWidgetQuestData->setCurrentIndex(0);
     ui.tabWidgetLanguage->setCurrentIndex(0);
@@ -168,6 +172,11 @@ This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | 
         layout->addWidget(bossSetEditors[i]);
         widget->setLayout(layout);
     }
+
+    acEquipEditor = new AcEquipEditor(this);
+
+    const auto acEquipWidget = ui.tabWidgetRoot->widget(5);
+    acEquipWidget->layout()->addWidget(acEquipEditor);
 }
 
 MHGUQuestEditor::~MHGUQuestEditor() = default;
@@ -583,7 +592,7 @@ void MHGUQuestEditor::initObjectiveDropdowns() const
             }
             break;
         case Resources::QuestClearParam::DeliverItem:
-            idCombo->setModel(itemNamesModel);
+            idCombo->setModel(ItemNamesModel);
             break;
         case Resources::QuestClearParam::None: [[fallthrough]];
         case Resources::QuestClearParam::EarnWycademyPoints: [[fallthrough]];
@@ -655,8 +664,8 @@ void MHGUQuestEditor::initItemNames()
     }
 
     const auto names = QJsonDocument::fromJson(itemNamesFile.readAll());
-    itemNames = names.toVariant().toStringList();
-    itemNamesModel = new QStringListModel(itemNames, this);
+    ItemNames = names.toVariant().toStringList();
+    ItemNamesModel = new QStringListModel(ItemNames, this);
 }
 
 void MHGUQuestEditor::initSpawns()
@@ -727,7 +736,7 @@ void MHGUQuestEditor::addRemEntry(const QString& remName, s32 tabIndex)
     const auto chanceBox = new QSpinBox;
     const auto itemLayout = new QHBoxLayout;
 
-    itemCombo->setModel(itemNamesModel);
+    itemCombo->setModel(ItemNamesModel);
     chanceBox->setSuffix("%");
 
     deleteButton->setText("⨯");
@@ -790,9 +799,9 @@ void MHGUQuestEditor::onOpenFile()
     // Open file dialog
     const auto path = QFileDialog::getOpenFileName(
         this, 
-        "Open Quest File", 
+        "Open Quest/Arena Equip File", 
         {}, 
-        "Archive Files (*.arc);;Quest Files (*.mib *.ext)"
+        "Archive Files (*.arc);;Quest Files (*.mib *.ext);;Arena Equip Files (*.ape)"
     );
 
     if (path.isEmpty())
@@ -879,13 +888,35 @@ void MHGUQuestEditor::loadFile(const QString& path)
         const std::filesystem::path fsPath = path.toStdWString();
         if (!isQuestArc(fsPath))
         {
-            qCritical("Invalid quest arc %s", qUtf8Printable(path));
+            auto myArc = std::make_unique<Resources::Arc>(fsPath);
+            const auto acEquipArcEntry = myArc->findEntry(acEquipArcPath);
+            if (!acEquipArcEntry)
+            {
+                qCritical("Not a valid arc for this editor. (Neither quest nor arena equipment arc)");
+                return;
+            }
+
+            acEquipArc = std::move(myArc);
+            acEquipPath = path;
+            acEquipEditor->setAcEquip(Resources::AcEquip::deserialize(acEquipArcEntry->getData()));
+            ui.tabWidgetRoot->setTabEnabled(5, true);
+            ui.actionSaveArenaQuests->setEnabled(true);
             return;
         }
 
         arc = std::make_unique<Resources::QuestArc>(fsPath);
 
         loadQuestArc();
+    }
+    else if (path.endsWith(".ape"))
+    {
+        acEquipArc.reset();
+        acEquipPath = path;
+        acEquipEditor->setAcEquip(Resources::AcEquip::deserialize(file.readAll()));
+        ui.actionSaveArenaQuests->setEnabled(true);
+        ui.tabWidgetRoot->setTabEnabled(5, true);
+        ui.actionSaveArenaQuests->setEnabled(true);
+        return;
     }
     else
     {
@@ -1267,6 +1298,55 @@ void MHGUQuestEditor::saveQuestArcToQuestList() const
     }
 
     questList.save();
+}
+
+void MHGUQuestEditor::saveAcEquip()
+{
+    if (acEquipPath.isEmpty() || !acEquipEditor->getAcEquip())
+    {
+        qCritical("No ac equip path set");
+        return;
+    }
+
+    if (!QFile::exists(acEquipPath))
+    {
+        qCritical("Ac equip path does not exist");
+        return;
+    }
+
+    if (acEquipPath.endsWith(".ape"))
+    {
+        QFile file(acEquipPath);
+        if (!file.open(QIODevice::WriteOnly))
+        {
+            qCritical("Failed to open ac equip file");
+            return;
+        }
+
+        file.write(Resources::AcEquip::serialize(*acEquipEditor->getAcEquip()));
+    }
+    else if (acEquipPath.endsWith(".arc"))
+    {
+        if (!acEquipArc)
+        {
+            qCritical("No AcEquip arc loaded");
+            return;
+        }
+
+        const auto serialized = Resources::AcEquip::serialize(*acEquipEditor->getAcEquip());
+
+        const auto entry = acEquipArc->findEntry(acEquipArcPath);
+        if (entry)
+        {
+            entry->setData(serialized);
+        }
+        else 
+        {
+            acEquipArc->addEntry(acEquipArcPath, "rAcPlayerEquip", serialized);
+        }
+
+        acEquipArc->save();
+    }
 }
 
 void MHGUQuestEditor::loadQuestDataIntoUi()
@@ -1782,7 +1862,7 @@ void MHGUQuestEditor::loadRemIntoUi(const Resources::Rem& rem, const QString& re
         const auto chanceBox = new QSpinBox;
         const auto itemLayout = new QHBoxLayout;
         
-        itemCombo->setModel(itemNamesModel);
+        itemCombo->setModel(ItemNamesModel);
         chanceBox->setSuffix("%");
         
         deleteButton->setText("⨯");

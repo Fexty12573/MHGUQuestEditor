@@ -22,5 +22,10 @@
         <file>res/icon.png</file>
         <file>res/ems_names.json</file>
         <file>res/spawns.json</file>
+        <file>res/armor_series_data.gmd</file>
+        <file>res/armor_series_data.json</file>
+        <file>res/hunter_arts.json</file>
+        <file>res/skill_names.json</file>
+        <file>res/weapons.json</file>
     </qresource>
 </RCC>

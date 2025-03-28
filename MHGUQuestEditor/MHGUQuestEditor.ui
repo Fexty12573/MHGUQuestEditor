@@ -31,7 +31,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="tab_13">
        <attribute name="title">
@@ -6064,8 +6064,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6313,8 +6313,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6562,8 +6562,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6811,8 +6811,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>66</width>
-                 <height>16</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
               </widget>
@@ -6916,6 +6916,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_37">
+       <attribute name="title">
+        <string>Arena Equipment</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_195"/>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -6936,6 +6942,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
+    <addaction name="actionSaveArenaQuests"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -7026,6 +7033,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionSaveArenaQuests">
+   <property name="text">
+    <string>Save Arena Equip</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
   </action>
  </widget>

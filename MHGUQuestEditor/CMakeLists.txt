@@ -43,6 +43,12 @@ set(PROJECT_SOURCES
     Widgets/BossSetEditor/BossSetEditor.ui
     Widgets/BossSetEditor/BossSetEditor.h
     Widgets/BossSetEditor/BossSetEditor.cpp
+    Widgets/AcEquipEditor/AcEquipEditor.ui
+    Widgets/AcEquipEditor/AcEquipEditor.h
+    Widgets/AcEquipEditor/AcEquipEditor.cpp
+    Widgets/AcEquipEditor/EquipSetEditor.ui
+    Widgets/AcEquipEditor/EquipSetEditor.h
+    Widgets/AcEquipEditor/EquipSetEditor.cpp
     Common.h
     Monster/Id.h
     Util/Crc32.h
@@ -58,6 +64,8 @@ set(PROJECT_SOURCES
     Resources/EmSetList.cpp
     Resources/BossSet.h
     Resources/BossSet.cpp
+    Resources/AcEquip.h
+    Resources/AcEquip.cpp
     Resources/Arc.h
     Resources/Arc.cpp
     Resources/QuestArc.h

@@ -112,6 +112,11 @@ Resources::ArcEntry& Resources::Arc::addEntry(const QString& fpath, const QStrin
     return entries.back();
 }
 
+Resources::ArcEntry& Resources::Arc::addEntry(const QString& fpath, const QString& typeName, const QByteArray& data, bool compressed, u32 realSize)
+{
+    return addEntry(fpath, typeName, { (const u8*)data.data(), (size_t)data.size() }, compressed, realSize);
+}
+
 void Resources::Arc::load()
 {
     QFile file(path);
@@ -187,34 +192,37 @@ void Resources::Arc::save(const std::filesystem::path& path)
     QDataStream stream(&file);
     stream.setByteOrder(QDataStream::LittleEndian);
 
+    const auto sortedEntries = getSortedEntries();
+
     stream << Arc::Magic;
     stream << Arc::Version;
-    stream << (s16)entries.size();
+    stream << (s16)sortedEntries.size();
     stream << (u32)0;
 
-    const auto fileTableLength = sizeof(ArcHeader) + entries.size() * sizeof(ArcEntryInternal);
+    const auto fileTableLength = sizeof(ArcHeader) + sortedEntries.size() * sizeof(ArcEntryInternal);
     auto dataOffset = fileTableLength + (Arc::DataAlignment - fileTableLength % Arc::DataAlignment);
 
     std::vector<qint64> offsets;
 
-    for (const auto& entry : entries)
+    for (const auto entry : sortedEntries)
     {
         ArcEntryInternal internal = {
-            .TypeHash = entry.TypeHash,
-            .CompSize = entry.CompSize,
-            .RealSize = entry.RealSize,
-            .Quality = entry.Quality,
+            .TypeHash = entry->TypeHash,
+            .CompSize = entry->CompSize,
+            .RealSize = entry->RealSize,
+            .Quality = entry->Quality,
             .Offset = (u32)dataOffset
         };
 
-        const auto pathLen = std::min(sizeof(internal.Path), (size_t)entry.Path.toLatin1().size());
-        std::memcpy(internal.Path, entry.Path.toUtf8().data(), pathLen);
+        const auto entryPath = entry->Path.toUtf8();
+        const auto pathLen = std::min(sizeof(internal.Path), (size_t)entryPath.size());
+        std::memcpy(internal.Path, entryPath.data(), pathLen);
         std::memset(internal.Path + pathLen, 0, sizeof(internal.Path) - pathLen);
 
         stream.writeRawData((const char*)&internal, sizeof(ArcEntryInternal));
 
         offsets.push_back(dataOffset);
-        dataOffset += entry.CompSize;
+        dataOffset += entry->CompSize;
     }
 
     // Pad to 0x8000
@@ -222,10 +230,10 @@ void Resources::Arc::save(const std::filesystem::path& path)
     constexpr char padding[Arc::DataAlignment] = {};
     stream.writeRawData(padding, paddingSize);
 
-    for (auto i = 0; i < entries.size(); i++)
+    for (auto i = 0; i < sortedEntries.size(); i++)
     {
         Q_ASSERT(file.pos() == offsets[i]);
-        stream.writeRawData((const char*)entries[i].Data.data(), entries[i].CompSize);
+        stream.writeRawData((const char*)sortedEntries[i]->Data.data(), sortedEntries[i]->CompSize);
     }
 }
 
