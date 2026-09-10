@@ -53,13 +53,13 @@ AcEquipEditor::AcEquipEditor(QWidget *parent)
     connect(ui.spinBoxQuestId, &QSpinBox::valueChanged, this, [this](int value) {
         auto& quest = this->acEquip->Quests[ui.listWidgetQuests->currentRow()];
         quest.Id = value;
-        ui.listWidgetQuests->currentItem()->setText(QStringLiteral("q%1 - %2p").arg(value, 7, 10, QChar(u'0')).arg(quest.PlayerCount));
+        ui.listWidgetQuests->currentItem()->setText(tr("q%1 - %2p").arg(value, 7, 10, QChar(u'0')).arg(quest.PlayerCount));
     });
 
     connect(ui.spinBoxPlayerCount, &QSpinBox::valueChanged, this, [this](int value) {
         auto& quest = this->acEquip->Quests[ui.listWidgetQuests->currentRow()];
         quest.PlayerCount = value;
-        ui.listWidgetQuests->currentItem()->setText(QStringLiteral("q%1 - %2p").arg(quest.Id, 7, 10, QChar(u'0')).arg(value));
+        ui.listWidgetQuests->currentItem()->setText(tr("q%1 - %2p").arg(quest.Id, 7, 10, QChar(u'0')).arg(value));
     });
 
     connect(ui.timeEditRankA, &QSpinBox::valueChanged, this, [this](int value) {
@@ -93,7 +93,7 @@ AcEquipEditor::AcEquipEditor(QWidget *parent)
         const auto item = ui.listWidgetQuests->itemAt(pos);
         if (!item || acEquip->Quests.size() == 1) return; // Don't allow deletion of the last quest
 
-        menu.addAction("Delete Quest", this, [this, item] {
+        menu.addAction(tr("Delete Quest"), this, [this, item] {
             const auto index = ui.listWidgetQuests->row(item);
             auto selectedIndex = ui.listWidgetQuests->currentRow();
             ui.listWidgetQuests->takeItem(index);
@@ -123,7 +123,7 @@ void AcEquipEditor::loadAcEquip()
 {
     for (const auto [i, quest] : std::views::enumerate(acEquip->Quests))
     {
-        const auto questString = QStringLiteral("q%1 - %2p").arg(quest.Id, 7, 10, QChar(u'0')).arg(quest.PlayerCount);
+        const auto questString = tr("q%1 - %2p").arg(quest.Id, 7, 10, QChar(u'0')).arg(quest.PlayerCount);
         ui.listWidgetQuests->addItem(new QuestListWidgetItem(questString, (int)i));
     }
 

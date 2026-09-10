@@ -159,6 +159,8 @@ Resources::ArcEntry* Resources::QuestLink::resolve(QuestArc& arc, const LinkReso
         return resolveEmSetList(arc, resource);
     case "rRem"_crc:
         return resolveRem(arc, resource);
+    case "rSupplyList"_crc:
+        return resolveSupp(arc, resource);
     default:
         qWarning("Unsupported quest link type hash for single resolution: 0x%08X", resource.TypeHash);
         return nullptr;
@@ -262,4 +264,18 @@ Resources::ArcEntry* Resources::QuestLink::resolveRem(QuestArc& arc, const LinkR
 
     // rem_000000 is always an empty file and should not be resolved
     return resource.File == EmptyRem ? nullptr : entry;
+}
+
+Resources::ArcEntry* Resources::QuestLink::resolveSupp(QuestArc& arc, const LinkResource& resource)
+{
+    if (resource.TypeHash == 0)
+        return nullptr;
+
+    const auto entry = arc.findEntry(QStringLiteral(R"(quest\supp\%1)").arg(resource.File));
+    if (!entry) {
+        qCritical("Failed to resolve Supp %08X %s", resource.TypeHash, resource.File);
+        return nullptr;
+    }
+
+    return entry;
 }

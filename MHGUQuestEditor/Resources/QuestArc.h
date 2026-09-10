@@ -31,6 +31,8 @@ public:
     bool addRem(u32 remId, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
     bool addEsl(u32 mapId, u32 eslId, const QByteArray& data, bool compressed = false, u32 realSize = 0);
     bool addEsl(u32 mapId, u32 eslId, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
+    bool addSupp(u32 questId, const QByteArray& data, bool compressed = false, u32 realSize = 0);
+    bool addSupp(u32 questId, std::span<const u8> data, bool compressed = false, u32 realSize = 0);
 
     const ArcEntry* getGmd(s32 languageId, const QString& name) const;
     ArcEntry* getGmd(s32 languageId, const QString& name);

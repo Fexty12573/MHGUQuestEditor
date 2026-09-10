@@ -1,4 +1,5 @@
 #include "MHGUQuestEditor.h"
+#include "Util/AppLang.h"
 
 #include <ranges>
 #include <regex>
@@ -12,15 +13,22 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QRandomGenerator>
+#include <QActionGroup>
+#include <QProcess>
 
 #include "SettingsDialog.h"
 #include "Resources/Arc.h"
 #include "Resources/QuestData.h"
 #include "Resources/StatTable.h"
 #include "Resources/BossSet.h"
+#include "Resources/Supp.h"
 #include "Monster/Id.h"
 #include "Util/Crc32.h"
 #include <QListView>
+#include <QGroupBox>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QVBoxLayout>
 
 template<typename T> concept Enum = std::is_enum_v<T>;
 template<typename T> concept Integral = std::is_integral_v<T>;
@@ -49,21 +57,38 @@ MHGUQuestEditor::MHGUQuestEditor(QWidget *parent) : QMainWindow(parent)
     initItemLevelDropdowns();
     initItemNames();
     initSpawns();
+    initSuppliesEditor();
 
     loadSettings();
 
-    recentFilesMenu = new QMenu("Open Recent", ui.menuFile);
+    recentFilesMenu = new QMenu(tr("Open Recent"), ui.menuFile);
     const QFont font("Segoe UI", 11);
     recentFilesMenu->setFont(font);
     ui.menuFile->insertMenu(ui.actionSave, recentFilesMenu)->setFont(font);
     ui.menuFile->insertSeparator(ui.actionSave);
 
+    // Language menu (placed after "Help"): English / Chinese, English by default.
+    // Switching stores it in MHGUQuestEditor.ini; takes effect after a restart.
+    auto* languageMenu = menuBar()->addMenu(tr("Language"));
+    languageMenu->setFont(font);
+    auto* languageGroup = new QActionGroup(this);
+    languageGroup->setExclusive(true);
+    const auto addLanguageAction = [&](const QString& text, bool english) {
+        auto* action = languageMenu->addAction(text);
+        action->setCheckable(true);
+        action->setChecked(AppLang::english() == english);
+        languageGroup->addAction(action);
+        connect(action, &QAction::triggered, this, [this, english] { switchLanguage(english); });
+    };
+    addLanguageAction(QStringLiteral("English"), true);
+    addLanguageAction(tr("Chinese"), false);
+
     connect(ui.actionOpen, &QAction::triggered, this, &MHGUQuestEditor::onOpenFile);
     connect(ui.actionDuplicateQuestInfo, &QAction::triggered, this, [this] {
-        const auto button = QMessageBox::warning(this, "Duplicate Quest Info",
-            R"(Warning: This will duplicate the quest info from
-the currently selected language into all other languages.
-This operation cannot be undone. Do you want to continue?)", QMessageBox::Yes | QMessageBox::No);
+        const auto button = QMessageBox::warning(this, tr("Duplicate Quest Info"),
+            tr(R"(Warning: this will copy the quest info of the selected language
+to all other languages.
+This cannot be undone. Continue?)"), QMessageBox::Yes | QMessageBox::No);
 
         if (button == QMessageBox::Yes)
         {
@@ -206,6 +231,32 @@ void MHGUQuestEditor::closeEvent(QCloseEvent* event)
     event->accept();
 }
 
+void MHGUQuestEditor::switchLanguage(bool english)
+{
+    if (AppLang::english() == english)
+    {
+        return;
+    }
+
+    AppLang::englishRef() = english;
+    AppLang::saveSetting();
+
+    QMessageBox box(this);
+    box.setWindowTitle(tr("Language"));
+    box.setIcon(QMessageBox::Information);
+    box.setText(tr("Language switched to %1. Restart the program to apply it fully.")
+                    .arg(english ? QStringLiteral("English") : tr("Chinese")));
+    auto* restartButton = box.addButton(tr("Restart Now"), QMessageBox::AcceptRole);
+    box.addButton(tr("Later"), QMessageBox::RejectRole);
+    box.exec();
+
+    if (box.clickedButton() == restartButton)
+    {
+        QProcess::startDetached(QCoreApplication::applicationFilePath(), {});
+        QCoreApplication::quit();
+    }
+}
+
 void MHGUQuestEditor::initIconDropdowns()
 {
     const QImage icons(":/res/cmn_micon00.png");
@@ -242,7 +293,7 @@ void MHGUQuestEditor::initIconDropdowns()
         }
     }
 
-    auto iconNames = QFile(":/res/icon_names.json");
+    auto iconNames = QFile(AppLang::resFile("icon_names.json"));
     if (!iconNames.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open icon_names.json");
@@ -251,7 +302,7 @@ void MHGUQuestEditor::initIconDropdowns()
     QJsonArray iconNamesArray = QJsonDocument::fromJson(iconNames.readAll()).array();
     for (int i = 0; i < iconNamesArray.size(); i++)
     {
-        const auto name = iconNamesArray[i].toString("N/A");
+        const auto name = iconNamesArray[i].toString(tr("N/A"));
 
         if (i == 0 || i >= monsterIcons.size())
         {
@@ -321,10 +372,12 @@ void MHGUQuestEditor::initStatDropdowns() {
     {
         const auto& entry = table[i];
 
-        const auto health = QString("%1%").arg(entry.Health * 100.0f);
-        const auto attack = QString("%1%").arg(entry.Attack * 100.0f);
-        const auto defense = QString("%1%").arg(entry.Defense * 100.0f);
-        const auto other = QString("Stagger: %1% Exhaust: %1% KO: %1% Mount: %1% Unk: %1%")
+        const auto health = QString("[%1] %2%").arg(i).arg(entry.Health * 100.0f);
+        const auto attack = QString("[%1] %2%").arg(i).arg(entry.Attack * 100.0f);
+        const auto defense = QString("[%1] %2%").arg(i).arg(entry.Defense * 100.0f);
+        const auto other = QString(tr("[%1] Def:%2% | Stagger:%3% | Exhaust:%4% | KO:%5% | Mount:%6% | Unknown:%7%"))
+            .arg(i)
+            .arg(entry.Defense * 100.0f)
             .arg(entry.Stagger * 100.0f)
             .arg(entry.Exhaust * 100.0f)
             .arg(entry.KO * 100.0f)
@@ -335,27 +388,22 @@ void MHGUQuestEditor::initStatDropdowns() {
 
         ui.comboMonster1Health->addItem(health);
         ui.comboMonster1Attack->addItem(attack);
-        ui.comboMonster1Defense->addItem(defense);
         ui.comboMonster1Other->addItem(other);
 
         ui.comboMonster2Health->addItem(health);
         ui.comboMonster2Attack->addItem(attack);
-        ui.comboMonster2Defense->addItem(defense);
         ui.comboMonster2Other->addItem(other);
 
         ui.comboMonster3Health->addItem(health);
         ui.comboMonster3Attack->addItem(attack);
-        ui.comboMonster3Defense->addItem(defense);
         ui.comboMonster3Other->addItem(other);
 
         ui.comboMonster4Health->addItem(health);
         ui.comboMonster4Attack->addItem(attack);
-        ui.comboMonster4Defense->addItem(defense);
         ui.comboMonster4Other->addItem(other);
 
         ui.comboMonster5Health->addItem(health);
         ui.comboMonster5Attack->addItem(attack);
-        ui.comboMonster5Defense->addItem(defense);
         ui.comboMonster5Other->addItem(other);
 
         ui.comboZakoHealth->addItem(health);
@@ -365,7 +413,7 @@ void MHGUQuestEditor::initStatDropdowns() {
 }
 
 void MHGUQuestEditor::initMonsterDropdowns() {
-    auto monsterNames = QFile(":/res/em_names.json");
+    auto monsterNames = QFile(AppLang::resFile("em_names.json"));
     if (!monsterNames.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open em_names.json");
@@ -389,27 +437,27 @@ void MHGUQuestEditor::initMonsterDropdowns() {
     const auto updateHp1 = [this](int) {
         const auto id = ui.comboMonster1->currentData().toInt();
         const auto modifier = ui.comboMonster1Health->currentIndex();
-        ui.labelMonster1Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+        ui.labelMonster1Hp->setText(QString(tr("Actual HP: %1")).arg(emBaseHp[id] * monsterHealthMods[modifier]));
     };
     const auto updateHp2 = [this](int) {
         const auto id = ui.comboMonster2->currentData().toInt();
         const auto modifier = ui.comboMonster2Health->currentIndex();
-        ui.labelMonster2Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+        ui.labelMonster2Hp->setText(QString(tr("Actual HP: %1")).arg(emBaseHp[id] * monsterHealthMods[modifier]));
     };
     const auto updateHp3 = [this](int) {
         const auto id = ui.comboMonster3->currentData().toInt();
         const auto modifier = ui.comboMonster3Health->currentIndex();
-        ui.labelMonster3Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+        ui.labelMonster3Hp->setText(QString(tr("Actual HP: %1")).arg(emBaseHp[id] * monsterHealthMods[modifier]));
     };
     const auto updateHp4 = [this](int) {
         const auto id = ui.comboMonster4->currentData().toInt();
         const auto modifier = ui.comboMonster4Health->currentIndex();
-        ui.labelMonster4Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+        ui.labelMonster4Hp->setText(QString(tr("Actual HP: %1")).arg(emBaseHp[id] * monsterHealthMods[modifier]));
     };
     const auto updateHp5 = [this](int) {
         const auto id = ui.comboMonster5->currentData().toInt();
         const auto modifier = ui.comboMonster5Health->currentIndex();
-        ui.labelMonster5Hp->setText(QString("Actual HP: %1").arg(emBaseHp[id] * monsterHealthMods[modifier]));
+        ui.labelMonster5Hp->setText(QString(tr("Actual HP: %1")).arg(emBaseHp[id] * monsterHealthMods[modifier]));
     };
 
     connect(ui.comboMonster1, &QComboBox::currentIndexChanged, this, updateHp1);
@@ -425,7 +473,7 @@ void MHGUQuestEditor::initMonsterDropdowns() {
 }
 
 void MHGUQuestEditor::initQuestTypeDropdown() const {
-    auto questTypes = QFile(":/res/quest_type.json");
+    auto questTypes = QFile(AppLang::resFile("quest_type.json"));
     if (!questTypes.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_type.json");
@@ -439,7 +487,7 @@ void MHGUQuestEditor::initQuestTypeDropdown() const {
 }
 
 void MHGUQuestEditor::initQuestSubTypeDropdown() const {
-    auto questSubTypes = QFile(":/res/quest_subtype.json");
+    auto questSubTypes = QFile(AppLang::resFile("quest_subtype.json"));
     if (!questSubTypes.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_subtype.json");
@@ -453,7 +501,7 @@ void MHGUQuestEditor::initQuestSubTypeDropdown() const {
 }
 
 void MHGUQuestEditor::initQuestLevelDropdown() const {
-    auto questLevels = QFile(":/res/quest_level.json");
+    auto questLevels = QFile(AppLang::resFile("quest_level.json"));
     if (!questLevels.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_level.json");
@@ -469,7 +517,7 @@ void MHGUQuestEditor::initQuestLevelDropdown() const {
 
 void MHGUQuestEditor::initMonsterLevelDropdown() const
 {
-    auto monsterLevels = QFile(":/res/em_level.json");
+    auto monsterLevels = QFile(AppLang::resFile("em_level.json"));
     if (!monsterLevels.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open monster_level.json");
@@ -485,7 +533,7 @@ void MHGUQuestEditor::initMonsterLevelDropdown() const
 
 void MHGUQuestEditor::initMapDropdown()
 {
-    auto mapsFile = QFile(":/res/map_names.json");
+    auto mapsFile = QFile(AppLang::resFile("map_names.json"));
     if (!mapsFile.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open map_names.json");
@@ -505,7 +553,7 @@ void MHGUQuestEditor::initMapDropdown()
 }
 
 void MHGUQuestEditor::initSpawnTypeDropdown() const {
-    auto spawnTypes = QFile(":/res/quest_start_type.json");
+    auto spawnTypes = QFile(AppLang::resFile("quest_start_type.json"));
     if (!spawnTypes.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open spawn_types.json");
@@ -519,7 +567,7 @@ void MHGUQuestEditor::initSpawnTypeDropdown() const {
 }
 
 void MHGUQuestEditor::initBgmDropdown() const {
-    auto questBgm = QFile(":/res/quest_bgm.json");
+    auto questBgm = QFile(AppLang::resFile("quest_bgm.json"));
     if (!questBgm.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open bgm.json");
@@ -533,7 +581,7 @@ void MHGUQuestEditor::initBgmDropdown() const {
 }
 
 void MHGUQuestEditor::initRequirementsDropdowns() const {
-    auto questRequirements = QFile(":/res/quest_requirement.json");
+    auto questRequirements = QFile(AppLang::resFile("quest_requirement.json"));
     if (!questRequirements.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_requirement.json");
@@ -549,7 +597,7 @@ void MHGUQuestEditor::initRequirementsDropdowns() const {
 }
 
 void MHGUQuestEditor::initClearTypeDropdown() const {
-    auto questClearTypes = QFile(":/res/quest_clear_type.json");
+    auto questClearTypes = QFile(AppLang::resFile("quest_clear_type.json"));
     if (!questClearTypes.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_clear_type.json");
@@ -564,7 +612,7 @@ void MHGUQuestEditor::initClearTypeDropdown() const {
 
 void MHGUQuestEditor::initObjectiveDropdowns() const
 {
-    auto questObjectives = QFile(":/res/quest_objective.json");
+    auto questObjectives = QFile(AppLang::resFile("quest_objective.json"));
     if (!questObjectives.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_objective.json");
@@ -618,7 +666,7 @@ void MHGUQuestEditor::initObjectiveDropdowns() const
 
 void MHGUQuestEditor::initItemLevelDropdowns() const
 {
-    auto carveLevels = QFile(":/res/quest_carve_level.json");
+    auto carveLevels = QFile(AppLang::resFile("quest_carve_level.json"));
     if (!carveLevels.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_carve_level.json");
@@ -630,7 +678,7 @@ void MHGUQuestEditor::initItemLevelDropdowns() const
         ui.comboCarveLevel->addItem(level.toString(), i);
     }
 
-    auto gatheringLevels = QFile(":/res/quest_gather_level.json");
+    auto gatheringLevels = QFile(AppLang::resFile("quest_gather_level.json"));
     if (!gatheringLevels.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_gather_level.json");
@@ -642,7 +690,7 @@ void MHGUQuestEditor::initItemLevelDropdowns() const
         ui.comboGatheringLevel->addItem(level.toString(), i);
     }
 
-    auto fishingLevels = QFile(":/res/quest_fishing_level.json");
+    auto fishingLevels = QFile(AppLang::resFile("quest_fishing_level.json"));
     if (!fishingLevels.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open quest_fishing_level.json");
@@ -657,7 +705,7 @@ void MHGUQuestEditor::initItemLevelDropdowns() const
 
 void MHGUQuestEditor::initItemNames()
 {
-    auto itemNamesFile = QFile(":/res/item_names.json");
+    auto itemNamesFile = QFile(AppLang::resFile("item_names.json"));
     if (!itemNamesFile.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open item_names.json");
@@ -668,9 +716,68 @@ void MHGUQuestEditor::initItemNames()
     ItemNamesModel = new QStringListModel(ItemNames, this);
 }
 
+void MHGUQuestEditor::initSuppliesEditor()
+{
+    auto* root = qobject_cast<QVBoxLayout*>(ui.tab_10->layout());
+    if (!root)
+    {
+        qWarning("Items tab layout not found, supply editor disabled");
+        return;
+    }
+
+    auto* group = new QGroupBox(tr("Supplies"), ui.tab_10);
+    auto* table = new QTableWidget(40, 2, group);
+    table->setHorizontalHeaderLabels({ tr("Item"), tr("Amount") });
+    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    table->verticalHeader()->setDefaultSectionSize(22);
+    table->verticalHeader()->setVisible(false);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->setSelectionMode(QAbstractItemView::NoSelection);
+    table->setFixedHeight(250);
+
+    for (int i = 0; i < 40; ++i)
+    {
+        auto* itemCombo = new QComboBox(table);
+        itemCombo->setModel(ItemNamesModel);
+        table->setCellWidget(i, 0, itemCombo);
+        suppItemCombos[i] = itemCombo;
+
+        auto* countSpin = new QSpinBox(table);
+        countSpin->setRange(0, 99);
+        table->setCellWidget(i, 1, countSpin);
+        suppCountSpins[i] = countSpin;
+    }
+
+    auto* layout = new QVBoxLayout(group);
+    layout->addWidget(table);
+    root->addWidget(group);
+}
+
+void MHGUQuestEditor::loadSuppIntoUi()
+{
+    for (int i = 0; i < 40; ++i)
+    {
+        const auto& entry = supp.Entries[i];
+        suppItemCombos[i]->setCurrentIndex(entry.Id);
+        suppCountSpins[i]->setValue(entry.Count);
+        suppFlags[i] = entry.Flag;
+    }
+}
+
+void MHGUQuestEditor::saveSuppFromUi()
+{
+    for (int i = 0; i < 40; ++i)
+    {
+        supp.Entries[i].Id = (u16)suppItemCombos[i]->currentIndex();
+        supp.Entries[i].Count = (u8)suppCountSpins[i]->value();
+        supp.Entries[i].Flag = suppFlags[i];
+    }
+}
+
 void MHGUQuestEditor::initSpawns()
 {
-    auto spawnsFile = QFile(":/res/spawns.json");
+    auto spawnsFile = QFile(AppLang::resFile("spawns.json"));
     if (!spawnsFile.open(QIODevice::ReadOnly))
     {
         qFatal("Failed to open spawns.json");
@@ -678,7 +785,7 @@ void MHGUQuestEditor::initSpawns()
 
     const auto maps = QJsonDocument::fromJson(spawnsFile.readAll()).array();
     const auto font = QFont("Segoe UI", 11);
-    const auto menu = new QMenu("Insert Spawn", ui.menuEdit);
+    const auto menu = new QMenu(tr("Insert Spawn"), ui.menuEdit);
     menu->setFont(font);
     ui.menuEdit->addMenu(menu);
     for (const auto map : maps)
@@ -695,7 +802,7 @@ void MHGUQuestEditor::initSpawns()
         {
             const auto areaObj = area.toObject();
             const auto areaNo = areaObj["area"].toInt();
-            const auto areaMenu = new QMenu(QString("Area %1").arg(areaNo), mapMenu);
+            const auto areaMenu = new QMenu(QString(tr("Area %1")).arg(areaNo), mapMenu);
             areaMenu->setFont(font);
             const auto spawns = areaObj["spawns"].toArray();
             for (const auto [i, spawn] : std::views::enumerate(spawns))
@@ -710,7 +817,7 @@ void MHGUQuestEditor::initSpawns()
                     (float)spawnObj["z"].toDouble()
                 };
 
-                const auto action = areaMenu->addAction(QString("Spawn %1").arg(i + 1));
+                const auto action = areaMenu->addAction(QString(tr("Spawn %1")).arg(i + 1));
                 action->setFont(font);
                 connect(action, &QAction::triggered, this, [this, s] {
                     bossSetEditors[ui.tabWidgetMonsterSpawns->currentIndex()]->setSpawn(s);
@@ -799,9 +906,9 @@ void MHGUQuestEditor::onOpenFile()
     // Open file dialog
     const auto path = QFileDialog::getOpenFileName(
         this, 
-        "Open Quest/Arena Equip File", 
-        {}, 
-        "Archive Files (*.arc);;Quest Files (*.mib *.ext);;Arena Equip Files (*.ape)"
+        tr("Open Quest/Arena Equip File"),
+        {},
+        tr("Archive Files (*.arc);;Quest Files (*.mib *.ext);;Arena Equip Files (*.ape)")
     );
 
     if (path.isEmpty())
@@ -826,9 +933,9 @@ void MHGUQuestEditor::onSaveFileAs()
 {
     const auto path = QFileDialog::getSaveFileName(
         this,
-        "Save Quest File",
+        tr("Save Quest File"),
         {},
-        "Archive Files (*.arc);;Quest Files (*.mib *.ext)"
+        tr("Archive Files (*.arc);;Quest Files (*.mib *.ext)")
     );
 
     if (path.isEmpty())
@@ -1043,11 +1150,15 @@ void MHGUQuestEditor::loadQuestArc()
     rems.emplace_back(resources.RemAdd[1] ? Rem::deserialize(resources.RemAdd[1]->getData()) : Resources::Rem{});
     rems.emplace_back(resources.RemSub ? Rem::deserialize(resources.RemSub->getData()) : Resources::Rem{});
 
+    supp = resources.Supp ? Resources::Supp::deserialize(resources.Supp->getData()) : Resources::Supp{};
+    suppLoaded = resources.Supp != nullptr;
+
     loadRemIntoUi(rems[0], "MainA", 0);
     loadRemIntoUi(rems[1], "MainB", 1);
     loadRemIntoUi(rems[2], "ExtraA", 2);
     loadRemIntoUi(rems[3], "ExtraB", 3);
     loadRemIntoUi(rems[4], "Sub", 4);
+    loadSuppIntoUi();
 
     ui.tabWidgetRoot->setTabEnabled(3, true); // Enable small monsters tab
 
@@ -1088,6 +1199,7 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
     saveRemFromUi(rems[2], "ExtraA", 2);
     saveRemFromUi(rems[3], "ExtraB", 3);
     saveRemFromUi(rems[4], "Sub", 4);
+    saveSuppFromUi();
 
     // Save quest info
     using Resources::Language;
@@ -1156,6 +1268,20 @@ void MHGUQuestEditor::saveQuestArc(const QString& path)
     saveRem(rems[2], questLink->resolve(*arc, questLink->RemAdd[0]), questLink->RemAdd[0]);
     saveRem(rems[3], questLink->resolve(*arc, questLink->RemAdd[1]), questLink->RemAdd[1]);
     saveRem(rems[4], questLink->resolve(*arc, questLink->RemSub), questLink->RemSub);
+
+    // Save supp: write the supply table back (.sup, 40 entries of {item, count, flag});
+    // only written when a .sup was successfully loaded, to avoid clobbering it.
+    if (suppLoaded)
+    {
+        if (auto* suppEntry = questLink->resolve(*arc, questLink->Supp))
+        {
+            suppEntry->setData(Resources::Supp::serialize(supp));
+        }
+        else
+        {
+            qWarning("Supp entry not found, supply items not saved");
+        }
+    }
 
     // Save esl
     const auto saveEsl = [this](const EmSetListEditor* editor, Resources::ArcEntry* entry, Resources::LinkResource& resource) {
@@ -1480,11 +1606,11 @@ void MHGUQuestEditor::loadQuestDataIntoUi()
     setIndex(ui.comboMonster4Attack, questData.Monsters[3].AttackTableIndex);
     setIndex(ui.comboMonster5Attack, questData.Monsters[4].AttackTableIndex);
 
-    setIndex(ui.comboMonster1Other, questData.Monsters[0].HealthTableIndex);
-    setIndex(ui.comboMonster2Other, questData.Monsters[1].HealthTableIndex);
-    setIndex(ui.comboMonster3Other, questData.Monsters[2].HealthTableIndex);
-    setIndex(ui.comboMonster4Other, questData.Monsters[3].HealthTableIndex);
-    setIndex(ui.comboMonster5Other, questData.Monsters[4].HealthTableIndex);
+    setIndex(ui.comboMonster1Other, questData.Monsters[0].OtherTableIndex);
+    setIndex(ui.comboMonster2Other, questData.Monsters[1].OtherTableIndex);
+    setIndex(ui.comboMonster3Other, questData.Monsters[2].OtherTableIndex);
+    setIndex(ui.comboMonster4Other, questData.Monsters[3].OtherTableIndex);
+    setIndex(ui.comboMonster5Other, questData.Monsters[4].OtherTableIndex);
 
     ui.spinBoxMonster1Difficulty->setValue(questData.Monsters[0].Difficulty);
     ui.spinBoxMonster2Difficulty->setValue(questData.Monsters[1].Difficulty);

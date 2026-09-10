@@ -1,4 +1,5 @@
 #include "EquipSetEditor.h"
+#include "../../Util/AppLang.h"
 #include "MHGUQuestEditor.h"
 #include "Resources/Gmd.h"
 
@@ -26,7 +27,7 @@ EquipSetEditor::EquipSetEditor(QWidget *parent)
 
     if (!HunterArtsModel)
     {
-        QFile hunterArtsFile(":/res/hunter_arts.json");
+        QFile hunterArtsFile(AppLang::resFile("hunter_arts.json"));
         if (!hunterArtsFile.open(QIODevice::ReadOnly))
         {
             qFatal("Failed to open hunter_arts.json");
@@ -43,8 +44,8 @@ EquipSetEditor::EquipSetEditor(QWidget *parent)
             HunterArtsModel->appendRow(item);
         }
 
-        QFile armorSeriesDataFile(":/res/armor_series_data.json");
-        QFile armorNamesFile(":/res/armor_series_data.gmd");
+        QFile armorSeriesDataFile(AppLang::resFile("armor_series_data.json"));
+        QFile armorNamesFile(AppLang::resFile("armor_series_data.gmd"));
 
         if (!armorSeriesDataFile.open(QIODevice::ReadOnly))
         {
@@ -141,7 +142,7 @@ EquipSetEditor::EquipSetEditor(QWidget *parent)
 
         SkillNamesModel = new QStringListModel();
 
-        QFile skillNamesFile(":/res/skill_names.json");
+        QFile skillNamesFile(AppLang::resFile("skill_names.json"));
         if (!skillNamesFile.open(QIODevice::ReadOnly))
         {
             qFatal("Failed to open skill_names.json");
@@ -150,7 +151,7 @@ EquipSetEditor::EquipSetEditor(QWidget *parent)
         const auto skillNames = QJsonDocument::fromJson(skillNamesFile.readAll());
         SkillNamesModel->setStringList(skillNames.toVariant().toStringList());
 
-        QFile weaponFile(":/res/weapons.json");
+        QFile weaponFile(AppLang::resFile("weapons.json"));
         if (!weaponFile.open(QIODevice::ReadOnly))
         {
             qFatal("Failed to open weapons.json");
@@ -167,7 +168,7 @@ EquipSetEditor::EquipSetEditor(QWidget *parent)
                 return weapon.toObject()["Type"].toString() == name;
             })->toObject()["Weapons"].toArray();
 
-            const auto noneItem = new QStandardItem("None");
+            const auto noneItem = new QStandardItem(tr("None"));
             noneItem->setData(0, Roles::WeaponFamilyRole);
             noneItem->setData(0, Roles::WeaponLevelRole);
             weaponModel->appendRow(noneItem);
@@ -215,12 +216,12 @@ EquipSetEditor::EquipSetEditor(QWidget *parent)
     ui.comboCharmSkill1->setModel(SkillNamesModel);
     ui.comboCharmSkill2->setModel(SkillNamesModel);
 
-    static constexpr std::array armorPieces = {
-        "Head",
-        "Chest",
-        "Arms",
-        "Waist",
-        "Legs"
+    const std::array armorPieces = {
+        tr("Head"),
+        tr("Chest"),
+        tr("Arms"),
+        tr("Waist"),
+        tr("Legs")
     };
 
     for (int i = 0; i < armorPieces.size(); ++i)

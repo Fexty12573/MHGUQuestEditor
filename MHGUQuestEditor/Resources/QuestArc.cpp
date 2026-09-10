@@ -222,6 +222,37 @@ bool Resources::QuestArc::addEsl(u32 mapId, u32 eslId, std::span<const u8> data,
     return true;
 }
 
+bool Resources::QuestArc::addSupp(u32 questId, const QByteArray& data, bool compressed, u32 realSize)
+{
+    return addSupp(questId, { (const u8*)data.data(), (size_t)data.size() }, compressed, realSize);
+}
+
+bool Resources::QuestArc::addSupp(u32 questId, std::span<const u8> data, bool compressed, u32 realSize)
+{
+    const auto path = QStringLiteral(R"(quest\supp\supp_%1)").arg(questId, 7, 10, QChar(u8'0'));
+    if (findEntry(path))
+    {
+        qWarning("Duplicate SUP %s", path.toStdString().c_str());
+        return false;
+    }
+
+    ArcEntry entry = {
+        .Path = path,
+        .TypeHash = "rSupplyList"_ext,
+        .Extension = ExtensionResolver::resolve("rSupplyList"_ext),
+        .CompSize = 0,
+        .RealSize = 0,
+        .Quality = 2
+    };
+
+    entry.setData(data, !compressed);
+    if (compressed && realSize != 0)
+        entry.RealSize = realSize;
+
+    entries.push_back(entry);
+    return true;
+}
+
 const Resources::ArcEntry* Resources::QuestArc::getGmd(s32 languageId, const QString& name) const
 {
     return findEntry(Language::toString(languageId) + R"(\quest\questData\)" + name);
@@ -279,7 +310,7 @@ std::vector<const Resources::ArcEntry*> Resources::QuestArc::getSortedEntries() 
     for (const auto& supp : entries | ext_filter(".sup"))
         sorted.push_back(&supp);
 
-    for (const auto& plus : entries | ext_filter(".plus"))
+    for (const auto& plus : entries | ext_filter(".qdp"))
         sorted.push_back(&plus);
 
     for (const auto& questLink : entries | ext_filter(".qdl"))

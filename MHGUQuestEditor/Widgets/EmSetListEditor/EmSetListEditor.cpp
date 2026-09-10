@@ -1,4 +1,5 @@
 #include "EmSetListEditor.h"
+#include "../../Util/AppLang.h"
 
 #include <QFile>
 #include <QFileDialog>
@@ -31,7 +32,7 @@ EmSetListEditor::EmSetListEditor(Resources::EmSetList esl, QWidget *parent)
 
     if (monsterNames.empty())
     {
-        auto emsNames = QFile(":/res/ems_names.json");
+        auto emsNames = QFile(AppLang::resFile("ems_names.json"));
         if (!emsNames.open(QIODevice::ReadOnly))
         {
             qFatal("Failed to open ems_names.json");
@@ -101,30 +102,30 @@ EmSetListEditor::EmSetListEditor(Resources::EmSetList esl, QWidget *parent)
         auto item = ui.treeWidgetPackSelector->itemAt(pos);
         if (!item)
         {
-            menu.addAction("Add Pack", this, [this] {
+            menu.addAction(tr("Add Pack"), this, [this] {
                 this->esl.Packs.emplace_back();
                 const auto packItem = new QTreeWidgetItem(ui.treeWidgetPackSelector, ItemType::Pack);
-                packItem->setText(0, QStringLiteral("Pack %1").arg(this->esl.Packs.size()));
+                packItem->setText(0, tr("Pack %1").arg(this->esl.Packs.size()));
                 packItem->setData(0, Qt::UserRole, this->esl.Packs.size() - 1);
             });
         }
         else if (item->type() == ItemType::Pack)
         {
             const auto packIndex = item->data(0, Qt::UserRole).toInt();
-            menu.addAction("Add Monster", this, [this, item, packIndex] {
+            menu.addAction(tr("Add Monster"), this, [this, item, packIndex] {
                 auto& pack = this->esl.Packs[packIndex];
                 pack.Ems.emplace_back();
                 const auto emsItem = new QTreeWidgetItem(item, ItemType::Ems);
                 emsItem->setText(0, formatEmsName(pack.Ems.back()));
                 emsItem->setData(0, Qt::UserRole, pack.Ems.size() - 1);
             });
-            menu.addAction("Add Pack", this, [this] {
+            menu.addAction(tr("Add Pack"), this, [this] {
                 this->esl.Packs.emplace_back();
                 const auto packItem = new QTreeWidgetItem(ui.treeWidgetPackSelector, ItemType::Pack);
-                packItem->setText(0, QStringLiteral("Pack %1").arg(this->esl.Packs.size()));
+                packItem->setText(0, tr("Pack %1").arg(this->esl.Packs.size()));
                 packItem->setData(0, Qt::UserRole, this->esl.Packs.size() - 1);
             });
-            menu.addAction("Remove Pack", this, [this, packIndex] {
+            menu.addAction(tr("Remove Pack"), this, [this, packIndex] {
                 const auto packIter = this->esl.Packs.begin() + packIndex;
                 if (currentEms && currentEms >= packIter->Ems.data() && currentEms < packIter->Ems.data() + packIter->Ems.size())
                 {
@@ -138,14 +139,14 @@ EmSetListEditor::EmSetListEditor(Resources::EmSetList esl, QWidget *parent)
         }
         else if (item->type() == ItemType::Ems)
         {
-            menu.addAction("Add Monster", this, [this, item] {
+            menu.addAction(tr("Add Monster"), this, [this, item] {
                 auto& pack = this->esl.Packs[item->parent()->data(0, Qt::UserRole).toInt()];
                 pack.Ems.emplace_back();
                 const auto emsItem = new QTreeWidgetItem(item->parent(), ItemType::Ems);
                 emsItem->setText(0, formatEmsName(pack.Ems.back()));
                 emsItem->setData(0, Qt::UserRole, pack.Ems.size() - 1);
             });
-            menu.addAction("Remove Monster", this, [this, item] {
+            menu.addAction(tr("Remove Monster"), this, [this, item] {
                 auto& pack = this->esl.Packs[item->parent()->data(0, Qt::UserRole).toInt()];
                 const auto emsIndex = item->data(0, Qt::UserRole).toInt();
                 if (currentEms == pack.Ems.data() + emsIndex)
@@ -163,10 +164,10 @@ EmSetListEditor::EmSetListEditor(Resources::EmSetList esl, QWidget *parent)
             return;
         }
 
-        menu.addAction("Expand All", this, [this] {
+        menu.addAction(tr("Expand All"), this, [this] {
             ui.treeWidgetPackSelector->expandAll();
         });
-        menu.addAction("Collapse All", this, [this] {
+        menu.addAction(tr("Collapse All"), this, [this] {
             ui.treeWidgetPackSelector->collapseAll();
         });
 
@@ -234,7 +235,7 @@ void EmSetListEditor::loadEslIntoUi()
     for (const auto [i, pack] : std::views::enumerate(esl.Packs))
     {
         const auto packItem = new QTreeWidgetItem(ui.treeWidgetPackSelector, ItemType::Pack);
-        packItem->setText(0, QStringLiteral("Pack %1").arg(i + 1));
+        packItem->setText(0, tr("Pack %1").arg(i + 1));
         packItem->setData(0, Qt::UserRole, QVariant::fromValue(i));
         for (const auto [j, ems] : std::views::enumerate(pack.Ems))
         {
@@ -251,9 +252,9 @@ void EmSetListEditor::importFromFile()
 {
     const auto fileName = QFileDialog::getOpenFileName(
         this, 
-        "Import EmSetList", 
-        QString(), 
-        "EmSetList (*.esl *.32CA92F8);;All Files (*)");
+        tr("Import EmSetList"),
+        QString(),
+        tr("EmSetList (*.esl *.32CA92F8);;All Files (*)"));
     if (fileName.isEmpty())
         return;
 
@@ -269,6 +270,6 @@ void EmSetListEditor::importFromFile()
 
 QString EmSetListEditor::formatEmsName(const Resources::Ems& ems)
 {
-    return QStringLiteral("Area %1: %2").arg(ems.Area).arg(monsterNames[ems.MonsterId]);
+    return tr("Area %1: %2").arg(ems.Area).arg(monsterNames[ems.MonsterId]);
 }
 

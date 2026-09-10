@@ -58,6 +58,8 @@ set(PROJECT_SOURCES
     Resources/Gmd.cpp
     Resources/Rem.h
     Resources/Rem.cpp
+    Resources/Supp.h
+    Resources/Supp.cpp
     Resources/QuestLink.h
     Resources/QuestLink.cpp
     Resources/EmSetList.h
@@ -78,6 +80,10 @@ set(PROJECT_SOURCES
 )
 
 qt_add_executable(MHGUQuestEditor ${PROJECT_SOURCES})
+
+if (MSVC)
+    target_compile_options(MHGUQuestEditor PRIVATE /utf-8)
+endif()
 
 target_include_directories(MHGUQuestEditor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(MHGUQuestEditor

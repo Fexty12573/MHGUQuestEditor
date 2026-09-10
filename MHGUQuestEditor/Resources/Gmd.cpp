@@ -52,13 +52,27 @@ QByteArray Resources::Gmd::serialize(const Gmd& gmd)
     stream.setByteOrder(QDataStream::LittleEndian);
 
     GmdHeader header = gmd.Header;
-    header.PackageNameLength = (u32)gmd.PackageName.size();
     header.StringCount = (u32)gmd.Entries.size();
     header.UpdateTime = std::time(nullptr);
 
+    // Package name area: deserialize reads PackageNameLength + 1 bytes (incl. zero padding).
+    // We must write back the same byte count and keep PackageNameLength in sync, otherwise
+    // one extra byte is written per save and the text offset creeps forward (old bug: +1 per save).
+    std::string packageName = gmd.PackageName;
+    if (packageName.empty() || packageName.back() != '\0')
+        packageName.push_back('\0');
+    header.PackageNameLength = (u32)packageName.size() - 1;
+
+    // String buffer size = total bytes of all entries including their trailing \0.
+    // The old code kept the stale value; when text grew it was not updated and the game read garbage.
+    u32 stringBufferSize = 0;
+    for (const auto& entry : gmd.Entries)
+        stringBufferSize += (u32)entry.size() + 1;
+    header.StringBufferSize = stringBufferSize;
+
     stream << GmdHeader::Magic;
     stream.writeRawData((const char*)&header, sizeof(GmdHeader));
-    stream.writeRawData(gmd.PackageName.c_str(), gmd.PackageName.size() + 1); // Include null terminator
+    stream.writeRawData(packageName.data(), (int)packageName.size());
 
     for (const auto& entry : gmd.Entries)
     {

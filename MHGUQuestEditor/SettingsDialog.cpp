@@ -23,7 +23,7 @@ SettingsDialog::~SettingsDialog() = default;
 
 void SettingsDialog::browseForQuestList()
 {
-    const auto path = QFileDialog::getOpenFileName(this, "Select Quest List", {}, "Arc File (*.arc)");
+    const auto path = QFileDialog::getOpenFileName(this, tr("Select Quest List"), {}, tr("Arc File (*.arc)"));
     if (path.isNull())
         return;
 

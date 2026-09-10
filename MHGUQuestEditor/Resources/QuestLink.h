@@ -75,6 +75,7 @@ private:
     static ArcEntry* resolveBossSet(QuestArc& arc, const LinkResource& resource);
     static ArcEntry* resolveEmSetList(QuestArc& arc, const LinkResource& resource);
     static ArcEntry* resolveRem(QuestArc& arc, const LinkResource& resource);
+    static ArcEntry* resolveSupp(QuestArc& arc, const LinkResource& resource);
 };
 
 #pragma pack(pop)
