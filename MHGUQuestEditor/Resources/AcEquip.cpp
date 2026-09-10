@@ -43,7 +43,24 @@ QByteArray Resources::AcEquip::serialize(const AcEquip& acEquip)
     stream << (s32)acEquip.Quests.size();
 
     for (const auto& quest : acEquip.Quests) {
-        stream.writeRawData((const char*)&quest, sizeof(ArenaQuest));
+        ArenaQuest q = quest;
+        // Auto toggle for the charm slot (6th equipment piece):
+        //   charm Id = charm type (0 = none, 2 = Dos charm, 10 = Ten charm);
+        //   if any skill/points/decoration is set and the type is 0, enable the Dos charm;
+        //   if all three are empty, disable it (Id = 0); an existing type is kept as is.
+        for (auto& set : q.EquipSets) {
+            auto& charm = set.Equipment[5];
+            const bool hasSkill = set.CharmSkill1 != 0 || set.CharmSkill1Level != 0
+                               || set.CharmSkill2 != 0 || set.CharmSkill2Level != 0;
+            const bool hasDeco = charm.Decos[0] != 0 || charm.Decos[1] != 0 || charm.Decos[2] != 0;
+            if (hasSkill || hasDeco) {
+                if (charm.Id == 0)
+                    charm.Id = 2; // Dos charm
+            } else {
+                charm.Id = 0;
+            }
+        }
+        stream.writeRawData((const char*)&q, sizeof(ArenaQuest));
     }
 
     return data;

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MHGUQuestEditorClass</class>
+  <customwidgets>
+   <customwidget>
+    <class>StatCombo</class>
+    <extends>QComboBox</extends>
+    <header>StatCombo.h</header>
+   </customwidget>
+  </customwidgets>
+
  <widget class="QMainWindow" name="MHGUQuestEditorClass">
   <property name="geometry">
    <rect>
@@ -1307,48 +1315,11 @@
                   </item>
                  </layout>
                 </item>
+
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_32" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="4,1">
                   <item>
-                   <widget class="QComboBox" name="comboMonster1Defense">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_38">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Defense</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_3">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="1,1">
-                  <item>
-                   <widget class="QComboBox" name="comboMonster1Other">
+                   <widget class="StatCombo" name="comboMonster1Other">
                     <property name="font">
                      <font>
                       <pointsize>11</pointsize>
@@ -1690,51 +1661,11 @@
                   </item>
                  </layout>
                 </item>
+
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_36" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_34" stretch="4,1">
                   <item>
-                   <widget class="QComboBox" name="comboMonster2Defense">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_47">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Defense</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_12">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Policy::Preferred</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>240</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_34" stretch="1,1">
-                  <item>
-                   <widget class="QComboBox" name="comboMonster2Other">
+                   <widget class="StatCombo" name="comboMonster2Other">
                     <property name="font">
                      <font>
                       <pointsize>11</pointsize>
@@ -2073,51 +2004,11 @@
                   </item>
                  </layout>
                 </item>
+
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_42" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_44" stretch="4,1">
                   <item>
-                   <widget class="QComboBox" name="comboMonster3Defense">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_56">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Defense</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_18">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Policy::Preferred</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>240</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_44" stretch="1,1">
-                  <item>
-                   <widget class="QComboBox" name="comboMonster3Other">
+                   <widget class="StatCombo" name="comboMonster3Other">
                     <property name="font">
                      <font>
                       <pointsize>11</pointsize>
@@ -2456,51 +2347,11 @@
                   </item>
                  </layout>
                 </item>
+
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_51" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_53" stretch="4,1">
                   <item>
-                   <widget class="QComboBox" name="comboMonster4Defense">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_68">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Defense</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_26">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Policy::Preferred</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>240</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_53" stretch="1,1">
-                  <item>
-                   <widget class="QComboBox" name="comboMonster4Other">
+                   <widget class="StatCombo" name="comboMonster4Other">
                     <property name="font">
                      <font>
                       <pointsize>11</pointsize>
@@ -2839,51 +2690,11 @@
                   </item>
                  </layout>
                 </item>
+
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_67" stretch="1,1,2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_69" stretch="4,1">
                   <item>
-                   <widget class="QComboBox" name="comboMonster5Defense">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_92">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Defense</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_42">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Policy::Preferred</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>240</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_69" stretch="1,1">
-                  <item>
-                   <widget class="QComboBox" name="comboMonster5Other">
+                   <widget class="StatCombo" name="comboMonster5Other">
                     <property name="font">
                      <font>
                       <pointsize>11</pointsize>
@@ -3008,9 +2819,9 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_77" stretch="1,1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_77" stretch="4,1">
                   <item>
-                   <widget class="QComboBox" name="comboZakoOther">
+                   <widget class="StatCombo" name="comboZakoOther">
                     <property name="font">
                      <font>
                       <pointsize>11</pointsize>

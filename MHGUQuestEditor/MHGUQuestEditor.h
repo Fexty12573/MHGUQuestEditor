@@ -13,6 +13,7 @@
 #include "Resources/QuestData.h"
 #include "Resources/QuestLink.h"
 #include "Resources/Rem.h"
+#include "Resources/Supp.h"
 
 
 class MHGUQuestEditor : public QMainWindow
@@ -68,7 +69,13 @@ private:
     void saveQuestInfoFromUi();
     void saveRemFromUi(Resources::Rem& rem, const QString& remName, s32 tabIndex);
 
+    void initSuppliesEditor();
+    void loadSuppIntoUi();
+    void saveSuppFromUi();
+
     void openSettings();
+
+    void switchLanguage(bool english);
 
 private:
     Ui::MHGUQuestEditorClass ui;
@@ -77,6 +84,11 @@ private:
     std::unique_ptr<Resources::QuestArc> arc;
     std::vector<Resources::Gmd> gmds;
     std::vector<Resources::Rem> rems;
+    Resources::Supp supp;
+    bool suppLoaded = false;
+    std::array<QComboBox*, 40> suppItemCombos{};
+    std::array<QSpinBox*, 40> suppCountSpins{};
+    std::array<u8, 40> suppFlags{};
     std::unique_ptr<Resources::QuestLink> questLink;
     Resources::QuestData questData;
     std::vector<QPixmap> monsterIcons;

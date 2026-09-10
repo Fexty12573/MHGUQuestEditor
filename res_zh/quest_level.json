@@ -1,0 +1,134 @@
+[
+    {
+        "Name": "训练",
+        "Value": 0
+    },
+    {
+        "Name": "1: ★",
+        "Value": 1
+    },
+    {
+        "Name": "2: ★★",
+        "Value": 2
+    },
+    {
+        "Name": "3: ★★★",
+        "Value": 3
+    },
+    {
+        "Name": "4: ★★★★",
+        "Value": 4
+    },
+    {
+        "Name": "5: ★★★★★",
+        "Value": 5
+    },
+    {
+        "Name": "6: ★★★★★★",
+        "Value": 6
+    },
+    {
+        "Name": "7: ★★★★★★★",
+        "Value": 7
+    },
+    {
+        "Name": "8: ★★★★★★★★",
+        "Value": 8
+    },
+    {
+        "Name": "9: ★★★★★★★★★",
+        "Value": 9
+    },
+    {
+        "Name": "10: ★★★★★★★★★★",
+        "Value": 10
+    },
+    {
+        "Name": "G★",
+        "Value": 11
+    },
+    {
+        "Name": "G★★",
+        "Value": 12
+    },
+    {
+        "Name": "G★★★",
+        "Value": 13
+    },
+    {
+        "Name": "G★★★★",
+        "Value": 14
+    },
+    {
+        "Name": "G★★★★★",
+        "Value": 15
+    },
+    {
+        "Name": "EX",
+        "Value": 16
+    },
+    {
+        "Name": "二名 Ⅰ",
+        "Value": 101
+    },
+    {
+        "Name": "二名 Ⅱ",
+        "Value": 102
+    },
+    {
+        "Name": "二名 Ⅲ",
+        "Value": 103
+    },
+    {
+        "Name": "二名 IV",
+        "Value": 104
+    },
+    {
+        "Name": "二名 V",
+        "Value": 105
+    },
+    {
+        "Name": "二名 VI",
+        "Value": 106
+    },
+    {
+        "Name": "二名 VII",
+        "Value": 107
+    },
+    {
+        "Name": "二名 VIII",
+        "Value": 108
+    },
+    {
+        "Name": "二名 IX",
+        "Value": 109
+    },
+    {
+        "Name": "二名 X",
+        "Value": 110
+    },
+    {
+        "Name": "二名 G1",
+        "Value": 111
+    },
+    {
+        "Name": "二名 G2",
+        "Value": 112
+    },
+    {
+        "Name": "二名 G3",
+        "Value": 113
+    },
+    {
+        "Name": "二名 G4",
+        "Value": 114
+    },
+    {
+        "Name": "二名 G5",
+        "Value": 115
+    },
+    {
+        "Name": "二名 EX",
+        "Value": 116
+    }
+]

@@ -27,5 +27,34 @@
         <file>res/hunter_arts.json</file>
         <file>res/skill_names.json</file>
         <file>res/weapons.json</file>
+        <file>res_zh/armor_series_data.gmd</file>
+        <file>res_zh/armor_series_data.json</file>
+        <file>res_zh/cmn_micon00.png</file>
+        <file>res_zh/cmn_micon01.png</file>
+        <file>res_zh/em_level.json</file>
+        <file>res_zh/em_names.json</file>
+        <file>res_zh/em_nando_tbl.nan</file>
+        <file>res_zh/ems_names.json</file>
+        <file>res_zh/hunter_arts.json</file>
+        <file>res_zh/icon.ico</file>
+        <file>res_zh/icon.png</file>
+        <file>res_zh/icon_names.json</file>
+        <file>res_zh/item_names.json</file>
+        <file>res_zh/map_names.json</file>
+        <file>res_zh/quest_bgm.json</file>
+        <file>res_zh/quest_carve_level.json</file>
+        <file>res_zh/quest_clear_type.json</file>
+        <file>res_zh/quest_fishing_level.json</file>
+        <file>res_zh/quest_gather_level.json</file>
+        <file>res_zh/quest_level.json</file>
+        <file>res_zh/quest_objective.json</file>
+        <file>res_zh/quest_requirement.json</file>
+        <file>res_zh/quest_start_type.json</file>
+        <file>res_zh/quest_subtype.json</file>
+        <file>res_zh/quest_type.json</file>
+        <file>res_zh/skill_names.json</file>
+        <file>res_zh/spawns.json</file>
+        <file>res_zh/weapons.json</file>
+        <file>lang/zh_CN.qm</file>
     </qresource>
 </RCC>
